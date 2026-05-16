@@ -51,9 +51,9 @@ public class branchLog {
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
     public void setId(Long id) { this.id = id; }
-    public void setActionType(String actionType) { this.actionType = actionType; }
-    public void setLocation(String location) { this.location = location; }
-    public void setDeviceId(String deviceId) { this.deviceId = deviceId; }
+    public void setActionType(String actionType) { this.productName = actionType; }
+    public void setLocation(String location) { this.price = location; }
+    public void setDeviceId(String deviceId) { this.amount = deviceId; }
 }
 
 
