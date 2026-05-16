@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class branchLog {
+public class Branch {
     @Id 
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    private String productName;
+    private String name;
     private String price;
     private String amount;
 
@@ -31,9 +31,9 @@ public class branchLog {
     private LocalDateTime updatedAt;
 
 
-    public branchLog() {}
+    public Branch() {}
 
-    public branchLog(
+    public Branch(
         String productName,
         String price,
         String amount
