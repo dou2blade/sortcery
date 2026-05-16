@@ -1,10 +1,11 @@
 services:
-    image: maven:3.9-eclipse-temurin-21
+  api:
+    image: maven:3.9-eclipse-temurin-25
     working_dir: /app
     volumes:
       - ./backend:/app
       - ~/.m2:/root/.m2
-    command: mvn spring-boot:run
+    command: sh -c "mvn clean flyway:migrate && mvn spring-boot:run"
     environment:
       DB_URL: db:5432/sortcery
       DB_USERNAME: ${DB_USERNAME}
@@ -23,12 +24,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - .db:/var/lib/postgresql
 
   adminer:
     image: adminer
     ports:
       - "8000:8080"
-
-volumes:
-  db_data:
