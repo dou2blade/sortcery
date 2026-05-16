@@ -14,14 +14,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Branch {
+public class Store {
     @Id 
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     private String name;
-    private String price;
-    private String amount;
 
     @CreatedDate
     @Column(updatable = false)
@@ -31,30 +29,31 @@ public class Branch {
     private LocalDateTime updatedAt;
 
 
-    public Branch() {}
+    public Store() {}
 
-    public Branch(
-        String name,
-        String price,
-        String amount
+    public Store(
+        String name
     ) {
-        this.productName = productName;
-        this.price = price;
-        this.amount = amount;
+        this.name = name;
     }
 
     public Long getId() { return id; }
-    public String getProductName() { return productName; }
-    public String getPrice() { return price; }
-    public String getAmount() { return amount; }
+    public String getName() { return name; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
     public void setId(Long id) { this.id = id; }
-    public void setActionType(String actionType) { this.productName = actionType; }
-    public void setLocation(String location) { this.price = location; }
+    public void setName(String name) { this.name = name; }
+    {
+        this.storeName = name;
+    }
+
+    public Long getId() { return id; }
+    public String getStoreName() { return name; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+
+    public void setId(Long id) { this.id = id; }
+    public void setStoreName(String storeName) { this.name = storeName;
     public void setDeviceId(String deviceId) { this.amount = deviceId; }
 }
-
-
-
