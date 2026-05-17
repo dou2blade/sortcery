@@ -9,26 +9,37 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.sortcery.backend.model.User;
+import com.sortcery.backend.security.BearerTokenAuthFilter;
 
 import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final BearerTokenAuthFilter bearerTokenAuthFilter;
+
+    public SecurityConfig(
+            BearerTokenAuthFilter bearerTokenAuthFilter
+    ) {
+        this.bearerTokenAuthFilter = bearerTokenAuthFilter;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .cors(cors -> {})
             .authorizeHttpRequests(request -> {
-                // TODO: Proper auth when implemented
+                request.requestMatchers("/api/auth/login/**", "/api/auth/logout").permitAll();
                 request.requestMatchers("/api/**").authenticated();
-                // request.requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/logout").permitAll();
                 request.anyRequest().hasAnyRole(User.Role.ADMIN.toString());
             })
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(bearerTokenAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling(exceptions -> exceptions
                     .authenticationEntryPoint((request, response, exception) -> {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
