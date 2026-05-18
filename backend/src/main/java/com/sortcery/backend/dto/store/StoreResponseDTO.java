@@ -4,10 +4,10 @@ import com.sortcery.backend.model.Store;
 import java.time.LocalDateTime;
 
 public class StoreResponseDTO {
-    private Long id;
-    private String name;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private final Long id;
+    private final String name;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     public StoreResponseDTO(Store store) {
         this.id = store.getId();
@@ -17,7 +17,7 @@ public class StoreResponseDTO {
     }
 
     public Long getId() { return id; }
-    public String getStoreName() { return name; }
+    public String getName() { return name; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 }

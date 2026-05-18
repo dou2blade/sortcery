@@ -1,10 +1,10 @@
-package com.isko_d.isko_d.service;
+package com.sortcery.backend.service;
 
-import com.isko_d.isko_d.model.Store;
-import com.isko_d.isko_d.dto.log.StoreRequestDTO;
-import com.isko_d.isko_d.dto.log.StoreResponseDTO;
-import com.isko_d.isko_d.repository.StoreRepository;
-import com.isko_d.isko_d.exception.NotFoundException;
+import com.sortcery.backend.model.Store;
+import com.sortcery.backend.dto.store.StoreRequestDTO;
+import com.sortcery.backend.dto.store.StoreResponseDTO;
+import com.sortcery.backend.repository.StoreRepository;
+import com.sortcery.backend.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -31,10 +31,8 @@ public class StoreService {
 
     public StoreResponseDTO save(StoreRequestDTO request) {
         Store saved = storeRepository.save(new Store(
-            request.getStoreName()
+            request.getName()
         ));
-        ));
-
         return new StoreResponseDTO(saved);
     }
 
@@ -42,7 +40,7 @@ public class StoreService {
         Store existing = storeRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(Store.class, id));
 
-        if (request.getStoreName() != null && !request.getStoreName().isBlank()) existing.setStoreName(request.getStoreName());
+        if (request.getName() != null && !request.getName().isBlank()) existing.setName(request.getName());
 
         Store saved = storeRepository.save(existing);
 

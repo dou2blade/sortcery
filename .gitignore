@@ -20,3 +20,4 @@ build/
 ### Env Files ###
 .env
 .env.*
+.db/

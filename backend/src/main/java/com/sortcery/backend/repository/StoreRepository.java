@@ -1,6 +1,6 @@
-package com.isko_d.isko_d.repository;
+package com.sortcery.backend.repository;
 
-import com.isko_d.isko_d.model.Store;
+import com.sortcery.backend.model.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

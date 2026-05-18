@@ -1,25 +1,23 @@
 package com.sortcery.backend.controller;
 
-import com.sortcery.backend.service.StoreService;
-import com.sortcery.backend.dto.common.PaginatedResponse;
-import com.sortcery.backend.dto.store.StoreResponseDTO;
-import com.sortcery.backend.dto.store.UserRequestDTO;
-import com.sortcery.backend.validation.Create;
-import com.sortcery.backend.validation.Update;
+import java.util.List;
 
-import com.sortcery.backend.validation.Create;
-import com.sortcery.backend.validation.Update;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.validation.annotation.Validated;
-import java.util.List;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sortcery.backend.dto.store.StoreRequestDTO;
+import com.sortcery.backend.dto.store.StoreResponseDTO;
+import com.sortcery.backend.service.StoreService;
+import com.sortcery.backend.validation.Create;
+import com.sortcery.backend.validation.Update;
 
 @RestController
 @RequestMapping(path="/stores")
