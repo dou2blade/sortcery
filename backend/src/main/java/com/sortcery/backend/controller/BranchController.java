@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sortcery.backend.dto.branch.BranchRequestDTO;
 import com.sortcery.backend.dto.branch.BranchResponseDTO;
+import com.sortcery.backend.dto.common.ApiResponse;
 import com.sortcery.backend.service.BranchService;
 import com.sortcery.backend.validation.Create;
 import com.sortcery.backend.validation.Update;
@@ -29,14 +30,14 @@ public class BranchController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BranchResponseDTO>> findAll() {
+    public ResponseEntity<ApiResponse<BranchResponseDTO>> findAll() {
         List<BranchResponseDTO> branches = branchService.findAll();
 
         if (branches.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(branches);
+        return ResponseEntity.ok(new ApiResponse<>(branches));
     }
 
     @GetMapping(path="/{id}")
@@ -45,23 +46,23 @@ public class BranchController {
     }
 
     @PostMapping
-    public ResponseEntity<BranchResponseDTO> save(
+    public ResponseEntity<ApiResponse<BranchResponseDTO>> save(
         @RequestBody @Validated(Create.class) BranchRequestDTO request
     ) {
         BranchResponseDTO savedBranch = branchService.save(request);
-        return ResponseEntity.status(201).body(savedBranch);
+        return ResponseEntity.status(201).body(new ApiResponse<>(savedBranch));
     }
 
     @PatchMapping(path="/{id}")
-    public ResponseEntity<BranchResponseDTO> update(
+    public ResponseEntity<ApiResponse<BranchResponseDTO>> update(
         @PathVariable Long id,
         @RequestBody @Validated(Update.class) BranchRequestDTO request
     ) {
-        return ResponseEntity.ok(branchService.update(id, request));
+        return ResponseEntity.ok(new ApiResponse<>(branchService.update(id, request)));
     }
 
     @DeleteMapping(path="/{id}")
-    public ResponseEntity<BranchResponseDTO> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(branchService.delete(id));
+    public ResponseEntity<ApiResponse<BranchResponseDTO>> delete(@PathVariable Long id) {
+        return ResponseEntity.ok(new ApiResponse<>(branchService.delete(id)));
     }
 }
