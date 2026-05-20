@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<UserResponseDTO>> findAll(
+    public ResponseEntity<ApiResponse> findAll(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
         @RequestParam(required = false) String searchBy,
@@ -47,36 +47,36 @@ public class UserController {
         
         if (all) {
             List<UserResponseDTO> users = userService.findAll(searchBy, search, sort);
-            return ResponseEntity.ok(new ApiResponse<>(users));
+            return ResponseEntity.ok(ApiResponse.of(users));
         } else {
             Page<UserResponseDTO> usersPage = userService.findPage(page, size, searchBy, search, sort);
-            return ResponseEntity.ok(new ApiResponse<>(usersPage));
+            return ResponseEntity.ok(ApiResponse.of(usersPage));
         }
     }
 
     @GetMapping(path="/{id}")
-    public ResponseEntity<ApiResponse<UserResponseDTO>> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(new ApiResponse<>(userService.findById(id)));
+    public ResponseEntity<ApiResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.of(userService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<UserResponseDTO>> save(
+    public ResponseEntity<ApiResponse> save(
         @RequestBody @Validated(Create.class) UserRequestDTO request
     ) {
         UserResponseDTO savedUser = userService.save(request);
-        return ResponseEntity.status(201).body(new ApiResponse<>(savedUser));
+        return ResponseEntity.status(201).body(ApiResponse.of(savedUser));
     }
 
     @PatchMapping(path="/{id}")
-    public ResponseEntity<ApiResponse<UserResponseDTO>> update(
+    public ResponseEntity<ApiResponse> update(
         @PathVariable Long id,
         @RequestBody @Validated(Update.class) UserRequestDTO request
     ) {
-        return ResponseEntity.ok(new ApiResponse<>(userService.update(id, request)));
+        return ResponseEntity.ok(ApiResponse.of(userService.update(id, request)));
     }
 
     @DeleteMapping(path="/{id}")
-    public ResponseEntity<ApiResponse<UserResponseDTO>> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(new ApiResponse<>(userService.delete(id)));
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.of(userService.delete(id)));
     }
 }

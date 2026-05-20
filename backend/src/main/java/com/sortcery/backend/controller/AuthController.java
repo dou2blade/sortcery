@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     
-    private ResponseEntity<ApiResponse<LoginResponseDTO>> authenticateUser(
+    private ResponseEntity<ApiResponse> authenticateUser(
         @RequestBody @Validated(Create.class) LoginRequestDTO request, 
         User.Role role
     ) {
@@ -56,33 +56,33 @@ public class AuthController {
 
             return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new ApiResponse<>(authPayload));
+                .body(ApiResponse.of(authPayload));
         }
     }
 
     @PostMapping("/login/admin")
-    public ResponseEntity<ApiResponse<LoginResponseDTO>> authenticateAdmin(
+    public ResponseEntity<ApiResponse> authenticateAdmin(
         @RequestBody @Validated(Create.class) LoginRequestDTO request
     ) {
         return authenticateUser(request, User.Role.ADMIN);
     }
 
     @PostMapping("/login/retailer")
-    public ResponseEntity<ApiResponse<LoginResponseDTO>> authenticateRetailer(
+    public ResponseEntity<ApiResponse> authenticateRetailer(
         @RequestBody @Validated(Create.class) LoginRequestDTO request
     ) {
         return authenticateUser(request, User.Role.RETAILER);
     }
 
     @PostMapping("/login/manager")
-    public ResponseEntity<ApiResponse<LoginResponseDTO>> authenticateManager(
+    public ResponseEntity<ApiResponse> authenticateManager(
         @RequestBody @Validated(Create.class) LoginRequestDTO request
     ) {
         return authenticateUser(request, User.Role.MANAGER);
     }
 
     @PostMapping("/login/consumer")
-    public ResponseEntity<ApiResponse<LoginResponseDTO>> authenticateConsumer(
+    public ResponseEntity<ApiResponse> authenticateConsumer(
         @RequestBody @Validated(Create.class) LoginRequestDTO request
     ) {
         return authenticateUser(request, User.Role.CONSUMER);

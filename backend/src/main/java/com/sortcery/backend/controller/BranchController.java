@@ -30,14 +30,14 @@ public class BranchController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<BranchResponseDTO>> findAll() {
+    public ResponseEntity<ApiResponse> findAll() {
         List<BranchResponseDTO> branches = branchService.findAll();
 
         if (branches.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(new ApiResponse<>(branches));
+        return ResponseEntity.ok(ApiResponse.of(branches));
     }
 
     @GetMapping(path="/{id}")
@@ -46,23 +46,23 @@ public class BranchController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<BranchResponseDTO>> save(
+    public ResponseEntity<ApiResponse> save(
         @RequestBody @Validated(Create.class) BranchRequestDTO request
     ) {
         BranchResponseDTO savedBranch = branchService.save(request);
-        return ResponseEntity.status(201).body(new ApiResponse<>(savedBranch));
+        return ResponseEntity.status(201).body(ApiResponse.of(savedBranch));
     }
 
     @PatchMapping(path="/{id}")
-    public ResponseEntity<ApiResponse<BranchResponseDTO>> update(
+    public ResponseEntity<ApiResponse> update(
         @PathVariable Long id,
         @RequestBody @Validated(Update.class) BranchRequestDTO request
     ) {
-        return ResponseEntity.ok(new ApiResponse<>(branchService.update(id, request)));
+        return ResponseEntity.ok(ApiResponse.of(branchService.update(id, request)));
     }
 
     @DeleteMapping(path="/{id}")
-    public ResponseEntity<ApiResponse<BranchResponseDTO>> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(new ApiResponse<>(branchService.delete(id)));
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.of(branchService.delete(id)));
     }
 }

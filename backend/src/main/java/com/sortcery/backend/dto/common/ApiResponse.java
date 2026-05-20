@@ -7,51 +7,40 @@ import java.util.Map;
 
 import org.springframework.data.domain.Page;
 
-public class ApiResponse<T> {
-    private final List<T> data;
+public class ApiResponse {
+    private final Object data;
     private final Instant timestamp;
-    private final Map<String, Object> pagination; 
+    private final Map<String, Object> meta; 
 
-    public ApiResponse(T content) {
-        this.data = List.of(content);
-
-        this.timestamp = Instant.now();
-
-        this.pagination = new HashMap<String, Object>();
-        this.pagination.put("page", 0);
-        this.pagination.put("size", this.data.size());
-        this.pagination.put("totalElements", this.data.size());
-        this.pagination.put("totalPages", 1);
-        this.pagination.put("last", true);
-    }
-
-    public ApiResponse(List<T> content) {
+    public ApiResponse(Object content, Map<String, Object> meta) {
         this.data = content;
-
         this.timestamp = Instant.now();
-
-        this.pagination = new HashMap<String, Object>();
-        this.pagination.put("page", 0);
-        this.pagination.put("size", content.size());
-        this.pagination.put("totalElements", content.size());
-        this.pagination.put("totalPages", 1);
-        this.pagination.put("last", true);
+        this.meta = meta;
     }
 
-    public ApiResponse(Page<T> page) {
-        this.data = page.getContent();
+    public static ApiResponse of(Object content) {
+        if (content instanceof Page<?> page) {
+            Map<String, Object> meta = new HashMap<>();
+            meta.put("page", page.getNumber());
+            meta.put("size", page.getSize());
+            meta.put("totalElements", page.getTotalElements());
+            meta.put("totalPages", page.getTotalPages());
+            meta.put("last", page.isLast());
 
-        this.timestamp = Instant.now();
+            return new ApiResponse(page.getContent(), meta);
+        }
 
-        this.pagination = new HashMap<String, Object>();
-        this.pagination.put("page", page.getNumber());
-        this.pagination.put("size", page.getSize());
-        this.pagination.put("totalElements", page.getTotalElements());
-        this.pagination.put("totalPages", page.getTotalPages());
-        this.pagination.put("last", page.isLast());
+        if (content instanceof List<?> list) {
+            Map<String, Object> meta = new HashMap<>();
+            meta.put("size", list.size());
+
+            return new ApiResponse(list, meta);
+        }
+
+        return new ApiResponse(content, null);
     }
 
-    public List<T> getData() { return data; }
+    public Object getData() { return data; }
     public Instant getTimestamp() { return timestamp; }
-    public Map<String, Object> getPagination() { return pagination; }
+    public Map<String, Object> getMeta() { return meta; }
 }

@@ -30,39 +30,39 @@ public class StoreController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<StoreResponseDTO>> findAll() {
+    public ResponseEntity<ApiResponse> findAll() {
         List<StoreResponseDTO> stores = storeService.findAll();
 
         if (stores.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(new ApiResponse<>(stores));
+        return ResponseEntity.ok(ApiResponse.of(stores));
     }
 
     @GetMapping(path="/{id}")
-    public ResponseEntity<ApiResponse<StoreResponseDTO>> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(new ApiResponse<>(storeService.findById(id)));
+    public ResponseEntity<ApiResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.of(storeService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<StoreResponseDTO>> save(
+    public ResponseEntity<ApiResponse> save(
         @RequestBody @Validated(Create.class) StoreRequestDTO request
     ) {
         StoreResponseDTO savedStore = storeService.save(request);
-        return ResponseEntity.status(201).body(new ApiResponse<>(savedStore));
+        return ResponseEntity.status(201).body(ApiResponse.of(savedStore));
     }
 
     @PatchMapping(path="/{id}")
-    public ResponseEntity<ApiResponse<StoreResponseDTO>> update(
+    public ResponseEntity<ApiResponse> update(
         @PathVariable Long id,
         @RequestBody @Validated(Update.class) StoreRequestDTO request
     ) {
-        return ResponseEntity.ok(new ApiResponse<>(storeService.update(id, request)));
+        return ResponseEntity.ok(ApiResponse.of(storeService.update(id, request)));
     }
 
     @DeleteMapping(path="/{id}")
-    public ResponseEntity<ApiResponse<StoreResponseDTO>> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(new ApiResponse<>(storeService.delete(id)));
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.of(storeService.delete(id)));
     }
 }
