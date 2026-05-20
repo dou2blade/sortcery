@@ -1,7 +1,7 @@
 package com.sortcery.backend.controller;
 
 import com.sortcery.backend.service.UserService;
-import com.sortcery.backend.dto.common.PaginatedResponse;
+import com.sortcery.backend.dto.common.ApiResponse;
 import com.sortcery.backend.dto.user.UserResponseDTO;
 import com.sortcery.backend.dto.user.UserRequestDTO;
 import com.sortcery.backend.validation.Create;
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<PaginatedResponse<UserResponseDTO>> findAll(
+    public ResponseEntity<ApiResponse<UserResponseDTO>> findAll(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
         @RequestParam(required = false) String searchBy,
@@ -47,36 +47,36 @@ public class UserController {
         
         if (all) {
             List<UserResponseDTO> users = userService.findAll(searchBy, search, sort);
-            return ResponseEntity.ok(new PaginatedResponse<>(users));
+            return ResponseEntity.ok(new ApiResponse<>(users));
         } else {
             Page<UserResponseDTO> usersPage = userService.findPage(page, size, searchBy, search, sort);
-            return ResponseEntity.ok(new PaginatedResponse<>(usersPage));
+            return ResponseEntity.ok(new ApiResponse<>(usersPage));
         }
     }
 
     @GetMapping(path="/{id}")
-    public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id));
+    public ResponseEntity<ApiResponse<UserResponseDTO>> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(new ApiResponse<>(userService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDTO> save(
-            @RequestBody @Validated(Create.class) UserRequestDTO request
+    public ResponseEntity<ApiResponse<UserResponseDTO>> save(
+        @RequestBody @Validated(Create.class) UserRequestDTO request
     ) {
         UserResponseDTO savedUser = userService.save(request);
-        return ResponseEntity.status(201).body(savedUser);
+        return ResponseEntity.status(201).body(new ApiResponse<>(savedUser));
     }
 
     @PatchMapping(path="/{id}")
-    public ResponseEntity<UserResponseDTO> update(
-            @PathVariable Long id,
-            @RequestBody @Validated(Update.class) UserRequestDTO request
+    public ResponseEntity<ApiResponse<UserResponseDTO>> update(
+        @PathVariable Long id,
+        @RequestBody @Validated(Update.class) UserRequestDTO request
     ) {
-        return ResponseEntity.ok(userService.update(id, request));
+        return ResponseEntity.ok(new ApiResponse<>(userService.update(id, request)));
     }
 
     @DeleteMapping(path="/{id}")
-    public ResponseEntity<UserResponseDTO> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.delete(id));
+    public ResponseEntity<ApiResponse<UserResponseDTO>> delete(@PathVariable Long id) {
+        return ResponseEntity.ok(new ApiResponse<>(userService.delete(id)));
     }
 }

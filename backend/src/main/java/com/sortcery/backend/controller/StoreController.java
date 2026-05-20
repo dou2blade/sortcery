@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sortcery.backend.dto.common.ApiResponse;
 import com.sortcery.backend.dto.store.StoreRequestDTO;
 import com.sortcery.backend.dto.store.StoreResponseDTO;
 import com.sortcery.backend.service.StoreService;
@@ -29,39 +30,39 @@ public class StoreController {
     }
 
     @GetMapping
-    public ResponseEntity<List<StoreResponseDTO>> findAll() {
+    public ResponseEntity<ApiResponse<StoreResponseDTO>> findAll() {
         List<StoreResponseDTO> stores = storeService.findAll();
 
         if (stores.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(stores);
+        return ResponseEntity.ok(new ApiResponse<>(stores));
     }
 
     @GetMapping(path="/{id}")
-    public ResponseEntity<StoreResponseDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(storeService.findById(id));
+    public ResponseEntity<ApiResponse<StoreResponseDTO>> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(new ApiResponse<>(storeService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<StoreResponseDTO> save(
+    public ResponseEntity<ApiResponse<StoreResponseDTO>> save(
         @RequestBody @Validated(Create.class) StoreRequestDTO request
     ) {
         StoreResponseDTO savedStore = storeService.save(request);
-        return ResponseEntity.status(201).body(savedStore);
+        return ResponseEntity.status(201).body(new ApiResponse<>(savedStore));
     }
 
     @PatchMapping(path="/{id}")
-    public ResponseEntity<StoreResponseDTO> update(
+    public ResponseEntity<ApiResponse<StoreResponseDTO>> update(
         @PathVariable Long id,
         @RequestBody @Validated(Update.class) StoreRequestDTO request
     ) {
-        return ResponseEntity.ok(storeService.update(id, request));
+        return ResponseEntity.ok(new ApiResponse<>(storeService.update(id, request)));
     }
 
     @DeleteMapping(path="/{id}")
-    public ResponseEntity<StoreResponseDTO> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(storeService.delete(id));
+    public ResponseEntity<ApiResponse<StoreResponseDTO>> delete(@PathVariable Long id) {
+        return ResponseEntity.ok(new ApiResponse<>(storeService.delete(id)));
     }
 }

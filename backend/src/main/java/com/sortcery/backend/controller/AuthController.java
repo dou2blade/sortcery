@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sortcery.backend.dto.auth.LoginRequestDTO;
 import com.sortcery.backend.dto.auth.LoginResponseDTO;
+import com.sortcery.backend.dto.common.ApiResponse;
 import com.sortcery.backend.model.User;
 import com.sortcery.backend.service.AuthService;
 import com.sortcery.backend.service.TokenService;
@@ -28,15 +29,18 @@ public class AuthController {
     private final TokenService tokenService;
 
     public AuthController(
-            AuthService authService,
-            TokenService tokenService
+        AuthService authService,
+        TokenService tokenService
     ) {
         this.authService = authService;
         this.tokenService = tokenService;
     }
 
     
-    private ResponseEntity<LoginResponseDTO> authenticateUser(@RequestBody @Validated(Create.class) LoginRequestDTO request, User.Role role) {
+    private ResponseEntity<ApiResponse<LoginResponseDTO>> authenticateUser(
+        @RequestBody @Validated(Create.class) LoginRequestDTO request, 
+        User.Role role
+    ) {
         LoginResponseDTO authPayload = authService.authenticateUser(request.getEmail(), request.getPassword(), role);
 
         if (authPayload == null) {
@@ -52,27 +56,35 @@ public class AuthController {
 
             return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(authPayload);
+                .body(new ApiResponse<>(authPayload));
         }
     }
 
     @PostMapping("/login/admin")
-    public ResponseEntity<LoginResponseDTO> authenticateAdmin(@RequestBody @Validated(Create.class) LoginRequestDTO request) {
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> authenticateAdmin(
+        @RequestBody @Validated(Create.class) LoginRequestDTO request
+    ) {
         return authenticateUser(request, User.Role.ADMIN);
     }
 
     @PostMapping("/login/retailer")
-    public ResponseEntity<LoginResponseDTO> authenticateRetailer(@RequestBody @Validated(Create.class) LoginRequestDTO request) {
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> authenticateRetailer(
+        @RequestBody @Validated(Create.class) LoginRequestDTO request
+    ) {
         return authenticateUser(request, User.Role.RETAILER);
     }
 
     @PostMapping("/login/manager")
-    public ResponseEntity<LoginResponseDTO> authenticateManager(@RequestBody @Validated(Create.class) LoginRequestDTO request) {
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> authenticateManager(
+        @RequestBody @Validated(Create.class) LoginRequestDTO request
+    ) {
         return authenticateUser(request, User.Role.MANAGER);
     }
 
     @PostMapping("/login/consumer")
-    public ResponseEntity<LoginResponseDTO> authenticateConsumer(@RequestBody @Validated(Create.class) LoginRequestDTO request) {
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> authenticateConsumer(
+        @RequestBody @Validated(Create.class) LoginRequestDTO request
+    ) {
         return authenticateUser(request, User.Role.CONSUMER);
     }
 
