@@ -12,7 +12,7 @@ final GoRouter router = GoRouter(
     final isLoggedIn = authViewModel.isLoggedIn;
     final location = state.uri.path;
 
-    final isAuthRoute = location == '/login' || location == '/register';
+    final isAuthRoute = location.startsWith('/login') || location == '/register';
 
     if (!isLoggedIn && !isAuthRoute) {
       return '/login';
