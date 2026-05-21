@@ -19,7 +19,6 @@ class AuthViewModel extends ChangeNotifier {
   Future<ApiResult<AuthSession>> login(LoginRequest req, UserRole role) async {
     final res = await authRepository.login(req, role);
 
-    print("HI");
     switch (res) {
       case ApiSuccess<AuthSession>():
         _session = res.data;

@@ -12,23 +12,14 @@ class DependencyInjector {
   static late final AuthViewModel authViewModel;
 
   static void init() {
-    print("INIT START");
-
     tokenStorage = TokenStorage();
-    print("TokenStorage OK");
-
+    
     apiClient = ApiClient(tokenStorage);
-    print("ApiClient OK");
-
+    
     authApi = AuthApi(apiClient);
-    print("AuthApi OK");
 
     authRepository = AuthRepository(authApi, tokenStorage);
-    print("AuthRepository OK");
 
     authViewModel = AuthViewModel(authRepository);
-    print("AuthViewModel OK");
-
-    print("INIT DONE");
   }
 }

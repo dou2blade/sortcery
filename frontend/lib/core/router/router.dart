@@ -12,8 +12,6 @@ final GoRouter router = GoRouter(
     final isLoggedIn = authViewModel.isLoggedIn;
     final location = state.uri.path;
 
-    print(isLoggedIn);
-
     final isAuthRoute = location == '/login' || location == '/register';
 
     if (!isLoggedIn && !isAuthRoute) {
