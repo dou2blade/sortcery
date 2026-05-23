@@ -1,0 +1,29 @@
+package com.sortcery.backend.dto.product;
+
+import com.sortcery.backend.model.Product;
+import java.time.LocalDateTime;
+
+public class ProductResponseDTO {
+    private final Long id;
+    private final Long productCategoryId;
+    private final Long brandId;
+    private final String name;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
+
+    public ProductResponseDTO(Product product) {
+        this.id = product.getId();
+        this.productCategoryId = product.getProductCategory().getId();
+        this.brandId = product.getBrand().getId();
+        this.name = product.getName();
+        this.createdAt = product.getCreatedAt();
+        this.updatedAt = product.getUpdatedAt();
+    }
+
+    public Long getId() { return id; }
+    public Long getProductCategoryId() { return productCategoryId; }
+    public Long getBrandId() { return brandId; }
+    public String getName() { return name; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+}
