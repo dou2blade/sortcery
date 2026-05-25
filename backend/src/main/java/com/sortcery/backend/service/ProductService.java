@@ -1,16 +1,18 @@
 package com.sortcery.backend.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.sortcery.backend.dto.product.ProductRequestDTO;
+import com.sortcery.backend.dto.product.ProductResponseDTO;
+import com.sortcery.backend.exception.NotFoundException;
 import com.sortcery.backend.model.Brand;
 import com.sortcery.backend.model.Product;
 import com.sortcery.backend.model.ProductCategory;
-import com.sortcery.backend.dto.product.ProductRequestDTO;
-import com.sortcery.backend.dto.product.ProductResponseDTO;
-import com.sortcery.backend.repository.ProductRepository;
 import com.sortcery.backend.repository.BrandRepository;
 import com.sortcery.backend.repository.ProductCategoryRepository;
-import com.sortcery.backend.exception.NotFoundException;
-import org.springframework.stereotype.Service;
-import java.util.List;
+import com.sortcery.backend.repository.ProductRepository;
 
 @Service
 public class ProductService {
@@ -41,22 +43,22 @@ public class ProductService {
 
     public ProductResponseDTO save(ProductRequestDTO request) {
 
-    productCategoryRepository.findById(request.getProductCategoryId())
+    ProductCategory productCategory = productCategoryRepository.findById(request.getProductCategoryId())
         .orElseThrow(() -> new NotFoundException(
             ProductCategory.class,
             request.getProductCategoryId()
         ));
 
-    brandRepository.findById(request.getBrandId())
+    Brand brand = brandRepository.findById(request.getBrandId())
         .orElseThrow(() -> new NotFoundException(
             Brand.class,
             request.getBrandId()
         ));
 
     Product saved = productRepository.save(new Product(
-        request.getName(),
-        request.getProductCategoryId(),
-        request.getBrandId()
+        productCategory,
+        brand,
+        request.getName()
     ));
 
     return new ProductResponseDTO(saved);
