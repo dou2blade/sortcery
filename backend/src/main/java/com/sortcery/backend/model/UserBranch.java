@@ -1,5 +1,4 @@
 package com.sortcery.backend.model;
-
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -12,23 +11,26 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name="branches")
+@Table(name = "user_branches")
 @EntityListeners(AuditingEntityListener.class)
-public class Branch {
-    @Id 
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+public class UserBranch {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "store_id", nullable = false)
-    private Store store;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "branch_id", nullable = false)
+    private Branch branch;
 
     @CreatedDate
     @Column(updatable = false)
@@ -37,24 +39,19 @@ public class Branch {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    public UserBranch() {}
 
-    public Branch() {}
-
-    public Branch(
-        Store store,
-        String name
-    ) {
-        this.store = store;
-        this.name = name;
+    public UserBranch(User user, Branch branch) {
+        this.user = user;
+        this.branch = branch;
     }
 
     public Long getId() { return id; }
-    public Store getStore() { return store; }
-    public String getName() { return name; }
+    public User getUser() { return user; }
+    public Branch getBranch() { return branch; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
-    public void setId(Long id) { this.id = id; }
-    public void setStore(Store store) { this.store = store; }
-    public void setName(String name) { this.name = name; }
+    public void setUser(User user) { this.user = user; }
+    public void setBranch(Branch branch) { this.branch = branch; }
 }

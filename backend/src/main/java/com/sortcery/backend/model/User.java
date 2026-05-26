@@ -42,10 +42,20 @@ public class User {
     private Role role;
 
     public enum Role {
-        ADMIN,
-        RETAILER,
-        MANAGER,
-        CONSUMER,
+        ADMIN(false),
+        RETAILER(true),
+        MANAGER(true),
+        CONSUMER(false);
+
+        private final boolean assignable;
+
+        Role(boolean assignable) {
+            this.assignable = assignable;
+        }
+
+        public boolean isAssignableToBranch() {
+            return assignable;
+        }
     }
 
     @CreatedDate

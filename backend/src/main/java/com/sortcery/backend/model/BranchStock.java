@@ -17,7 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="branchstocks")
+@Table(name="branch_stocks")
 @EntityListeners(AuditingEntityListener.class)
 public class BranchStock {
     @Id 
