@@ -1,8 +1,8 @@
-CREATE TABLE IF NOT EXISTS stores (
+CREATE TABLE IF NOT EXISTS branches (
     id BIGSERIAL PRIMARY KEY,
 
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (store_id) REFERENCES stores(id),
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    store_id BIGINT NOT NULL REFERENCES stores(id) ON DELETE RESTRICT,
 
     name VARCHAR(64) NOT NULL,
 
