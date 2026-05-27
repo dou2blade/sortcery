@@ -15,11 +15,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="branch_stocks")
+@Table(
+    name = "product_variants",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"product_id", "name"})
+    }
+)
 @EntityListeners(AuditingEntityListener.class)
-public class BranchStock {
+public class ProductVariant {
     @Id 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -28,11 +34,10 @@ public class BranchStock {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "branch_id", nullable = false)
-    private Branch branch;
+    @Column(nullable = false)
+    private String name;
 
-    private Integer amount;
+    private String imageUrl;
 
     @CreatedDate
     @Column(updatable = false)
@@ -41,28 +46,27 @@ public class BranchStock {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    public ProductVariant() {}
 
-    public BranchStock() {}
-
-    public BranchStock(
+    public ProductVariant(
         Product product,
-        Branch branch,
-        Integer amount
+        String name,
+        String imageUrl
     ) {
         this.product = product;
-        this.branch = branch;
-        this.amount = amount;
+        this.name = name;
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() { return id; }
     public Product getProduct() { return product; }
-    public Branch getBranch() { return branch; }
-    public Integer getAmount() { return amount; }
+    public String getName() { return name; }
+    public String getImageUrl() { return imageUrl; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
     public void setId(Long id) { this.id = id; }
     public void setProduct(Product product) { this.product = product; }
-    public void setBranch(Branch branch) { this.branch = branch; }
-    public void setAmount(Integer amount) { this.amount = amount; }
+    public void setName(String name) { this.name = name; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }
