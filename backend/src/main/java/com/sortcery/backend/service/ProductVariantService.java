@@ -28,14 +28,21 @@ public class ProductVariantService {
     public List<ProductVariantResponseDTO> findAll() {
         return productVariantRepository.findAll()
             .stream()
-            .map((product) -> new ProductVariantResponseDTO(product))
+            .map(ProductVariantResponseDTO::new)
             .toList();
     }
 
     public ProductVariantResponseDTO findById(Long id) {
         return productVariantRepository.findById(id)
-            .map((product) -> new ProductVariantResponseDTO(product))
+            .map(ProductVariantResponseDTO::new)
             .orElseThrow(() -> new NotFoundException(Product.class, id));
+    }
+
+    public List<ProductVariantResponseDTO> findByProductId(Long productId) {
+        return productVariantRepository.findByProductId(productId)
+            .stream()
+            .map(ProductVariantResponseDTO::new)
+            .toList();
     }
 
     public ProductVariantResponseDTO save(ProductVariantRequestDTO request) {

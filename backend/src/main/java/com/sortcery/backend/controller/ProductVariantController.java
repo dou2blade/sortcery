@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sortcery.backend.dto.productvariant.ProductVariantRequestDTO;
 import com.sortcery.backend.dto.productvariant.ProductVariantResponseDTO;
-import com.sortcery.backend.service.ProductService;
 import com.sortcery.backend.service.ProductVariantService;
 import com.sortcery.backend.dto.common.ApiResponse;
 import com.sortcery.backend.validation.Create;
@@ -69,6 +68,6 @@ public class ProductVariantController {
 
     @GetMapping(path="/products/{id}/product-variants")
     public ResponseEntity<ApiResponse> findByProduct(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.of(productVariantService.findByProduct(id)))
+        return ResponseEntity.ok(ApiResponse.of(productVariantService.findByProductId(id)));
     }
 }
