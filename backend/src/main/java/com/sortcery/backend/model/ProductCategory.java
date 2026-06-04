@@ -27,7 +27,7 @@ public class ProductCategory {
 
     private String name;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "productCategory")
     private List<Product> products = new ArrayList<>();
 
     @CreatedDate
