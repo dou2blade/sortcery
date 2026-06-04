@@ -39,12 +39,8 @@ public class Brand {
 
     public Brand() {}
 
-    public Brand(
-        String name,
-        List<Product> products
-    ) {
+    public Brand(String name) {
         this.name = name;
-        this.products = products;
     }
 
     public Long getId() { return id; }

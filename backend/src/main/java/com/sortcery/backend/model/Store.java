@@ -40,12 +40,8 @@ public class Store {
 
     public Store() {}
 
-    public Store(
-        String name,
-        List<Branch> branches
-    ) {
+    public Store(String name) {
         this.name = name;
-        this.branches = branches;
     }
 
     public Long getId() { return id; }

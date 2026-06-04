@@ -40,12 +40,8 @@ public class ProductCategory {
 
     public ProductCategory() {}
 
-    public ProductCategory(
-        String name,
-        List<Product> products
-    ) {
+    public ProductCategory(String name) {
         this.name = name;
-        this.products = products;
     }
 
     public Long getId() { return id; }

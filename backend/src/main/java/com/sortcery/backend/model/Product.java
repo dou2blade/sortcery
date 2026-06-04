@@ -63,16 +63,11 @@ public class Product {
     public Product(
         ProductCategory productCategory,
         Brand brand,
-        List<ProductVariant> productVariants,
         String name
     ) {
         this.productCategory = productCategory;
         this.brand = brand;
         this.name = name;
-
-        for (ProductVariant variant : productVariants) {
-            addProductVariant(variant);
-        }
     }
 
     public Long getId() { return id; }
