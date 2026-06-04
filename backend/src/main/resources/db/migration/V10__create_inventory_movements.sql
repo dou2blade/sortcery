@@ -4,7 +4,16 @@ CREATE TABLE IF NOT EXISTS inventory_movements (
     branch_product_variant_id BIGINT NOT NULL REFERENCES branch_product_variants(id) ON DELETE CASCADE,
 
     type VARCHAR(32) NOT NULL CHECK (
-        type IN ('STOCK_IN', 'TRANSFER_IN', 'TRANSFER_OUT', 'SALE', 'RETURN')
+        type IN (
+            'STOCK_IN',
+			'TRANSFER_IN',
+			'TRANSFER_OUT',
+			'SALE',
+			'RETURN',
+			'ADJUSTMENT',
+			'DAMAGED',
+			'EXPIRED'
+        )
     ),
 
     quantity_change INTEGER NOT NULL,
@@ -14,5 +23,6 @@ CREATE TABLE IF NOT EXISTS inventory_movements (
 
     notes TEXT,
 
+    created_by BIGINT NOT NULL REFERENCES users(id),
     created_at TIMESTAMP DEFAULT NOW()
 )

@@ -33,6 +33,8 @@ public class Branch {
     private Store store;
 
     private String name;
+    private Double latitude;
+    private Double longitude;
 
     @OneToMany(mappedBy = "branch")
     private List<UserBranch> userBranches = new ArrayList<>();
@@ -48,15 +50,21 @@ public class Branch {
 
     public Branch(
         Store store,
-        String name
+        String name,
+        Double latitude,
+        Double longitude
     ) {
         this.store = store;
         this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Long getId() { return id; }
     public Store getStore() { return store; }
     public String getName() { return name; }
+    public Double getLatitude() { return latitude; }
+    public Double getLongitude() { return longitude; }
     public List<UserBranch> getUserBranches() { return userBranches; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
@@ -64,6 +72,8 @@ public class Branch {
     public void setId(Long id) { this.id = id; }
     public void setStore(Store store) { this.store = store; }
     public void setName(String name) { this.name = name; }
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
 
     @Transient
     public List<User> getUsers() {

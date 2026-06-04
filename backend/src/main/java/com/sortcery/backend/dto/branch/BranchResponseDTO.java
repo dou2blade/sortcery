@@ -12,6 +12,8 @@ public class BranchResponseDTO {
     private final List<Long> retailerIds;
     private final List<Long> managerIds;
     private final String name;
+    private final Double latitude;
+    private final Double longitude;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
@@ -27,6 +29,8 @@ public class BranchResponseDTO {
             .map(User::getId)
             .toList();
         this.name = branch.getName();
+        this.latitude = branch.getLatitude();
+        this.longitude = branch.getLongitude();
         this.createdAt = branch.getCreatedAt();
         this.updatedAt = branch.getUpdatedAt();
     }
@@ -36,6 +40,8 @@ public class BranchResponseDTO {
     public List<Long> getRetailerIds() { return retailerIds; }
     public List<Long> getManagerIds() { return managerIds; }
     public String getName() { return name; }
+    public Double getLatitude() { return latitude; }
+    public Double getLongitude() { return longitude; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 }

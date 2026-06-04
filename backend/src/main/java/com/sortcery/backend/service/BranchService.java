@@ -63,7 +63,9 @@ public class BranchService {
 
         Branch saved = branchRepository.save(new Branch(
             store,
-            request.getName()
+            request.getName(),
+            request.getLatitude(),
+            request.getLongitude()
         ));
 
         List<User> targetUsers = userRepository.findAllById(request.getUserIds());
@@ -100,6 +102,9 @@ public class BranchService {
 
             existing.setStore(store);
         }
+
+        if (request.getLatitude() != null) existing.setLatitude(request.getLatitude());
+        if (request.getLongitude() != null) existing.setLongitude(request.getLongitude());
 
         if (request.getUserIds() != null && !request.getUserIds().isEmpty()) {
             Set<Long> userIds = new HashSet<>(request.getUserIds());
