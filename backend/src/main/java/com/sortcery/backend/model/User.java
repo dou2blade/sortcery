@@ -7,13 +7,17 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import jakarta.persistence.Transient;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -58,6 +62,9 @@ public class User {
         }
     }
 
+    @OneToMany(mappedBy = "user")
+    private List<UserBranch> userBranches = new ArrayList<>();
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -90,6 +97,7 @@ public class User {
     public String getEmail() { return email; }
     public String getPassword() { return password; }
     public Role getRole() { return role; }
+    public List<UserBranch> getUserBranches() { return userBranches; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
@@ -100,4 +108,12 @@ public class User {
     public void setEmail(String email) { this.email = email; }
     public void setPassword(String password) { this.password = password; }
     public void setRole(Role role) { this.role = role; }
+    public void setUserBranches(List<UserBranch> userBranches) { this.userBranches = userBranches; }
+
+    @Transient
+    public List<Branch> getBranches() {
+        return userBranches.stream()
+            .map(UserBranch::getBranch)
+            .toList();
+    }
 }

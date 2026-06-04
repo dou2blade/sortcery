@@ -1,6 +1,8 @@
 package com.sortcery.backend.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,7 +15,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
 
 @Entity
@@ -30,13 +34,15 @@ public class Branch {
 
     private String name;
 
+    @OneToMany(mappedBy = "branch")
+    private List<UserBranch> userBranches = new ArrayList<>();
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
 
     public Branch() {}
 
@@ -51,10 +57,35 @@ public class Branch {
     public Long getId() { return id; }
     public Store getStore() { return store; }
     public String getName() { return name; }
+    public List<UserBranch> getUserBranches() { return userBranches; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
     public void setId(Long id) { this.id = id; }
     public void setStore(Store store) { this.store = store; }
     public void setName(String name) { this.name = name; }
+
+    @Transient
+    public List<User> getUsers() {
+        return userBranches.stream()
+            .map(UserBranch::getUser)
+            .toList();
+    }
+
+    @Transient
+    public List<User> getRetailers() {
+        return userBranches.stream()
+            .map(UserBranch::getUser)
+            .filter((user) -> user.getRole() == User.Role.RETAILER)
+            .toList();
+    }
+
+    @Transient
+    public List<User> getManagers() {
+        return userBranches.stream()
+            .map(UserBranch::getUser)
+            .filter((user) -> user.getRole() == User.Role.MANAGER)
+            .toList();
+    }
+
 }

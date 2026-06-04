@@ -1,5 +1,7 @@
 package com.sortcery.backend.dto.branch;
 
+import java.util.List;
+
 import com.sortcery.backend.validation.Create;
 
 import jakarta.validation.constraints.NotBlank;
@@ -13,18 +15,13 @@ public class BranchRequestDTO {
     @NotNull(groups = Create.class)
     private Long storeId;
 
-    @NotNull(groups = Create.class)
-    private Long userId;
+    private List<Long> userIds;
 
     public String getName() { return name; }
-
     public Long getStoreId() { return storeId; }
-
-    public Long getUserId() { return userId; }
+    public List<Long> getUserIds() { return userIds; }
 
     public void setName(String name) { this.name = name; }
-
     public void setStoreId(Long storeId) { this.storeId = storeId; }
-
-    public void setUserId(Long userId) { this.userId = userId; }
+    public void setUserIds(List<Long> userIds) { this.userIds = userIds; }
 }

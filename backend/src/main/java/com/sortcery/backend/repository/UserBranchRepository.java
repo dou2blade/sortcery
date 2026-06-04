@@ -14,6 +14,4 @@ public interface UserBranchRepository extends JpaRepository<UserBranch, Long> {
     List<UserBranch> findByUserId(Long userId);
 
     Optional<UserBranch> findByUserIdAndBranchId(Long userId, Long branchId);
-
-    boolean existsByUserIdAndBranchId(Long userId, Long branchId);
 }
