@@ -27,7 +27,7 @@ public class UserSeeder {
             }
 
             List<User> users = List.of(
-                new User("Super", "", "Admin", "superadmin@sortcery.com", "password", User.Role.ADMIN),
+                new User("Super", "", "Admin", "superadmin@sortcery.com", bCryptEncoder.encode("password"), User.Role.ADMIN),
 
                 instantiateUser("Elara", "Moonfall", "FreshMart", User.Role.MANAGER),
                 instantiateUser("Thalion", "Mooncrest", "Freshmart", User.Role.RETAILER),
