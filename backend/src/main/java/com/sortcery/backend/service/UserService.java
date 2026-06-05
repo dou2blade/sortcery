@@ -77,7 +77,7 @@ public class UserService {
         if (request.getMiddleName() != null && !request.getMiddleName().isBlank()) existing.setMiddleName(request.getMiddleName());
         if (request.getLastName() != null && !request.getLastName().isBlank()) existing.setLastName(request.getLastName());
         if (request.getEmail() != null && !request.getEmail().isBlank()) existing.setEmail(request.getEmail());
-        if (request.getPassword() != null && !request.getPassword().isBlank()) existing.setPassword(request.getPassword());
+        if (request.getPassword() != null && !request.getPassword().isBlank()) existing.setPassword(bCryptEncoder.encode(request.getPassword()));
         if (request.getRole() != null) existing.setRole(request.getRole()); 
 
         User saved = userRepository.save(existing);

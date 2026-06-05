@@ -9,10 +9,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 public class UserSeeder {
+    private final BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder(10);
+
     @Bean
     @Transactional
     @Order(1)
@@ -62,6 +65,6 @@ public class UserSeeder {
             + storeName.toLowerCase() 
             + ".com";
 
-        return new User(firstName, "", lastName, email, "password", role);
+        return new User(firstName, "", lastName, email, bCryptEncoder.encode("password"), role);
     }
 }
