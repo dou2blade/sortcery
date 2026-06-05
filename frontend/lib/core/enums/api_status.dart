@@ -1,4 +1,0 @@
-enum ApiStatus {
-  success,
-  error
-} 
