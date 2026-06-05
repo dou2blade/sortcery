@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS inventory_movements (
 			'TRANSFER_OUT',
 			'SALE',
 			'RETURN',
-			'ADJUSTMENT',
+			'ADJUSTMENT_IN',
+			'ADJUSTMENT_OUT',
 			'DAMAGED',
 			'EXPIRED'
         )

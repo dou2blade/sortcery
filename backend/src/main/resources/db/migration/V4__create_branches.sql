@@ -3,10 +3,12 @@ CREATE TABLE IF NOT EXISTS branches (
 
     store_id BIGINT NOT NULL REFERENCES stores(id) ON DELETE RESTRICT,
 
-    name VARCHAR(64) NOT NULL UNIQUE,
+    name VARCHAR(64) NOT NULL,
     latitude DOUBLE PRECISION NOT NULL,
     longitude DOUBLE PRECISION NOT NULL,
 
     created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
+    updated_at TIMESTAMP DEFAULT NOW(),
+
+    UNIQUE (store_id, name)
 );
