@@ -21,7 +21,7 @@ const RootLayout = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
-        <Stack />
+        <Stack screenOptions={{ headerShown: false }} />
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );

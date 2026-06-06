@@ -36,7 +36,7 @@ const Login = () => {
     const { plainToken, ...user } = data;
     login(plainToken, user);
 
-    router.replace(`/`);
+    router.replace(`/${user.role.toLowerCase()}`);
   }
 
   return (

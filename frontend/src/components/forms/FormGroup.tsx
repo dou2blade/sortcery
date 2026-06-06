@@ -4,7 +4,7 @@ import FormInput from "./FormInput";
 import FormLabel from "./FormLabel";
 import FormFeedback from "./FormFeedback";
 import FormSelect from "./FormSelect";
-import { SelectOption } from "@/definitions/types/selectOption";
+import { SelectOption } from "@/definitions/types";
 
 interface BaseFormGroupProps<T extends FieldValues> {
   name: Path<T>;

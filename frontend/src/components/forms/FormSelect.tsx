@@ -4,7 +4,7 @@ import { Pressable, Text } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 
-import { SelectOption } from "@/definitions/types/selectOption";
+import { SelectOption } from "@/definitions/types";
 
 interface FormSelectProps<T extends FieldValues> {
   name: Path<T>;

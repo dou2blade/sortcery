@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { AuthSession } from "@/definitions/types/authSession";
-import { User } from "@/definitions/types/user";
+import { User } from "@/definitions/schemas";
 
 interface AuthState extends AuthSession {
   login: (token: string, user: User) => void;
