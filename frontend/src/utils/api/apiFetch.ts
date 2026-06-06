@@ -1,4 +1,4 @@
-export const apiFetch = async ({ resource, method, body }: {
+export const apiFetch = async <T>({ resource, method, body }: {
   resource: string;
   method?: "GET" | "POST" | "PUT" | "DELETE";
   body?: object;
@@ -12,19 +12,10 @@ export const apiFetch = async ({ resource, method, body }: {
     body: JSON.stringify(body)
   });
 
-  if (!res.ok) {
-    let message = "Request failed";
-    try {
-      const data = await res.json();
-      message = data.message ?? message;
-    } catch {}
-    throw new Error(`${res.status}: ${message}`);
-  }
-
   return await res.json() as {
     status?: number,
     message?: string,
-    data?: Record<string, any>, 
+    data?: T, 
     timestamp: string, 
     meta?: {
       page: number,
