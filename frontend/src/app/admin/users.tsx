@@ -12,7 +12,7 @@ const columns: DataTableColumn<User>[] = [
 ];
 
 const AdminUsersPage = () => {
-  const { page = "1" } = useLocalSearchParams<{
+  const { page = "0" } = useLocalSearchParams<{
     page?: string;
   }>();
 

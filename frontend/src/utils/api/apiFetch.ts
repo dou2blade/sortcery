@@ -26,7 +26,5 @@ export const apiFetch = async <T>({ resource, method, body, params }: {
     body: JSON.stringify(body)
   });
 
-  return res.status === 204
-    ? {} as ApiResponse<{}>
-    : await res.json() as ApiResponse<T>;
+  return await res.json() as ApiResponse<T>;
 }

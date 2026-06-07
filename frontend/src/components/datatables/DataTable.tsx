@@ -15,7 +15,7 @@ const DataTable = <T,>({
   data,
   loading,
 }: DataTableProps<T>) => {
-  const { page = "1" } = useLocalSearchParams<{
+  const { page = "0" } = useLocalSearchParams<{
     page?: string;
   }>();
 

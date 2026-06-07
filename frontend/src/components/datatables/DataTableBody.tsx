@@ -23,7 +23,7 @@ export const DataTableBody = <T,>({
               style={{
                 flex: col.flex ?? 1,
                 padding: 12,
-                minWidth: 0, // important
+                minWidth: 0
               }}
             >
               <Text>
