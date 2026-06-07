@@ -1,6 +1,4 @@
 package com.sortcery.backend.service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -14,6 +12,7 @@ import com.sortcery.backend.model.ProductCategory;
 import com.sortcery.backend.repository.BrandRepository;
 import com.sortcery.backend.repository.ProductCategoryRepository;
 import com.sortcery.backend.repository.ProductRepository;
+
 
 @Service
 public class ProductService {
@@ -85,14 +84,4 @@ public class ProductService {
         return new ProductResponseDTO(deleted);
     }
 
-    public List<ProductResponseDTO> itemSearch(String keyword) {
-        List<Product> products = productRepository.findAll();
-        List<ProductResponseDTO> results = new ArrayList<>();
-        for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getName().toLowerCase().contains(keyword.toLowerCase())) {
-                results.add(new ProductResponseDTO(products.get(i)));
-            }
-        }
-        return results;
-    }
 }

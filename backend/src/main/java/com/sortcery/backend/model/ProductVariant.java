@@ -1,6 +1,8 @@
 package com.sortcery.backend.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -46,6 +49,10 @@ public class ProductVariant {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "productVariant")
+    private List<BranchProductVariant> branchProductVariants
+    = new ArrayList<>();
+
     public ProductVariant() {}
 
     public ProductVariant(
@@ -69,4 +76,6 @@ public class ProductVariant {
     public void setProduct(Product product) { this.product = product; }
     public void setName(String name) { this.name = name; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public List<BranchProductVariant> getBranchProductVariants() {return branchProductVariants;}
 }
