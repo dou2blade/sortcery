@@ -1,17 +1,22 @@
 package com.sortcery.backend.service;
 
-import com.sortcery.backend.dto.user.*;
 import com.sortcery.backend.model.User;
 import com.sortcery.backend.repository.UserRepository;
-
+import com.sortcery.backend.dto.user.UserRequestDTO;
+import com.sortcery.backend.dto.user.UserResponseDTO;
+import com.sortcery.backend.dto.user.UserStatsDTO;
 import com.sortcery.backend.exception.NotFoundException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -25,8 +30,6 @@ public class UserService {
     }
 
     public List<UserResponseDTO> findAll(
-        String searchBy,
-        String search,
         Sort sort
     ) {
         return userRepository
@@ -39,14 +42,30 @@ public class UserService {
     public Page<UserResponseDTO> findPage(
         int page,
         int size,
-        String searchBy,
         String search,
+        User.Role role,
         Sort sort
     ) {
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
+        Specification<User> spec = (root, query, cb) -> cb.conjunction();
+
+        if (role != null) spec = spec.and((root, query, cb) -> cb.equal(root.get("role"), role));
+
+        if (search != null && !search.isBlank()) {
+            String term = "%" + search.toLowerCase() + "%";
+            spec = spec.and((root, query, cb) -> (
+                cb.or(
+                    cb.like(cb.lower(root.get("email")), term),
+                    cb.like(cb.lower(root.get("firstName")), term),
+                    cb.like(cb.lower(root.get("middleName")), term),
+                    cb.like(cb.lower(root.get("lastName")), term)
+                )
+            ));
+        }
+
         return userRepository
-            .findAll(pageRequest)
+            .findAll(spec, pageRequest)
             .map(UserResponseDTO::new);
     }
 
@@ -92,5 +111,23 @@ public class UserService {
         userRepository.deleteById(id);
 
         return new UserResponseDTO(deleted);
+    }
+
+    public UserStatsDTO stats() {
+        List<Object[]> raw = userRepository.countByRole();
+        Map<User.Role, Long> byRole = new EnumMap<>(User.Role.class);
+
+        for (Object[] row : raw) {
+            User.Role role = (User.Role) row[0];
+            Long count = (Long) row[1];
+            byRole.put(role, count);
+        }
+
+        long total = byRole.values()
+                .stream()
+                .mapToLong(Long::longValue)
+                .sum();
+
+        return new UserStatsDTO(total, byRole);
     }
 }

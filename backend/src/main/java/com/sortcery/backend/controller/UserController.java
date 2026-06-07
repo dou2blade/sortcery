@@ -3,6 +3,7 @@ package com.sortcery.backend.controller;
 import com.sortcery.backend.service.UserService;
 import com.sortcery.backend.dto.common.ApiResponse;
 import com.sortcery.backend.dto.user.UserResponseDTO;
+import com.sortcery.backend.model.User;
 import com.sortcery.backend.dto.user.UserRequestDTO;
 import com.sortcery.backend.validation.Create;
 import com.sortcery.backend.validation.Update;
@@ -35,8 +36,8 @@ public class UserController {
     public ResponseEntity<ApiResponse> findAll(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
-        @RequestParam(required = false) String searchBy,
         @RequestParam(required = false) String search,
+        @RequestParam(required = false) User.Role role,
         @RequestParam(defaultValue = "createdAt") String sortBy,
         @RequestParam(defaultValue = "desc") String sortDir,
         @RequestParam(defaultValue = "false") boolean all
@@ -46,10 +47,10 @@ public class UserController {
             : Sort.by(sortBy).descending();
         
         if (all) {
-            List<UserResponseDTO> users = userService.findAll(searchBy, search, sort);
+            List<UserResponseDTO> users = userService.findAll(sort);
             return ResponseEntity.ok(ApiResponse.of(users));
         } else {
-            Page<UserResponseDTO> usersPage = userService.findPage(page, size, searchBy, search, sort);
+            Page<UserResponseDTO> usersPage = userService.findPage(page, size, search, role, sort);
             return ResponseEntity.ok(ApiResponse.of(usersPage));
         }
     }
@@ -78,5 +79,10 @@ public class UserController {
     @DeleteMapping(path="/{id}")
     public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.of(userService.delete(id)));
+    }
+
+    @GetMapping(path="/stats")
+    public ResponseEntity<ApiResponse> stats() {
+        return ResponseEntity.ok(ApiResponse.of(userService.stats()));
     }
 }
