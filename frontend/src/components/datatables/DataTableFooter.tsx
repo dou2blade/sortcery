@@ -17,10 +17,12 @@ export const DataTableFooter = ({
 }: DataTableFooterProps) => {
   const router = useRouter();
 
-  const start = (page * size) + 1;
-  const end = (start - 1) + size >= total ? total : (start - 1) + size;
+  const start = total === 0 ? 0 : (page * size) + 1;
+  const end = total === 0
+    ? 0
+    : (start - 1) + size >= total ? total : (start - 1) + size;
   return (
-    <View className="flex-row items-center justify-end p-3 w-full rounded-b-lg border-t border-slate-300 bg-slate-200">
+    <View className="flex-row items-center justify-end p-3 w-full rounded-b-lg border-t border-slate-300 bg-green-200">
       <Text className="text-xs text-slate-500 mr-2">
         {start} - {end} of {total}
       </Text>

@@ -25,7 +25,7 @@ const StaffSidebar = ({
   const router = useRouter();
 
   const viewStyle = useAnimatedStyle(() => ({
-    width: withTiming(collapsed ? 80 : 256, {
+    width: withTiming(collapsed ? 60 : 256, {
       duration: 250,
     }),
   }));
@@ -37,26 +37,27 @@ const StaffSidebar = ({
   }));
 
   return (
-    <Pressable onPress={onToggle}>
+    <Pressable onPress={onToggle} className="h-full">
       <Animated.View
         style={viewStyle}
-        className="h-full bg-white border-r border-gray-200"
+        className="h-full bg-green-600"
       >
-        {/* TOP SECTION */}
         <View className="flex-1">
-          <View className="py-6 px-4 border-b border-gray-200">
+          <View className="py-6 px-4">
             {collapsed ? (
-              <MaterialIcons name="inventory" size={24} />
+              <MaterialIcons name="inventory" size={24} color="white" />
             ) : (
               <Animated.Text
                 style={labelStyle}
                 numberOfLines={1}
-                className="font-bold text-lg"
+                className="font-bold text-lg text-white"
               >
                 Sortcery Admin
               </Animated.Text>
             )}
           </View>
+
+          <View className="mx-4 h-px mb-3 bg-white" />
 
           {navItems.map(({ label, icon, href }) => {
             const active = pathname === href;
@@ -66,13 +67,17 @@ const StaffSidebar = ({
                 key={`${label}-${icon}-${href}`}
                 onPress={() => router.push(href)}
                 className={`flex-row items-center pl-4 py-4 gap-3 ${
-                  active ? "bg-green-100" : ""
+                  active ? "bg-white" : ""
                 }`}
               >
-                <MaterialIcons name={icon} size={24} />
+                <MaterialIcons name={icon} size={24} color={active ? "black" : "white"}/>
 
                 {!collapsed && (
-                  <Animated.Text entering={FadeInLeft} exiting={FadeOutLeft}>
+                  <Animated.Text 
+                    entering={FadeInLeft} 
+                    exiting={FadeOutLeft} 
+                    className={active ? "text-black" : "text-white"}
+                  >
                     {label}
                   </Animated.Text>
                 )}
@@ -81,16 +86,21 @@ const StaffSidebar = ({
           })}
         </View>
 
-        {/* BOTTOM SECTION */}
-        <View className="border-t border-gray-200">
+        <View className="mx-4 h-px bg-white" />
+
+        <View>
           <Pressable
             onPress={logout}
             className="flex-row items-center pl-4 py-4 gap-3"
           >
-            <MaterialIcons name="logout" size={24} />
+            <MaterialIcons name="logout" size={24} color="white" />
 
             {!collapsed && (
-              <Animated.Text entering={FadeInLeft} exiting={FadeOutLeft}>
+              <Animated.Text 
+                entering={FadeInLeft} 
+                exiting={FadeOutLeft}
+                className="text-white"
+              >
                 Logout
               </Animated.Text>
             )}

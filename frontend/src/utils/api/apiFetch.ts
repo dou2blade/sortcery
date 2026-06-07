@@ -12,6 +12,7 @@ export const apiFetch = async <T>({ resource, method, body, params }: {
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
   const queryParams = Object.entries(params ?? {})
+    .filter(([_, v]) => v !== undefined)
     .map(([k, v]) => `${k}=${v}`)
     .join("&");
 

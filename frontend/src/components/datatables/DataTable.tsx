@@ -3,17 +3,20 @@ import { DataTableColumn } from "@/features/ui/types";
 import { ApiResponse } from "@/utils/api";
 import { useLocalSearchParams } from "expo-router";
 import { DataTableBody, DataTableFooter, DataTableHeader } from "@/components/datatables";
+import Animated, { EntryOrExitLayoutType, FadeIn, FadeInDown } from "react-native-reanimated";
 
 interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
   data?: ApiResponse<T[]>;
   loading: boolean;
+  fadeIn?: EntryOrExitLayoutType;
 }
 
 const DataTable = <T,>({ 
   columns, 
   data,
   loading,
+  fadeIn
 }: DataTableProps<T>) => {
   const { page = "0" } = useLocalSearchParams<{
     page?: string;
@@ -21,32 +24,32 @@ const DataTable = <T,>({
 
   if (loading) {
     return (
-      <View className="w-full">
+      <Animated.View className="w-full" entering={fadeIn ?? FadeIn}>
         <DataTableHeader columns={columns} />
         <ActivityIndicator color="green" />
-      </View>
+      </Animated.View>
     );
   }
 
-  if (!data?.data || !data?.meta) {
+  if (!data?.data || !data?.meta || !data.data.length) {
     return (
-      <View className="w-full">
+      <Animated.View className="w-full" entering={fadeIn ?? FadeIn}>
         <DataTableHeader columns={columns} />
         <Text className="w-full p-3 text-slate-500 border-x border-slate-300 text-center">
           There are no records to display
         </Text>
         <DataTableFooter 
-          page={1} 
-          pageCount={1} 
+          page={0} 
+          pageCount={0} 
           total={0} 
           size={0}
         />
-      </View>
+      </Animated.View>
     );
   }
 
   return (
-    <View className="w-full">
+    <Animated.View className="w-full" entering={fadeIn ?? FadeIn}>
       <DataTableHeader columns={columns} />
       <DataTableBody data={data.data} columns={columns} />
       <DataTableFooter 
@@ -55,8 +58,7 @@ const DataTable = <T,>({
         total={data.meta.totalElements} 
         size={data.meta.size}
       />
-
-    </View>
+    </Animated.View>
   );
 }
 

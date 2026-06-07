@@ -32,6 +32,7 @@ export default function AdminLayout() {
         open={drawerOpen}
         onOpen={() => setDrawerOpen(true)}
         onClose={() => setDrawerOpen(false)}
+        drawerStyle={{ width: 256 }}
         renderDrawerContent={() => (
           <StaffSidebar navItems={navItems} collapsed={false} />
         )}

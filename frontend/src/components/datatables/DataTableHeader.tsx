@@ -7,7 +7,7 @@ interface DataTableHeaderProps<T> {
 
 export const DataTableHeader = <T,>({ columns }: DataTableHeaderProps<T>) => {
   return (
-    <View className="flex-row w-full rounded-t-lg border-b border-slate-300 bg-slate-200">
+    <View className="flex-row w-full rounded-t-lg border-b border-slate-300 bg-green-200">
       {columns.map(({ name }, idx) => (
         <Text key={`${idx}-${name}`} className="w-full p-3 font-semibold">{name}</Text>
       ))}
