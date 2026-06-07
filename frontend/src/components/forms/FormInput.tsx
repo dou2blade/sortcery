@@ -5,7 +5,7 @@ interface FormInputProps<T extends FieldValues> extends TextInputProps {
   name: Path<T>;
 }
 
-const FormInput = <T extends FieldValues>({ name, ...rest }: FormInputProps<T>) => {
+export const FormInput = <T extends FieldValues>({ name, ...rest }: FormInputProps<T>) => {
   const { control } = useFormContext();
   const { errors } = useFormState({ control, name });
 
@@ -35,5 +35,3 @@ const FormInput = <T extends FieldValues>({ name, ...rest }: FormInputProps<T>) 
       />
   );
 }
-
-export default FormInput;

@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-import { AuthSession } from "@/definitions/types/authSession";
-import { User } from "@/definitions/schemas";
+import { AuthSession } from "../types";
+import { User } from "@/features/users/types";
 
 interface AuthState extends AuthSession {
   login: (token: string, user: User) => void;

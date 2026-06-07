@@ -5,7 +5,8 @@ interface FormSubmitProps<T extends FieldValues> {
   onSubmit: SubmitHandler<T>;
   label?: string;
 }
-const FormSubmit = <T extends FieldValues>({ onSubmit, label }: FormSubmitProps<T>) => {
+
+export const FormSubmit = <T extends FieldValues>({ onSubmit, label }: FormSubmitProps<T>) => {
   const { 
     handleSubmit,
     formState: { isSubmitting }
@@ -29,5 +30,3 @@ const FormSubmit = <T extends FieldValues>({ onSubmit, label }: FormSubmitProps<
     </Pressable>
   );
 }
-
-export default FormSubmit;

@@ -3,8 +3,7 @@ import { Controller, FieldValues, Path, useFormContext, useFormState } from "rea
 import { Pressable, Text } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
-
-import { SelectOption } from "@/definitions/types";
+import { SelectOption } from "@/features/ui/types";
 
 interface FormSelectProps<T extends FieldValues> {
   name: Path<T>;
@@ -12,7 +11,7 @@ interface FormSelectProps<T extends FieldValues> {
   placeholder?: string;
 }
 
-const FormSelect = <T extends FieldValues>({
+export const FormSelect = <T extends FieldValues>({
   name,
   options,
   placeholder
@@ -71,5 +70,3 @@ const FormSelect = <T extends FieldValues>({
     />
   );
 };
-
-export default FormSelect;

@@ -1,4 +1,4 @@
-import { User } from "@/definitions/schemas";
+import { User } from "@/features/users/types";
 
 export type AuthSession = {
   token: string | null;

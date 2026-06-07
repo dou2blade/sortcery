@@ -1,28 +1,32 @@
-export const apiFetch = async <T>({ resource, method, body }: {
+import { useAuthStore } from "@/features/auth/stores";
+import { ApiResponse } from "./types";
+
+export const apiFetch = async <T>({ resource, method, body, params }: {
   resource: string;
   method?: "GET" | "POST" | "PUT" | "DELETE";
+  params?: Record<string, any>;
   body?: object;
 }) => {
+  const token = useAuthStore.getState().token;
+
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-  const res = await fetch(`${apiUrl}${resource}`, {
+
+  const queryParams = Object.entries(params ?? {})
+    .map(([k, v]) => `${k}=${v}`)
+    .join("&");
+
+  const url = `${apiUrl}${resource}${queryParams ? `?${queryParams}` : ""}`
+
+  const res = await fetch(url, {
     method: method ?? "GET",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` })
     },
     body: JSON.stringify(body)
   });
 
-  return await res.json() as {
-    status?: number,
-    message?: string,
-    data?: T, 
-    timestamp: string, 
-    meta?: {
-      page: number,
-      size: number,
-      totalElements: number,
-      totalPages: number,
-      last: boolean
-    }
-  };
+  return res.status === 204
+    ? {} as ApiResponse<{}>
+    : await res.json() as ApiResponse<T>;
 }

@@ -10,12 +10,11 @@ import { Drawer } from "react-native-drawer-layout";
 import StaffSidebar from "@/components/sidebars/StaffSidebar";
 import { NavItem } from "@/definitions/types";
 
-const routes: NavItem[] = [
+const navItems: NavItem[] = [
   { label: "Dashboard", icon: "dashboard", href: "/admin" },
   { label: "Users", icon: "people", href: "/admin/users" },
   { label: "Stores", icon: "store", href: "/admin/stores" },
-  { label: "Inventory", icon: "inventory", href: "/admin/inventory" },
-  { label: "Reports", icon: "assessment", href: "/admin/reports" },
+  { label: "Products", icon: "local-grocery-store", href: "/admin/products" },
 ] as const;
 
 export default function AdminLayout() {
@@ -34,7 +33,7 @@ export default function AdminLayout() {
         onOpen={() => setDrawerOpen(true)}
         onClose={() => setDrawerOpen(false)}
         renderDrawerContent={() => (
-          <StaffSidebar routes={routes} collapsed={false} />
+          <StaffSidebar navItems={navItems} collapsed={false} />
         )}
       >
         <View className="flex-1">
@@ -63,7 +62,7 @@ export default function AdminLayout() {
     return (
       <View className="flex-1 flex-row">
         <StaffSidebar
-          routes={routes}
+          navItems={navItems}
           collapsed={collapsed}
           onToggle={() =>
             setCollapsed(prev => !prev)
@@ -90,7 +89,7 @@ export default function AdminLayout() {
 
   return (
     <View className="flex-1 flex-row">
-      <StaffSidebar routes={routes} collapsed={false} />
+      <StaffSidebar navItems={navItems} collapsed={false} />
 
       <View className="flex-1">
         <Stack

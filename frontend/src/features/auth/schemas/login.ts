@@ -1,10 +1,6 @@
 import * as z from "zod";
 import { User } from "../types";
 
-export interface LoginResponse extends User {
-  plainToken: string;
-}
-
 export type LoginFormData = z.infer<typeof LoginSchema>;
 
 export const LoginSchema = z.object({

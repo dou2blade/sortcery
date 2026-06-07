@@ -1,19 +1,13 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { LoginFormData, LoginResponse, LoginSchema } from "@/definitions/schemas/login";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormGroup from "@/components/forms/FormGroup";
-import { apiPost } from "@/utils/api";
-import FormSubmit from "@/components/forms/FormSubmit";
-import { useEffect, useState } from "react";
-import FormFeedback from "@/components/forms/FormFeedback";
 import { useRouter } from "expo-router";
-import { useAuthStore } from "@/stores";
-import { User } from "@/definitions/types";
+import { LoginFormData, LoginSchema } from "@/features/auth/schemas";
+import FormGroup, { FormFeedback, FormSubmit } from "@/components/forms";
+import { login } from "@/utils/auth";
 
 const Login = () => {
   const router = useRouter();
-  const { login } = useAuthStore();
 
   const formMethods = useForm<LoginFormData>({
     resolver: zodResolver(LoginSchema),
@@ -25,18 +19,14 @@ const Login = () => {
   });
 
   const onSubmit: SubmitHandler<LoginFormData> = async (payload) => {
-    const { email, password, role } = payload;
-    const { data, message } = await apiPost<LoginResponse>(`auth/login/${role.toLowerCase()}`, { email, password });
-    
-    if (!data) { 
+    const message = await login(payload);
+
+    if (message) { 
       formMethods.setError("root", { message });
       return;
     }
 
-    const { plainToken, ...user } = data;
-    login(plainToken, user);
-
-    router.replace(`/${user.role.toLowerCase()}`);
+    router.replace(`/${payload.role.toLowerCase()}`);
   }
 
   return (
