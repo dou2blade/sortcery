@@ -16,7 +16,7 @@ const AdminUsersPage = () => {
     page?: string;
   }>();
 
-  const { data: users, isLoading, error } = useUsers({ page: Number(page) });
+  const { data: users, isLoading } = useUsers({ page: Number(page) });
 
   return (
     <View className="items-center m-3">
