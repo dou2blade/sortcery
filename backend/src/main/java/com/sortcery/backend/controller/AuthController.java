@@ -2,6 +2,9 @@ package com.sortcery.backend.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
+
+import java.util.HashMap;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -89,7 +92,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> revokeToken(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<ApiResponse> revokeToken(HttpServletRequest request, HttpServletResponse response) {
         String plainToken = null;
 
         String authHeader = request.getHeader("Authorization");
@@ -118,8 +121,8 @@ public class AuthController {
             .maxAge(0)
             .build();
 
-        return ResponseEntity.noContent()
+        return ResponseEntity.ok()
             .header(HttpHeaders.SET_COOKIE, cookie.toString())
-            .build();
+            .body(ApiResponse.of(new HashMap<>()));
     }
 }
