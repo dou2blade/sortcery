@@ -8,10 +8,10 @@ import {
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Drawer } from "react-native-drawer-layout";
 import StaffSidebar from "@/components/sidebars/StaffSidebar";
-import { NavItem } from "@/definitions/types";
+import { NavItem } from "@/features/ui/types";
 
 const navItems: NavItem[] = [
-  { label: "Dashboard", icon: "dashboard", href: "/admin" },
+  { label: "Dashboard", icon: "dashboard", href: "/admin/dashboard" },
   { label: "Users", icon: "people", href: "/admin/users" },
   { label: "Stores", icon: "store", href: "/admin/stores" },
   { label: "Products", icon: "local-grocery-store", href: "/admin/products" },

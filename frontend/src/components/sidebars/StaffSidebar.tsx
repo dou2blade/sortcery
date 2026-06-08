@@ -60,7 +60,7 @@ const StaffSidebar = ({
           <View className="mx-4 h-px mb-3 bg-white" />
 
           {navItems.map(({ label, icon, href }) => {
-            const active = pathname === href;
+            const active = pathname.startsWith(href.toString());
 
             return (
               <Pressable

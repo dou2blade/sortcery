@@ -8,7 +8,7 @@ import { SearchFilter, SelectFilter } from "@/components/filters";
 import { SelectOption } from "@/features/ui/types";
 import { StatCard } from "@/components/cards";
 import { useUserStats } from "@/features/users/hooks/useUserStats";
-import { FadeInDown, FadeInLeft, FadeInRight, FadeInUp } from "react-native-reanimated";
+import { CmsHeader } from "@/components/headers";
 
 const columns: DataTableColumn<User>[] = [
   { name: "Name", selector: (row) => `${row.firstName} ${row.lastName}` },
@@ -23,7 +23,7 @@ const roleOptions: SelectOption[] = [
   { label: "Consumer", value: "CONSUMER" }
 ];
 
-const AdminUsersPage = () => {
+export const AdminUsersListView = () => {
   const { 
     page = "0",
     role,
@@ -39,17 +39,12 @@ const AdminUsersPage = () => {
 
   return (
     <View className="flex-1 m-3 gap-3">
-      <View className="flex-row gap-3">
-        <StatCard title="Managers" value={String(stats?.data?.byRole.MANAGER ?? 0)} loading={statsLoading} fadeIn={FadeInUp} />
-        <StatCard title="Retailers" value={String(stats?.data?.byRole.RETAILER ?? 0)} loading={statsLoading} fadeIn={FadeInUp} />
-        <StatCard title="Consumers" value={String(stats?.data?.byRole.CONSUMER ?? 0)} loading={statsLoading} fadeIn={FadeInUp} />
-      </View>
+      <CmsHeader title="Users" subtitle="Manage users" addHref="/admin/users/create" />
       <View className="flex-row gap-3 w-full">
         <View className="flex-[3]">
           <SearchFilter
             name="search"
             placeholder="Search..."
-            fadeIn={FadeInLeft}
           />
         </View>
         <View className="flex-1">
@@ -57,13 +52,16 @@ const AdminUsersPage = () => {
             name="role"
             options={roleOptions}
             placeholder="Role"
-            fadeIn={FadeInRight}
           />
         </View>
       </View>
-      <DataTable columns={columns} data={users} loading={usersLoading} fadeIn={FadeInDown} />
+
+      <View className="flex-row gap-3">
+        <StatCard title="Managers" value={String(stats?.data?.byRole.MANAGER ?? 0)} loading={statsLoading} />
+        <StatCard title="Retailers" value={String(stats?.data?.byRole.RETAILER ?? 0)} loading={statsLoading} />
+        <StatCard title="Consumers" value={String(stats?.data?.byRole.CONSUMER ?? 0)} loading={statsLoading} />
+      </View>
+      <DataTable columns={columns} data={users} loading={usersLoading} />
     </View>
   );
 }
-
-export default AdminUsersPage;

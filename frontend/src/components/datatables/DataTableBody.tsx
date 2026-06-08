@@ -15,7 +15,7 @@ export const DataTableBody = <T,>({
       {data.map((row, rowIndex) => (
         <View
           key={rowIndex}
-          className="flex-row w-full border border-slate-200"
+          className="flex-row w-full border border-x-slate-300 border-y-slate-200"
         >
           {columns.map((col) => (
             <View
