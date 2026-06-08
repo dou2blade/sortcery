@@ -1,12 +1,16 @@
+import { useLocalSearchParams } from "expo-router";
 import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
 import { ActivityIndicator, Pressable, Text } from "react-native";
 
 interface FormSubmitProps<T extends FieldValues> {
   onSubmit: SubmitHandler<T>;
   label?: string;
+  readOnly?: boolean;
 }
 
-export const FormSubmit = <T extends FieldValues>({ onSubmit, label }: FormSubmitProps<T>) => {
+export const FormSubmit = <T extends FieldValues>({ onSubmit, label, readOnly }: FormSubmitProps<T>) => {
+  const { view } = useLocalSearchParams();
+
   const { 
     handleSubmit,
     formState: { isSubmitting }
@@ -14,9 +18,15 @@ export const FormSubmit = <T extends FieldValues>({ onSubmit, label }: FormSubmi
 
   return (
     <Pressable 
-      className="bg-green-600 rounded-lg p-3"
+      className={`
+        min-w-[70px]
+        items-center
+        rounded-lg 
+        p-3
+        ${!!view || readOnly || isSubmitting ? "bg-green-600/70" : "bg-green-600" } 
+      `}
       onPress={handleSubmit(onSubmit)} 
-      disabled={isSubmitting}
+      disabled={!!view || readOnly || isSubmitting}
     >
       {
         isSubmitting 

@@ -4,18 +4,23 @@ import { Pressable, Text } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { SelectOption } from "@/features/ui/types";
+import { useLocalSearchParams } from "expo-router";
 
 interface FormSelectProps<T extends FieldValues> {
   name: Path<T>;
   options: SelectOption[];
   placeholder?: string;
+  readOnly?: boolean;
 }
 
 export const FormSelect = <T extends FieldValues>({
   name,
   options,
-  placeholder
+  placeholder,
+  readOnly
 }: FormSelectProps<T>) => {
+  const { view } = useLocalSearchParams();
+
   const { control } = useFormContext<T>();
   const { errors } = useFormState({ control, name });
 
@@ -32,9 +37,11 @@ export const FormSelect = <T extends FieldValues>({
           <Pressable
             onPress={() => sheetRef.current?.present()}
             className={`
-              rounded-xl border bg-white px-4 py-3 flex-1 flex-row justify-between
+              rounded-xl border px-4 py-3 flex-1 flex-row justify-between
+              ${!!view || readOnly ? "bg-slate-200" : "bg-white"}
               ${invalid ? "border-red-500" : "border-gray-300"}
             `}
+            disabled={!!view || readOnly}
           >
             <Text className={`text-base ${value ? "text-black" : "text-slate-500"}`}>
               {options.find((opt) => opt.value === value)?.label ?? placeholder ?? ""}

@@ -2,7 +2,7 @@ import { View } from "react-native"
 import { useLocalSearchParams } from "expo-router";
 import { DataTableColumn } from "@/features/ui/types";
 import { User } from "@/features/users/types";
-import { useUsers } from "@/features/users/hooks";
+import { useDeleteUser, useUsers } from "@/features/users/hooks";
 import DataTable from "@/components/datatables";
 import { SearchFilter, SelectFilter } from "@/components/filters";
 import { SelectOption } from "@/features/ui/types";
@@ -36,6 +36,7 @@ export const AdminUsersListView = () => {
 
   const { data: users, isLoading: usersLoading } = useUsers({ page: Number(page), role, search });
   const { data: stats, isLoading: statsLoading } = useUserStats();
+  const deleteUser = useDeleteUser();
 
   return (
     <View className="flex-1 m-3 gap-3">
@@ -61,7 +62,7 @@ export const AdminUsersListView = () => {
         <StatCard title="Retailers" value={String(stats?.data?.byRole.RETAILER ?? 0)} loading={statsLoading} />
         <StatCard title="Consumers" value={String(stats?.data?.byRole.CONSUMER ?? 0)} loading={statsLoading} />
       </View>
-      <DataTable columns={columns} data={users} loading={usersLoading} />
+      <DataTable columns={columns} data={users} loading={usersLoading} deleteQuery={deleteUser} />
     </View>
   );
 }

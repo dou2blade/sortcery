@@ -7,20 +7,22 @@ import { Text } from "react-native-gesture-handler";
 interface RowActionsSheetProps {
   id?: number;
   handleClose: () => void;
+  handleDelete: (id: number) => void;
 }
 
 export const RowActionsSheet = forwardRef<BottomSheetModal, RowActionsSheetProps>((
-  { id, handleClose },
+  { id, handleClose, handleDelete },
   ref
 ) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleNav = () => {
-    router.push(`${pathname}/${id !== undefined ? id : ""}`);
+  const handleNav = (view: boolean) => {
+    if (id === undefined) return;
+    router.push(`${pathname}/${id}${view ? "?view=1" : ""}`);
     handleClose();
   }
-  
+
   return (
     <BottomSheetModal
       ref={ref}
@@ -29,21 +31,21 @@ export const RowActionsSheet = forwardRef<BottomSheetModal, RowActionsSheetProps
       <BottomSheetView className="p-4">
         <Pressable
           className="py-3"
-          onPress={handleNav}
+          onPress={() => handleNav(true)}
         >
           <Text>View</Text>
         </Pressable>
 
         <Pressable
           className="py-3"
-          onPress={handleNav}
+          onPress={() => handleNav(false)}
         >
           <Text>Edit</Text>
         </Pressable>
 
         <Pressable
           className="py-3"
-          onPress={() => {}}
+          onPress={() => id !== undefined ? handleDelete(id) : null}
         >
           <Text className="text-red-500">
             Delete

@@ -1,4 +1,4 @@
-import { ActivityIndicator, Text, View } from "react-native"
+import { ActivityIndicator, Text } from "react-native"
 import { DataTableColumn } from "@/features/ui/types";
 import { ApiResponse } from "@/utils/api";
 import { useLocalSearchParams } from "expo-router";
@@ -6,19 +6,22 @@ import { DataTableBody, DataTableFooter, DataTableHeader, RowActionsSheet } from
 import Animated, { EntryOrExitLayoutType, FadeIn } from "react-native-reanimated";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useRef, useState } from "react";
+import { UseMutationResult } from "@tanstack/react-query";
 
 interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
   data?: ApiResponse<T[]>;
   loading: boolean;
   fadeIn?: EntryOrExitLayoutType;
+  deleteQuery: UseMutationResult<ApiResponse<unknown>, Error, number, unknown>;
 }
 
 const DataTable = <T,>({ 
   columns, 
   data,
   loading,
-  fadeIn
+  fadeIn,
+  deleteQuery
 }: DataTableProps<T>) => {
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
   const { page = "0" } = useLocalSearchParams<{
@@ -58,6 +61,11 @@ const DataTable = <T,>({
     sheetRef.current?.present();
   }
 
+  const handleDelete = async (id: number) => {
+    await deleteQuery.mutateAsync(id);
+    sheetRef.current?.dismiss();
+  }
+
   return (
     <Animated.View className="w-full" entering={fadeIn ?? FadeIn}>
       <DataTableHeader columns={columns} />
@@ -77,6 +85,7 @@ const DataTable = <T,>({
         ref={sheetRef} 
         id={selectedId} 
         handleClose={() => sheetRef.current?.dismiss()}
+        handleDelete={handleDelete}
       />
     </Animated.View>
   );

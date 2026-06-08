@@ -1,8 +1,7 @@
-import { userDefaults } from "@/features/users/schemas";
 import { AdminUserForm } from "@/views/admin/users";
 
 const AdminUsersCreatePage = () => {
-  return <AdminUserForm user={userDefaults} />;
+  return <AdminUserForm />;
 }
 
 export default AdminUsersCreatePage

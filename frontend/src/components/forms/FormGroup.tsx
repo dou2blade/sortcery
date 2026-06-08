@@ -18,6 +18,7 @@ interface SelectFieldProps<T extends FieldValues> extends BaseFormGroupProps<T> 
   type: "select";
   options: SelectOption[];
   placeholder?: string;
+  readOnly?: boolean;
 }
 
 type FormGroupProps<T extends FieldValues> = 
