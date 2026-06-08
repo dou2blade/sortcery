@@ -6,6 +6,8 @@ import { FormFeedback, FormInput, FormLabel, FormSelect } from "@/components/for
 interface BaseFormGroupProps<T extends FieldValues> {
   name: Path<T>;
   label?: string;
+  flex?: number;
+  optional?: boolean;
 }
 
 interface TextFieldProps<T extends FieldValues> extends BaseFormGroupProps<T>, TextInputProps {
@@ -23,10 +25,9 @@ type FormGroupProps<T extends FieldValues> =
   | SelectFieldProps<T>
 
 const FormGroup = <T extends FieldValues>(props: FormGroupProps<T>) => {
-  const { name, label, type, ...rest } = props;
+  const { flex, name, label, type, optional, ...rest } = props;
 
-  const renderLabel = label ?? String(name).toLowerCase()
-    .split('')
+  const renderLabel = label ?? String(name).split('')
     .map((c, idx) => { 
       if (idx === 0) return c.toUpperCase();
       const isUpperCase = c === c.toUpperCase() 
@@ -50,8 +51,8 @@ const FormGroup = <T extends FieldValues>(props: FormGroupProps<T>) => {
   }
 
   return (
-    <View className="w-100">
-      <FormLabel>{ renderLabel }</FormLabel>
+    <View style={{ flex: flex ?? 1 }}>
+      <FormLabel optional={optional}>{ renderLabel }</FormLabel>
       {field}
       <FormFeedback name={name} />
     </View>

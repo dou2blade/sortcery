@@ -3,7 +3,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import { LoginFormData, LoginSchema } from "@/features/auth/schemas";
-import FormGroup, { FormFeedback, FormSubmit } from "@/components/forms";
+import FormGroup, { FormContainer, FormFeedback, FormSubmit } from "@/components/forms";
 import { login } from "@/utils/auth";
 
 const Login = () => {
@@ -32,22 +32,24 @@ const Login = () => {
   return (
     <View className="flex-1 gap-3 justify-center items-center">
       <FormProvider {...formMethods}>
-        <FormGroup name="email" placeholder="Enter your email" />
-        <FormGroup name="password" secureTextEntry={true} placeholder="Enter your password" />
-        <FormGroup 
-          name="role" 
-          type="select" 
-          placeholder="Select your role"
-          options={[
-            { label: "Admin", value: "ADMIN" },
-            { label: "Manager", value: "MANAGER" },
-            { label: "Retailer", value: "RETAILER" }
-          ]} 
-        />
-        <View className="flex flex-col items-start w-100">
-          <FormFeedback name="root" />
-        </View>
-        <FormSubmit onSubmit={onSubmit} />
+        <FormContainer>
+          <FormGroup name="email" placeholder="Enter your email" />
+          <FormGroup name="password" secureTextEntry={true} placeholder="Enter your password" />
+          <FormGroup 
+            name="role" 
+            type="select" 
+            placeholder="Select your role"
+            options={[
+              { label: "Admin", value: "ADMIN" },
+              { label: "Manager", value: "MANAGER" },
+              { label: "Retailer", value: "RETAILER" }
+            ]} 
+          />
+          <View className="flex flex-col items-start w-100">
+            <FormFeedback name="root" />
+          </View>
+          <FormSubmit onSubmit={onSubmit} />
+        </FormContainer>
       </FormProvider>
     </View>
   );

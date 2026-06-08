@@ -1,11 +1,7 @@
-import { View } from "react-native";
+import { AdminUserForm } from "@/views/admin/users";
 
 const AdminUsersCreatePage = () => {
-  return (
-    <View className="flex-1 m-3 gap-3">
-      
-    </View>
-  );
+  return <AdminUserForm />;
 }
 
 export default AdminUsersCreatePage

@@ -1,5 +1,4 @@
 import * as z from "zod";
-import { User } from "../types";
 
 export type LoginFormData = z.infer<typeof LoginSchema>;
 

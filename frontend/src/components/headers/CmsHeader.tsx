@@ -6,8 +6,8 @@ import { Href } from "expo-router";
 interface CmsHeaderProps {
   title: string;
   subtitle: string;
-  addHref: Href;
   fadeIn?: EntryOrExitLayoutType;
+  addHref?: Href;
 }
 
 export const CmsHeader = ({ title, subtitle, addHref, fadeIn }: CmsHeaderProps) => {
@@ -18,7 +18,7 @@ export const CmsHeader = ({ title, subtitle, addHref, fadeIn }: CmsHeaderProps) 
           <Text className="text-3xl font-bold">{title}</Text>
           <Text className="text-xl">{subtitle}</Text>
         </View>
-        <AddItemButton label="Add User" href={addHref} />
+        {addHref && <AddItemButton label="Add User" href={addHref} />}
       </View>
       <View className="mb-3 h-px bg-slate-300" />
     </Animated.View>
