@@ -5,7 +5,7 @@ import { userKeys } from "./userKeys";
 
 export const useUserStats = () => {
   return useQuery({
-    queryKey: userKeys.stats,
+    queryKey: userKeys.stats(),
     queryFn: () => apiGet<UserStats>("users/stats"),
   });
 };

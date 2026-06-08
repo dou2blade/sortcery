@@ -4,9 +4,22 @@ import { forwardRef } from "react";
 import { Pressable } from "react-native";
 import { Text } from "react-native-gesture-handler";
 
-export const RowActionsSheet = forwardRef<BottomSheetModal, { id?: number }>(({ id }, ref) => {
+interface RowActionsSheetProps {
+  id?: number;
+  handleClose: () => void;
+}
+
+export const RowActionsSheet = forwardRef<BottomSheetModal, RowActionsSheetProps>((
+  { id, handleClose },
+  ref
+) => {
   const router = useRouter();
   const pathname = usePathname();
+
+  const handleNav = () => {
+    router.push(`${pathname}/${id !== undefined ? id : ""}`);
+    handleClose();
+  }
   
   return (
     <BottomSheetModal
@@ -16,14 +29,14 @@ export const RowActionsSheet = forwardRef<BottomSheetModal, { id?: number }>(({ 
       <BottomSheetView className="p-4">
         <Pressable
           className="py-3"
-          onPress={() => router.push(`${pathname}/${id !== undefined ? id : ""}`)}
+          onPress={handleNav}
         >
           <Text>View</Text>
         </Pressable>
 
         <Pressable
           className="py-3"
-          onPress={() => router.push(`${pathname}/${id !== undefined ? id : ""}`)}
+          onPress={handleNav}
         >
           <Text>Edit</Text>
         </Pressable>

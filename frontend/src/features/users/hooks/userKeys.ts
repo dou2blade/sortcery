@@ -2,7 +2,12 @@ import { UserQueryParams } from "../types";
 
 export const userKeys = {
   all: ["users"] as const,
-  list: (params: UserQueryParams) => ["users", params] as const,
-  stats: ["users", "stats"] as const,
-  detail: (id: number) => ["users", id] as const,
+
+  lists: () => [...userKeys.all, "list"] as const,
+
+  list: (params: UserQueryParams) => [...userKeys.lists(), params] as const,
+
+  stats: () => [...userKeys.all, "stats"] as const,
+
+  detail: (id: number) => [...userKeys.all, "detail", id] as const,
 };

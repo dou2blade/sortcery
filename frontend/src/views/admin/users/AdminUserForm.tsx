@@ -1,7 +1,8 @@
 import FormGroup, { FormCancel, FormContainer, FormSubmit } from "@/components/forms";
 import { CmsHeader } from "@/components/headers";
-import { useCreateUser } from "@/features/users/hooks";
-import { UserDefaults, UserFormData, UserSchema } from "@/features/users/schemas";
+import { useCreateUser, useUpdateUser } from "@/features/users/hooks";
+import { userToFormData, UserFormData, UserSchema } from "@/features/users/schemas";
+import { User } from "@/features/users/types";
 import { mapErrors } from "@/utils/forms";
 import toast from "@/utils/toast";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,35 +11,43 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { View } from "react-native";
 
 interface AdminUserFormProps {
-  user?: UserFormData;
+  user?: User;
 }
 
 export const AdminUserForm = ({ user }: AdminUserFormProps) => {
   const formMethods = useForm<UserFormData>({
     resolver: zodResolver(UserSchema),
-    defaultValues: { ...UserDefaults, ...user }
+    defaultValues: userToFormData(user)
   });
 
   const router = useRouter();
+
   const createUser = useCreateUser();
+  const updateUser = useUpdateUser();
 
   const onSubmit: SubmitHandler<UserFormData> = async (payload) => {
     try {
-      const { errors } = await createUser.mutateAsync(payload);
+      const { errors } = user
+        ? await updateUser.mutateAsync({ id: user.id, data: payload })
+        : await createUser.mutateAsync(payload)
+
       if (errors) {
         mapErrors(formMethods.setError, errors);
       } else {
-        toast.success("User created");
+        toast.cmsSuccess(!user, "user");
         router.dismiss();
       }
     } catch (err) {
-      toast.error("Failed to create user");
+      toast.cmsError(!user, "user");
     }
   }
 
   return (
     <View className="flex-1 m-3 gap-3">
-      <CmsHeader title="Add User" subtitle="Add a new user account" />     
+      <CmsHeader 
+        title={user ? "Edit User" : "Add User"} 
+        subtitle={user ? "Edit existing user details" : "Add a new user account" }
+      />     
       <FormProvider {...formMethods}>
         <FormContainer>
           <View className="flex-row gap-3">

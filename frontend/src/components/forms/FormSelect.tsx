@@ -16,7 +16,6 @@ export const FormSelect = <T extends FieldValues>({
   options,
   placeholder
 }: FormSelectProps<T>) => {
-  const [label, setLabel] = useState<string | null>(null);
   const { control } = useFormContext<T>();
   const { errors } = useFormState({ control, name });
 
@@ -38,7 +37,7 @@ export const FormSelect = <T extends FieldValues>({
             `}
           >
             <Text className={`text-base ${value ? "text-black" : "text-slate-500"}`}>
-              {label ?? placeholder ?? ""}
+              {options.find((opt) => opt.value === value)?.label ?? placeholder ?? ""}
             </Text>
 
             <MaterialIcons name="expand-more" size={16} color="gray" />
@@ -55,7 +54,6 @@ export const FormSelect = <T extends FieldValues>({
                   key={opt.value}
                   onPress={() => {
                     onChange(opt.value);
-                    setLabel(opt.label);
                     sheetRef.current?.dismiss();
                   }}
                   className="py-3 border-b border-gray-200"

@@ -61,7 +61,11 @@ const DataTable = <T,>({
   return (
     <Animated.View className="w-full" entering={fadeIn ?? FadeIn}>
       <DataTableHeader columns={columns} />
-      <DataTableBody data={data.data} columns={columns} onRowAction={handleRowAction} />
+      <DataTableBody 
+        data={data.data} 
+        columns={columns}
+        onRowAction={handleRowAction}
+      />
       <DataTableFooter 
         page={Number(page)} 
         pageCount={data.meta.totalPages} 
@@ -69,7 +73,11 @@ const DataTable = <T,>({
         size={data.meta.size}
       />
 
-      <RowActionsSheet ref={sheetRef} id={selectedId} />
+      <RowActionsSheet 
+        ref={sheetRef} 
+        id={selectedId} 
+        handleClose={() => sheetRef.current?.dismiss()}
+      />
     </Animated.View>
   );
 }
