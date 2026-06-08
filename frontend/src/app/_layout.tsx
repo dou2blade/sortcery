@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useAuthStore } from "@/features/auth/stores";
 import "./global.css";
+import Toast from "react-native-toast-message";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const RootLayout = () => {
           <Stack screenOptions={{ headerShown: false }} />
         </BottomSheetModalProvider>
       </QueryClientProvider>
+      <Toast />
     </GestureHandlerRootView>
   );
 };
