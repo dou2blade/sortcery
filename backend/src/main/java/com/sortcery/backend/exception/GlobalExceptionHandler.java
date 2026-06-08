@@ -32,6 +32,11 @@ public class GlobalExceptionHandler {
         return new ForbiddenResponse("Access denied: " + exception.getMessage(), request).build();
     }
 
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<Map<String, ?>> handleValidation(ValidationException exception, HttpServletRequest request) {
+        return new ValidationResponse(exception.getMessage(), exception.getErrors(), request).build();
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, ?>> handleGenericException(Exception exception, HttpServletRequest request) {
         return new ServerErrorResponse(exception.getMessage(), request).build();

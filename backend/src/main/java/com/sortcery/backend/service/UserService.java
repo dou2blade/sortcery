@@ -6,7 +6,9 @@ import com.sortcery.backend.dto.user.UserRequestDTO;
 import com.sortcery.backend.dto.user.UserResponseDTO;
 import com.sortcery.backend.dto.user.UserStatsDTO;
 import com.sortcery.backend.exception.NotFoundException;
+import com.sortcery.backend.exception.ValidationException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -76,16 +78,20 @@ public class UserService {
     }
 
     public UserResponseDTO save(UserRequestDTO request) {
-        User saved = new User(
-                request.getFirstName(),
-                request.getMiddleName(),
-                request.getLastName(),
-                request.getEmail(),
-                bCryptEncoder.encode(request.getPassword()),
-                request.getRole()
-        );
+        try {
+            User saved = new User(
+                    request.getFirstName(),
+                    request.getMiddleName(),
+                    request.getLastName(),
+                    request.getEmail(),
+                    bCryptEncoder.encode(request.getPassword()),
+                    request.getRole()
+            );
 
-        return new UserResponseDTO(userRepository.save(saved));
+            return new UserResponseDTO(userRepository.save(saved));
+        } catch (DataIntegrityViolationException exception) {
+            throw new ValidationException(Map.of("email", "Email already exists"));
+        }
     }
 
     public UserResponseDTO update(Long id, UserRequestDTO request) {
