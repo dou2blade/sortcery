@@ -1,4 +1,4 @@
-import FormGroup, { FormCancel, FormContainer, FormSubmit } from "@/components/forms";
+import FormGroup, { FormButtons, FormCancel, FormContainer, FormRow, FormSubmit } from "@/components/forms";
 import { CmsHeader } from "@/components/headers";
 import { useCreateUser, useUpdateUser } from "@/features/users/hooks";
 import { userToFormData, UserFormData, UserSchema } from "@/features/users/schemas";
@@ -50,15 +50,15 @@ export const AdminUserForm = ({ user }: AdminUserFormProps) => {
       />     
       <FormProvider {...formMethods}>
         <FormContainer>
-          <View className="flex-row gap-3">
+          <FormRow>
             <FormGroup name="firstName" placeholder="Foo" />
             <FormGroup name="middleName" placeholder="Bar" optional />
             <FormGroup name="lastName" placeholder="Baz" />
-          </View>
-          <View className="flex-row flex-wrap gap-3">
+          </FormRow>
+          <FormRow>
             <FormGroup name="email" placeholder="user@example.com" />
             <FormGroup name="password" secureTextEntry={true} placeholder="●●●●●●●●" />
-          </View>
+          </FormRow>
           <FormGroup 
             name="role" 
             type="select" 
@@ -70,10 +70,7 @@ export const AdminUserForm = ({ user }: AdminUserFormProps) => {
             ]} 
           />
 
-          <View className="flex-row justify-end gap-3">
-            <FormCancel />
-            <FormSubmit onSubmit={onSubmit} />
-          </View>
+          <FormButtons onSubmit={onSubmit} />
         </FormContainer>
       </FormProvider>
     </View>

@@ -3,14 +3,27 @@ import { AddItemButton } from "../buttons";
 import Animated, { EntryOrExitLayoutType, FadeIn } from "react-native-reanimated";
 import { Href } from "expo-router";
 
-interface CmsHeaderProps {
+interface CmsHeaderPropsBase {
   title: string;
   subtitle: string;
   fadeIn?: EntryOrExitLayoutType;
-  addHref?: Href;
 }
 
-export const CmsHeader = ({ title, subtitle, addHref, fadeIn }: CmsHeaderProps) => {
+interface CmsHeaderPropsAdd extends CmsHeaderPropsBase {
+  addLabel: string;
+  addHref: Href;
+}
+
+interface CmsHeaderPropsNoAdd extends CmsHeaderPropsBase {
+  addLabel?: never;
+  addHref?: never;
+}
+
+type CmsHeaderProps = 
+  | CmsHeaderPropsAdd
+  | CmsHeaderPropsNoAdd;
+
+export const CmsHeader = ({ title, subtitle, addHref, addLabel, fadeIn }: CmsHeaderProps) => {
   return (
     <Animated.View entering={fadeIn ?? FadeIn}>
       <View className="w-full flex-row justify-between items-center p-2">
@@ -18,7 +31,7 @@ export const CmsHeader = ({ title, subtitle, addHref, fadeIn }: CmsHeaderProps) 
           <Text className="text-3xl font-bold">{title}</Text>
           <Text className="text-xl">{subtitle}</Text>
         </View>
-        {addHref && <AddItemButton label="Add User" href={addHref} />}
+        {addHref && addLabel && <AddItemButton label={addLabel} href={addHref} />}
       </View>
       <View className="mb-3 h-px bg-slate-300" />
     </Animated.View>

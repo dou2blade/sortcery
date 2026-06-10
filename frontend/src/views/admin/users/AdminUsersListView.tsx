@@ -40,7 +40,12 @@ export const AdminUsersListView = () => {
 
   return (
     <View className="flex-1 m-3 gap-3">
-      <CmsHeader title="Users" subtitle="Manage users" addHref="/admin/users/create" />
+      <CmsHeader 
+        title="Users" 
+        subtitle="Manage users" 
+        addLabel="Add User" 
+        addHref="/admin/users/create" 
+      />
       <View className="flex-row gap-3 w-full">
         <View className="flex-[3]">
           <SearchFilter
