@@ -62,6 +62,8 @@ public class BearerTokenAuthFilter extends OncePerRequestFilter {
 
             Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, List.of(authority));
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+            tokenService.refreshIfNeeded(token);
         } else {
             throw new UnauthorizedException("Invalid or expired API token");
         }

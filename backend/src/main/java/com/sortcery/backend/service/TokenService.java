@@ -53,4 +53,12 @@ public class TokenService {
 
         return token;
     }
+
+    public void refreshIfNeeded(Token token) {
+        LocalDateTime threshold = LocalDateTime.now().plusHours(1);
+
+        if (token.getExpiresAt().isBefore(threshold)) {
+            token.setExpiresAt(LocalDateTime.now().plusHours(3));
+        }
+    }
 }
