@@ -1,13 +1,11 @@
-import FormGroup, { FormButtons, FormCancel, FormContainer, FormRow, FormSubmit } from "@/components/forms";
+import FormGroup, { FormButtons, FormContainer, FormRow } from "@/components/forms";
 import { CmsHeader } from "@/components/headers";
 import { useCreateUser, useUpdateUser } from "@/features/users/hooks";
 import { userToFormData, UserFormData, UserSchema } from "@/features/users/schemas";
 import { User } from "@/features/users/types";
-import { mapErrors } from "@/utils/forms";
-import toast from "@/utils/toast";
+import { useSubmitHandler } from "@/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "expo-router";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { View } from "react-native";
 
 interface AdminUserFormProps {
@@ -20,27 +18,13 @@ export const AdminUserForm = ({ user }: AdminUserFormProps) => {
     defaultValues: userToFormData(user)
   });
 
-  const router = useRouter();
-
-  const createUser = useCreateUser();
-  const updateUser = useUpdateUser();
-
-  const onSubmit: SubmitHandler<UserFormData> = async (payload) => {
-    try {
-      const { errors } = user
-        ? await updateUser.mutateAsync({ id: user.id, data: payload })
-        : await createUser.mutateAsync(payload)
-
-      if (errors) {
-        mapErrors(formMethods.setError, errors);
-      } else {
-        toast.cmsSuccess(!user, "user");
-        router.dismiss();
-      }
-    } catch (err) {
-      toast.cmsError(!user, "user");
-    }
-  }
+  const onSubmit = useSubmitHandler({
+    form: formMethods,
+    id: user?.id,
+    entity: "user",
+    create: useCreateUser(),
+    update: useUpdateUser()
+  });
 
   return (
     <View className="flex-1 m-3 gap-3">

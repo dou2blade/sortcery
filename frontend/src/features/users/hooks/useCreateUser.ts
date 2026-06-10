@@ -7,7 +7,7 @@ export const useCreateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: UserFormData) => apiPost("users", data),
+    mutationFn: (payload: UserFormData) => apiPost("users", payload),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: userKeys.all,

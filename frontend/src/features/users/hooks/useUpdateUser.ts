@@ -7,10 +7,10 @@ export const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { 
+    mutationFn: ({ id, payload }: { 
       id: number, 
-      data: UserFormData 
-    }) => apiPut(`users/${id}`, data),
+      payload: UserFormData 
+    }) => apiPut(`users/${id}`, payload),
 
     onSuccess: (data, { id }) => {
       queryClient.invalidateQueries({
