@@ -15,6 +15,11 @@ import jakarta.validation.ValidationException;
 
 import com.sortcery.backend.repository.BranchRepository;
 import com.sortcery.backend.exception.NotFoundException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +46,31 @@ public class BranchService {
         this.storeRepository = storeRepository;
         this.userRepository = userRepository;
         this.userBranchRepository = userBranchRepository;
+    }
+
+    public Page<BranchResponseDTO> findPage(
+        int page,
+        int size,
+        String search,
+        Sort sort
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        Specification<Branch> spec = (root, query, cb) -> cb.conjunction();
+
+        if (search != null && !search.isBlank()) {
+            String term = "%" + search.toLowerCase() + "%";
+            spec = spec.and((root, query, cb) -> (
+                cb.or(
+                    cb.like(cb.lower(root.get("name")), term),
+                    cb.like(cb.lower(root.get("address")), term)
+                )
+            ));
+        }
+
+        return branchRepository
+            .findAll(spec, pageRequest)
+            .map(BranchResponseDTO::new);
     }
 
     public List<BranchResponseDTO> findAll() {
