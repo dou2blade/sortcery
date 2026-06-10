@@ -3,6 +3,8 @@ package com.sortcery.backend.service;
 import com.sortcery.backend.model.Store;
 import com.sortcery.backend.dto.store.StoreRequestDTO;
 import com.sortcery.backend.dto.store.StoreResponseDTO;
+import com.sortcery.backend.dto.store.StoreStatsDTO;
+import com.sortcery.backend.repository.BranchRepository;
 import com.sortcery.backend.repository.StoreRepository;
 import com.sortcery.backend.exception.NotFoundException;
 
@@ -16,9 +18,14 @@ import java.util.List;
 @Service
 public class StoreService {
     private final StoreRepository storeRepository;
+    private final BranchRepository branchRepository;
 
-    public StoreService(StoreRepository storeRepository) {
+    public StoreService(
+        StoreRepository storeRepository,
+        BranchRepository branchRepository
+    ) {
         this.storeRepository = storeRepository;
+        this.branchRepository = branchRepository;
     }
 
     public List<StoreResponseDTO> findAll(Sort sort) {
@@ -81,6 +88,13 @@ public class StoreService {
         storeRepository.deleteById(id);
 
         return new StoreResponseDTO(deleted);
+    }
+
+    public StoreStatsDTO stats() {
+        return new StoreStatsDTO(
+            storeRepository.count(), 
+            branchRepository.count()
+        );
     }
 }
 

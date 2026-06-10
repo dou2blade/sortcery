@@ -79,4 +79,9 @@ public class StoreController {
     public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.of(storeService.delete(id)));
     }
+
+    @GetMapping(path="/stats")
+    public ResponseEntity<ApiResponse> stats() {
+        return ResponseEntity.ok(ApiResponse.of(storeService.stats()));
+    }
 }
