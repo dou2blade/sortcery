@@ -12,7 +12,9 @@ export const BranchSchema = z.object({
     .refine((v) => v !== undefined, { error: "The latitude is required" }),
   longitude: z.number().optional()
     .refine((v) => v !== undefined, { error: "The longitude is required" }),
-})
+  managerIds: z.array(z.number()),
+  retailerIds: z.array(z.number())
+});
 
 export const branchToFormData = (branch?: Branch): BranchFormData => ({
   name: branch?.name ?? "",
@@ -20,4 +22,6 @@ export const branchToFormData = (branch?: Branch): BranchFormData => ({
   address: branch?.address ?? "",
   latitude: branch?.latitude,
   longitude: branch?.longitude,
+  managerIds: branch?.managerIds ?? [],
+  retailerIds: branch?.retailerIds ?? []
 });

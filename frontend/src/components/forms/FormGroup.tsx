@@ -5,12 +5,14 @@ import { FormInput } from "./FormInput";
 import { FormSelect } from "./FormSelect";
 import { FormLabel } from "./FormLabel";
 import { FormFeedback } from "./FormFeedback";
+import { FormList } from "./FormList";
 
 interface BaseFormGroupProps<T extends FieldValues> {
   name: Path<T>;
   label?: string;
   flex?: number;
   optional?: boolean;
+  readOnly?: boolean;
 }
 
 interface TextFieldProps<T extends FieldValues> extends BaseFormGroupProps<T>, TextInputProps {
@@ -21,12 +23,17 @@ interface SelectFieldProps<T extends FieldValues> extends BaseFormGroupProps<T> 
   type: "select";
   options: SelectOption[];
   placeholder?: string;
-  readOnly?: boolean;
+}
+
+interface ListFieldProps<T extends FieldValues> extends BaseFormGroupProps<T> {
+  type: "list";
+  options: SelectOption[];
 }
 
 type FormGroupProps<T extends FieldValues> = 
   | TextFieldProps<T>
   | SelectFieldProps<T>
+  | ListFieldProps<T>
 
 const FormGroup = <T extends FieldValues>(props: FormGroupProps<T>) => {
   const { flex, name, label, type, optional, ...rest } = props;
@@ -50,14 +57,23 @@ const FormGroup = <T extends FieldValues>(props: FormGroupProps<T>) => {
         {...rest} 
       />
       break;
+    case "list":
+      field = <FormList 
+        name={name}
+        options={props.options}
+        optional={optional}
+        label={renderLabel}
+      />
     default:
       break;
   }
 
+  if (type === "list") return field;
+
   return (
     <View style={{ flex: flex ?? 1 }}>
-      <FormLabel optional={optional}>{ renderLabel }</FormLabel>
-      {field}
+      <FormLabel optional={optional}>{ renderLabel }</FormLabel> 
+        {field} 
       <FormFeedback name={name} />
     </View>
   );
