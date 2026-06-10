@@ -34,7 +34,7 @@ export default function AdminLayout() {
         onClose={() => setDrawerOpen(false)}
         drawerStyle={{ width: 256 }}
         renderDrawerContent={() => (
-          <StaffSidebar navItems={navItems} collapsed={false} />
+          <StaffSidebar navItems={navItems} collapsed={false} onToggle={() => setDrawerOpen(!drawerOpen)} />
         )}
       >
         <View className="flex-1">

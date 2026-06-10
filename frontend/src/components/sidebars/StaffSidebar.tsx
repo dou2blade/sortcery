@@ -65,7 +65,10 @@ const StaffSidebar = ({
             return (
               <Pressable
                 key={`${label}-${icon}-${href}`}
-                onPress={() => router.push(href)}
+                onPress={() => {
+                  onToggle?.();
+                  router.push(href);
+                }}
                 className={`flex-row items-center pl-4 py-4 gap-3 ${
                   active ? "bg-white" : ""
                 }`}
