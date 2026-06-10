@@ -1,7 +1,10 @@
 import { SelectOption } from "@/features/ui/types";
 import { FieldValues, Path } from "react-hook-form";
 import { TextInputProps, View } from "react-native";
-import { FormFeedback, FormInput, FormLabel, FormSelect } from "@/components/forms";
+import { FormInput } from "./FormInput";
+import { FormSelect } from "./FormSelect";
+import { FormLabel } from "./FormLabel";
+import { FormFeedback } from "./FormFeedback";
 
 interface BaseFormGroupProps<T extends FieldValues> {
   name: Path<T>;

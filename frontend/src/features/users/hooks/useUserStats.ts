@@ -1,6 +1,6 @@
 import { apiGet } from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
-import { UserStats } from "../types/userStats";
+import { UserStats } from "../types";
 import { userKeys } from "./userKeys";
 
 export const useUserStats = () => {
