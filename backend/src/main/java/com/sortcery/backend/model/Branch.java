@@ -33,6 +33,8 @@ public class Branch {
     private Store store;
 
     private String name;
+
+    private String address;
     private Double latitude;
     private Double longitude;
 
@@ -51,11 +53,13 @@ public class Branch {
     public Branch(
         Store store,
         String name,
+        String address,
         Double latitude,
         Double longitude
     ) {
         this.store = store;
         this.name = name;
+        this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -63,6 +67,7 @@ public class Branch {
     public Long getId() { return id; }
     public Store getStore() { return store; }
     public String getName() { return name; }
+    public String getAddress() { return address; }
     public Double getLatitude() { return latitude; }
     public Double getLongitude() { return longitude; }
     public List<UserBranch> getUserBranches() { return userBranches; }
@@ -72,6 +77,7 @@ public class Branch {
     public void setId(Long id) { this.id = id; }
     public void setStore(Store store) { this.store = store; }
     public void setName(String name) { this.name = name; }
+    public void setAddress(String address) { this.address = address; }
     public void setLatitude(Double latitude) { this.latitude = latitude; }
     public void setLongitude(Double longitude) { this.longitude = longitude; }
 

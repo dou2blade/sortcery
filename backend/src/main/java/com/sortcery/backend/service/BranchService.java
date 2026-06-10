@@ -58,12 +58,14 @@ public class BranchService {
 
     @Transactional
     public BranchResponseDTO save(BranchRequestDTO request) {
+        System.out.println(request.toString());
         Store store = storeRepository.findById(request.getStoreId())
             .orElseThrow(() -> new NotFoundException(Store.class, request.getStoreId()));
 
         Branch saved = branchRepository.save(new Branch(
             store,
             request.getName(),
+            request.getAddress(),
             request.getLatitude(),
             request.getLongitude()
         ));
@@ -103,6 +105,7 @@ public class BranchService {
             existing.setStore(store);
         }
 
+        if (request.getAddress() != null && !request.getAddress().isBlank()) existing.setAddress(request.getAddress());
         if (request.getLatitude() != null) existing.setLatitude(request.getLatitude());
         if (request.getLongitude() != null) existing.setLongitude(request.getLongitude());
 
