@@ -9,6 +9,7 @@ import java.util.List;
 public class BranchResponseDTO {
     private final Long id;
     private final Long storeId;
+    private final String storeName;
     private final List<Long> retailerIds;
     private final List<Long> managerIds;
     private final String name;
@@ -20,6 +21,7 @@ public class BranchResponseDTO {
     public BranchResponseDTO(Branch branch) {
         this.id = branch.getId();
         this.storeId = branch.getStore().getId();
+        this.storeName = branch.getStore().getName();
         this.retailerIds = branch.getRetailers()
             .stream()
             .map(User::getId)
@@ -37,6 +39,7 @@ public class BranchResponseDTO {
 
     public Long getId() { return id; }
     public Long getStoreId() { return storeId; }
+    public String getStoreName() { return storeName; }
     public List<Long> getRetailerIds() { return retailerIds; }
     public List<Long> getManagerIds() { return managerIds; }
     public String getName() { return name; }

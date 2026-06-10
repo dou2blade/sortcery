@@ -41,8 +41,8 @@ public class BranchController {
     }
 
     @GetMapping(path="/{id}")
-    public ResponseEntity<BranchResponseDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(branchService.findById(id));
+    public ResponseEntity<ApiResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.of(branchService.findById(id)));
     }
 
     @PostMapping

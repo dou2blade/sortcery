@@ -38,20 +38,19 @@ public class StoreController {
         @RequestParam(defaultValue = "15") int size,
         @RequestParam(required = false) String search,
         @RequestParam(defaultValue = "createdAt") String sortBy,
-        @RequestParam(defaultValue = "desc") String sortDir,
-        @RequestParam(defaultValue = "false") boolean all
+        @RequestParam(defaultValue = "desc") String sortDir
     ) {
         Sort sort = sortDir.equalsIgnoreCase("asc") 
             ? Sort.by(sortBy).ascending()
             : Sort.by(sortBy).descending();
         
-        if (all) {
-            List<StoreResponseDTO> stores = storeService.findAll(sort);
-            return ResponseEntity.ok(ApiResponse.of(stores));
-        } else {
-            Page<StoreResponseDTO> storesPage = storeService.findPage(page, size, search, sort);
-            return ResponseEntity.ok(ApiResponse.of(storesPage));
-        }
+        Page<StoreResponseDTO> storesPage = storeService.findPage(page, size, search, sort);
+        return ResponseEntity.ok(ApiResponse.of(storesPage));
+    }
+
+    @GetMapping(path="/options")
+    public ResponseEntity<ApiResponse> findOptions() {
+        return ResponseEntity.ok(ApiResponse.of(storeService.findOptions()));
     }
 
     @GetMapping(path="/{id}")

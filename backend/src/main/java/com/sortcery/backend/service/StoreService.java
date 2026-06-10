@@ -1,6 +1,7 @@
 package com.sortcery.backend.service;
 
 import com.sortcery.backend.model.Store;
+import com.sortcery.backend.dto.store.StoreOptionDTO;
 import com.sortcery.backend.dto.store.StoreRequestDTO;
 import com.sortcery.backend.dto.store.StoreResponseDTO;
 import com.sortcery.backend.dto.store.StoreStatsDTO;
@@ -28,13 +29,6 @@ public class StoreService {
         this.branchRepository = branchRepository;
     }
 
-    public List<StoreResponseDTO> findAll(Sort sort) {
-        return storeRepository.findAll(sort)
-            .stream()
-            .map((store) -> new StoreResponseDTO(store))
-            .toList();
-    }
-
     public Page<StoreResponseDTO> findPage(
         int page,
         int size,
@@ -55,6 +49,13 @@ public class StoreService {
         return storeRepository
             .findAll(spec, pageRequest)
             .map(StoreResponseDTO::new);
+    }
+
+    public List<StoreOptionDTO> findOptions() {
+        return storeRepository.findAll()
+            .stream()
+            .map(StoreOptionDTO::new)
+            .toList();
     }
 
     public StoreResponseDTO findById(Long id) {
