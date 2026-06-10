@@ -2,6 +2,7 @@ package com.sortcery.backend.service;
 
 import com.sortcery.backend.model.User;
 import com.sortcery.backend.repository.UserRepository;
+import com.sortcery.backend.dto.user.UserOptionDTO;
 import com.sortcery.backend.dto.user.UserRequestDTO;
 import com.sortcery.backend.dto.user.UserResponseDTO;
 import com.sortcery.backend.dto.user.UserStatsDTO;
@@ -29,16 +30,6 @@ public class UserService {
         UserRepository userRepository
     ) {
         this.userRepository = userRepository;
-    }
-
-    public List<UserResponseDTO> findAll(
-        Sort sort
-    ) {
-        return userRepository
-            .findAll(sort)
-            .stream()
-            .map(UserResponseDTO::new)
-            .toList();
     }
 
     public Page<UserResponseDTO> findPage(
@@ -69,6 +60,21 @@ public class UserService {
         return userRepository
             .findAll(spec, pageRequest)
             .map(UserResponseDTO::new);
+    }
+
+    public Map<User.Role, List<UserOptionDTO>> findOptions() {
+        List<User> users = userRepository.findAll();
+
+        return Map.of(
+            User.Role.MANAGER, users.stream()
+                .filter((user) -> user.getRole() == User.Role.MANAGER)
+                .map(UserOptionDTO::new)
+                .toList(),
+            User.Role.RETAILER, users.stream()
+                .filter((user) -> user.getRole() == User.Role.RETAILER)
+                .map(UserOptionDTO::new)
+                .toList()
+        );
     }
 
     public UserResponseDTO findById(Long id) {

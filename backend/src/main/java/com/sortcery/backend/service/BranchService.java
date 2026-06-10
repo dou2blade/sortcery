@@ -11,10 +11,10 @@ import com.sortcery.backend.repository.StoreRepository;
 import com.sortcery.backend.repository.UserBranchRepository;
 import com.sortcery.backend.repository.UserRepository;
 
-import jakarta.validation.ValidationException;
 
 import com.sortcery.backend.repository.BranchRepository;
 import com.sortcery.backend.exception.NotFoundException;
+import com.sortcery.backend.exception.ValidationException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -100,16 +101,21 @@ public class BranchService {
             request.getLongitude()
         ));
 
-        List<User> targetUsers = userRepository.findAllById(request.getUserIds());
+        Set<Long> userIds = new HashSet<>(request.getManagerIds());
+        userIds.addAll(request.getRetailerIds());
+        List<User> targetUsers = userRepository.findAllById(userIds);
 
-        if (targetUsers.size() != request.getUserIds().size()) {
+        if (targetUsers.size() != userIds.size()) {
             throw new NotFoundException("One or more users do not exist");
         }
 
         List<UserBranch> userBranches = new ArrayList<>();
         for (User user : targetUsers) {
             if (!user.getRole().isAssignableToBranch()) {
-                throw new ValidationException(String.format("User with ID %d does not have an assignable role", user.getRole()));
+                throw new ValidationException(Map.of(
+                    "managerIds", "One or more users have invalid roles",
+                    "retailerIds", "One or more users have invalid roles"
+                ));
             }
 
             userBranches.add(new UserBranch(user, saved));
@@ -139,11 +145,16 @@ public class BranchService {
         if (request.getLatitude() != null) existing.setLatitude(request.getLatitude());
         if (request.getLongitude() != null) existing.setLongitude(request.getLongitude());
 
-        if (request.getUserIds() != null && !request.getUserIds().isEmpty()) {
-            Set<Long> userIds = new HashSet<>(request.getUserIds());
+        Set<Long> userIds = new HashSet<>(request.getManagerIds());
+        userIds.addAll(request.getRetailerIds());
+
+        if (!userIds.isEmpty()) {
             List<User> targetUsers = userRepository.findAllById(userIds);
             if (targetUsers.size() != userIds.size()) {
-                throw new NotFoundException("One or more users do not exist");
+                throw new ValidationException(Map.of(
+                    "managerIds", "One or more users do not exist",
+                    "retailerIds", "One or more users do not exist"
+                ));
             }
 
             List<UserBranch> existingRelations = userBranchRepository.findByBranchId(id);

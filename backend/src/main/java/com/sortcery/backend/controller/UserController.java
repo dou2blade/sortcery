@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.validation.annotation.Validated;
-import java.util.List;
 
 @RestController
 @RequestMapping(path="/users")
@@ -39,20 +38,19 @@ public class UserController {
         @RequestParam(required = false) String search,
         @RequestParam(required = false) User.Role role,
         @RequestParam(defaultValue = "createdAt") String sortBy,
-        @RequestParam(defaultValue = "desc") String sortDir,
-        @RequestParam(defaultValue = "false") boolean all
+        @RequestParam(defaultValue = "desc") String sortDir
     ) {
         Sort sort = sortDir.equalsIgnoreCase("asc") 
             ? Sort.by(sortBy).ascending()
             : Sort.by(sortBy).descending();
         
-        if (all) {
-            List<UserResponseDTO> users = userService.findAll(sort);
-            return ResponseEntity.ok(ApiResponse.of(users));
-        } else {
-            Page<UserResponseDTO> usersPage = userService.findPage(page, size, search, role, sort);
-            return ResponseEntity.ok(ApiResponse.of(usersPage));
-        }
+        Page<UserResponseDTO> usersPage = userService.findPage(page, size, search, role, sort);
+        return ResponseEntity.ok(ApiResponse.of(usersPage));
+    }
+
+    @GetMapping(path="/options")
+    public ResponseEntity<ApiResponse> findOptions() {
+        return ResponseEntity.ok(ApiResponse.of(userService.findOptions()));
     }
 
     @GetMapping(path="/{id}")
