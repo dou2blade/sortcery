@@ -59,6 +59,7 @@ public class TokenService {
 
         if (token.getExpiresAt().isBefore(threshold)) {
             token.setExpiresAt(LocalDateTime.now().plusHours(3));
+            tokenRepository.save(token);
         }
     }
 }
