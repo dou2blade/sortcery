@@ -2,7 +2,7 @@ import { useUser } from "@/features/users/hooks";
 import { AdminUserForm } from "@/views/admin/users";
 import { useLocalSearchParams } from "expo-router";
 
-const AdminUsersEditPage = () => {
+const AdminUserEditPage = () => {
   const { id } = useLocalSearchParams();
 
   const { data } = useUser(Number(id));
@@ -14,4 +14,4 @@ const AdminUsersEditPage = () => {
   return <AdminUserForm user={user} />;
 }
 
-export default AdminUsersEditPage
+export default AdminUserEditPage;

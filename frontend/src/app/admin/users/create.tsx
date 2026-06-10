@@ -1,7 +1,7 @@
 import { AdminUserForm } from "@/views/admin/users";
 
-const AdminUsersCreatePage = () => {
+const AdminUserCreatePage = () => {
   return <AdminUserForm />;
 }
 
-export default AdminUsersCreatePage
+export default AdminUserCreatePage;
