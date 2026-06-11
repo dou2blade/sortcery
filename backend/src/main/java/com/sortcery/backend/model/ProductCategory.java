@@ -46,11 +46,13 @@ public class ProductCategory {
 
     public Long getId() { return id; }
     public String getName() { return name; }
+    public List<Product> getProducts() { return products; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
     public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
+    public void setProducts(List<Product> products) { this.products = products; }
 
     public void addProduct(Product product) {
         if (!products.contains(product)) {
