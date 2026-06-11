@@ -53,6 +53,7 @@ public class BranchService {
         int page,
         int size,
         String search,
+        Long store,
         Sort sort
     ) {
         PageRequest pageRequest = PageRequest.of(page, size, sort);
@@ -65,6 +66,15 @@ public class BranchService {
                 cb.or(
                     cb.like(cb.lower(root.get("name")), term),
                     cb.like(cb.lower(root.get("address")), term)
+                )
+            ));
+        }
+
+        if (store != null) {
+            spec = spec.and((root, query, cb) -> (
+                cb.equal(
+                    root.get("store").get("id"), 
+                    store
                 )
             ));
         }
