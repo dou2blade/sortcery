@@ -11,6 +11,7 @@ import { useProductStats } from "@/features/products/hooks";
 
 const columns: DataTableColumn<Brand>[] = [
   { name: "Name", selector: (row) => row.name },
+  { name: "Products", selector: (row) => row.products.length.toString() }
 ];
 
 export const AdminBrandsListView = () => {

@@ -4,6 +4,7 @@ import { useCreateBrand, useUpdateBrand } from "@/features/brands/hooks";
 import { brandToFormData, BrandFormData, BrandSchema } from "@/features/brands/schemas";
 import { Brand } from "@/features/brands/types";
 import { useSubmitHandler } from "@/hooks";
+import { toOptions } from "@/utils/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { ScrollView } from "react-native";
@@ -26,6 +27,8 @@ export const AdminBrandForm = ({ brand }: AdminBrandFormProps) => {
     update: useUpdateBrand()
   });
 
+  const productValues = toOptions(brand?.products ?? [], (row) => row.name, (row) => row.id);
+
   return (
     <ScrollView className="flex-1 m-3 gap-3">
       <CmsHeader 
@@ -35,6 +38,12 @@ export const AdminBrandForm = ({ brand }: AdminBrandFormProps) => {
       <FormProvider {...formMethods}>
         <FormContainer>
           <FormGroup name="name" placeholder="Enter brand name" />
+          <FormGroup 
+            type="list-readonly"  
+            label="Products"
+            values={productValues}
+            href={"/admin/products"}
+          />
 
           <FormButtons onSubmit={onSubmit} />
         </FormContainer>
