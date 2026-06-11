@@ -1,10 +1,12 @@
 import FormGroup, { FormButtons, FormContainer } from "@/components/forms";
 import { CmsHeader } from "@/components/headers";
+import { useBrandOptions } from "@/features/brands/hooks/useBrandOptions";
 import { useCreateProduct, useUpdateProduct } from "@/features/products/hooks";
 import { productToFormData, ProductFormData, ProductSchema } from "@/features/products/schemas";
 import { Product } from "@/features/products/types";
 import { SelectOption } from "@/features/ui/types";
 import { useSubmitHandler } from "@/hooks";
+import { toOptions } from "@/utils/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { ScrollView } from "react-native";
@@ -27,8 +29,9 @@ export const AdminProductForm = ({ product }: AdminProductFormProps) => {
     update: useUpdateProduct()
   });
 
-  // temp
-  const brandOptions: SelectOption[] = [];
+  const { data: brands } = useBrandOptions();
+
+  const brandOptions = toOptions(brands?.data ?? [], (row) => row.name, (row) => row.id);
   const productCategoryOptions: SelectOption[] = [];
 
   return (

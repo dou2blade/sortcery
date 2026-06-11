@@ -4,3 +4,5 @@ export * from "./useStore";
 export * from "./useCreateStore";
 export * from "./useUpdateStore";
 export * from "./useDeleteStore";
+export * from "./useStoreStats";
+export * from "./useStoreOptions";
