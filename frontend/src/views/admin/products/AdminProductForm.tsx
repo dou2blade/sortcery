@@ -1,10 +1,10 @@
 import FormGroup, { FormButtons, FormContainer } from "@/components/forms";
 import { CmsHeader } from "@/components/headers";
 import { useBrandOptions } from "@/features/brands/hooks/useBrandOptions";
+import { useProductCategoryOptions } from "@/features/product-categories/hooks/useProductCategoryOptions";
 import { useCreateProduct, useUpdateProduct } from "@/features/products/hooks";
 import { productToFormData, ProductFormData, ProductSchema } from "@/features/products/schemas";
 import { Product } from "@/features/products/types";
-import { SelectOption } from "@/features/ui/types";
 import { useSubmitHandler } from "@/hooks";
 import { toOptions } from "@/utils/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,9 +30,10 @@ export const AdminProductForm = ({ product }: AdminProductFormProps) => {
   });
 
   const { data: brands } = useBrandOptions();
+  const { data: productCategories } = useProductCategoryOptions();
 
   const brandOptions = toOptions(brands?.data ?? [], (row) => row.name, (row) => row.id);
-  const productCategoryOptions: SelectOption[] = [];
+  const productCategoryOptions = toOptions(productCategories?.data ?? [], (row) => row.name, (row) => row.id);
 
   return (
     <ScrollView className="flex-1 m-3 gap-3">

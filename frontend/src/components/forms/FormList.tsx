@@ -86,7 +86,7 @@ export const FormList = <T extends FieldValues>({
                 >
                   <View style={{ flex: 1, padding: 12, minWidth: 0 }}>
                     <Text numberOfLines={1}>
-                      {idx}
+                      {idx + 1}
                     </Text>
                   </View>
                   <View style={{ flex: 14, padding: 12, minWidth: 0 }}>
