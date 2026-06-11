@@ -62,8 +62,14 @@ public class UserService {
             .map(UserResponseDTO::new);
     }
 
-    public Map<User.Role, List<UserOptionDTO>> findOptions() {
-        List<User> users = userRepository.findAll();
+    public Map<User.Role, List<UserOptionDTO>> findOptions(String search) {
+        Specification<User> spec = (root, query, cb) -> cb.conjunction();
+        if (search != null && !search.isBlank()) {
+            String term = "%" + search.toLowerCase() + "%";
+            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("email")), term));
+        }
+
+        List<User> users = userRepository.findAll(spec);
 
         return Map.of(
             User.Role.MANAGER, users.stream()

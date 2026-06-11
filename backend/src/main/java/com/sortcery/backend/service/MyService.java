@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.sortcery.backend.model.User;
-import com.sortcery.backend.dto.branch.BranchSummaryDTO;
+import com.sortcery.backend.dto.branch.BranchResponseDTO;
 
 @Service
 public class MyService {
@@ -15,12 +15,12 @@ public class MyService {
         this.tokenService = tokenService;
     }
 
-    public List<BranchSummaryDTO> findBranches(String token) {
+    public List<BranchResponseDTO> findBranches(String token) {
         User user = tokenService.findUser(token);
 
         return user.getBranches()
             .stream()
-            .map(BranchSummaryDTO::new)
+            .map(BranchResponseDTO::new)
             .toList();
     }
 }

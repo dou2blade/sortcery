@@ -49,8 +49,10 @@ public class UserController {
     }
 
     @GetMapping(path="/options")
-    public ResponseEntity<ApiResponse> findOptions() {
-        return ResponseEntity.ok(ApiResponse.of(userService.findOptions()));
+    public ResponseEntity<ApiResponse> findOptions(
+        @RequestParam(required = false) String search
+    ) {
+        return ResponseEntity.ok(ApiResponse.of(userService.findOptions(search)));
     }
 
     @GetMapping(path="/{id}")
