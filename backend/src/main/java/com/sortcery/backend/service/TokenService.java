@@ -15,7 +15,10 @@ public class TokenService {
     private final TokenRepository tokenRepository;
     private final TokenHasher hasher;
 
-    public TokenService(TokenRepository tokenRepository, TokenHasher hasher) {
+    public TokenService(
+        TokenRepository tokenRepository, 
+        TokenHasher hasher
+    ) {
         this.tokenRepository = tokenRepository;
         this.hasher = hasher;
     }
@@ -43,6 +46,12 @@ public class TokenService {
             }
         }
         return null;
+    }
+
+    public User findUser(String plainToken) {
+        String lookup = hasher.sha256(plainToken);
+        return tokenRepository.findBySha256(lookup)
+            .getUser();
     }
 
     public Token revokeToken(String plainToken) {
