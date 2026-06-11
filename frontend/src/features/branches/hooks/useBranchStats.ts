@@ -1,11 +1,12 @@
 import { apiGet } from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
-import { BranchStats } from "../types/branchStats";
+import { BranchStats } from "../types";
 import { branchKeys } from "./branchKeys";
 
-export const useBranchStats = () => {
+export const useBranchStats = (id?: number) => {
   return useQuery({
-    queryKey: branchKeys.stats(),
-    queryFn: () => apiGet<BranchStats>("branches/stats"),
+    queryKey: branchKeys.stat(id!),
+    queryFn: async () => apiGet<BranchStats>(`branches/${id}/stats`),
+    enabled: id !== undefined,
   });
 };

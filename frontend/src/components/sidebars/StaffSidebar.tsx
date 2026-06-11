@@ -6,9 +6,14 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { Pressable, View } from "react-native";
-import { NavItem } from "@/features/ui/types";
+import { Pressable, Text, View } from "react-native";
+import { NavItem, SelectOption } from "@/features/ui/types";
 import { logout } from "@/utils/auth";
+import { useStaffBranchContextStore } from "@/features/ui/stores";
+import { useEffect, useRef } from "react";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import { useMyBranches } from "@/features/branches/hooks";
+import { toOptions } from "@/utils/forms";
 
 interface StaffSidebarProps {
   navItems: NavItem[];
@@ -21,8 +26,24 @@ const StaffSidebar = ({
   collapsed,
   onToggle,
 }: StaffSidebarProps) => {
+  const { branchId, setBranchId, setName } = useStaffBranchContextStore();
+  const { data: branches } = useMyBranches();
+
+  useEffect(() => {
+    if (branchId !== undefined) return;
+
+    const defaultId = branches?.data?.[0].id;
+    if (defaultId !== undefined) {
+      setBranchId(defaultId);
+      setName(`${branches!.data![0].storeName} - ${branches!.data![0].name}`);
+    }
+  }, [branches]);
+
+
   const pathname = usePathname();
   const router = useRouter();
+
+  const sheetRef = useRef<BottomSheetModal>(null);
 
   const viewStyle = useAnimatedStyle(() => ({
     width: withTiming(collapsed ? 60 : 256, {
@@ -36,81 +57,128 @@ const StaffSidebar = ({
     }),
   }));
 
+  const branchOptions = toOptions(branches?.data ?? [], (row) => `${row.storeName} - ${row.name}`, (row) => row.id);
+
   return (
-    <Pressable onPress={onToggle} className="h-full">
-      <Animated.View
-        style={viewStyle}
-        className="h-full bg-green-600"
-      >
-        <View className="flex-1">
-          <View className="py-6 px-4">
-            {collapsed ? (
-              <MaterialIcons name="inventory" size={24} color="white" />
-            ) : (
-              <Animated.Text
-                style={labelStyle}
-                numberOfLines={1}
-                className="font-bold text-lg text-white"
-              >
-                Sortcery Admin
-              </Animated.Text>
-            )}
+    <>
+      <Pressable onPress={onToggle} className="h-full">
+        <Animated.View
+          style={viewStyle}
+          className="h-full bg-green-600"
+        >
+          <View className="flex-1">
+            <View className="py-6 px-4">
+              {collapsed ? (
+                <MaterialIcons name="inventory" size={24} color="white" />
+              ) : (
+                <Animated.Text
+                  style={labelStyle}
+                  numberOfLines={1}
+                  className="font-bold text-lg text-white"
+                >
+                  Sortcery Manager
+                </Animated.Text>
+              )}
+            </View>
+
+            <View className="mx-4 h-px mb-3 bg-white" />
+
+            <Pressable
+              onPress={() => sheetRef.current?.present()}
+              className={`
+                p-4
+                rounded-xl
+                flex-row
+                items-center
+                ${collapsed ? "justify-center" : "justify-between"}
+              `}
+            >
+              {!collapsed &&
+                <Text className="text-base text-white" numberOfLines={1} ellipsizeMode="tail">
+                  {branchOptions.length 
+                    ? branchOptions.find((opt) => opt.value === branchId)?.label 
+                    : "No branches assigned"
+                  }
+                </Text>
+              }
+              <MaterialIcons name="expand-more" size={16} color="white" />
+            </Pressable>
+
+            {navItems.map(({ label, icon, href }) => {
+              const active = pathname.startsWith(href.toString());
+
+              return (
+                <Pressable
+                  key={`${label}-${icon}-${href}`}
+                  onPress={() => {
+                    onToggle?.();
+                    router.push(href);
+                  }}
+                  className={`flex-row items-center pl-4 py-4 gap-3 ${
+                    active ? "bg-white" : ""
+                  }`}
+                >
+                  <MaterialIcons name={icon} size={24} color={active ? "black" : "white"}/>
+
+                  {!collapsed && (
+                    <Animated.Text 
+                      entering={FadeInLeft} 
+                      exiting={FadeOutLeft} 
+                      className={active ? "text-black" : "text-white"}
+                    >
+                      {label}
+                    </Animated.Text>
+                  )}
+                </Pressable>
+              );
+            })}
           </View>
 
-          <View className="mx-4 h-px mb-3 bg-white" />
+          <View className="mx-4 h-px bg-white" />
 
-          {navItems.map(({ label, icon, href }) => {
-            const active = pathname.startsWith(href.toString());
+          <View>
+            <Pressable
+              onPress={logout}
+              className="flex-row items-center pl-4 py-4 gap-3"
+            >
+              <MaterialIcons name="logout" size={24} color="white" />
 
-            return (
-              <Pressable
-                key={`${label}-${icon}-${href}`}
-                onPress={() => {
-                  onToggle?.();
-                  router.push(href);
-                }}
-                className={`flex-row items-center pl-4 py-4 gap-3 ${
-                  active ? "bg-white" : ""
-                }`}
-              >
-                <MaterialIcons name={icon} size={24} color={active ? "black" : "white"}/>
+              {!collapsed && (
+                <Animated.Text 
+                  entering={FadeInLeft} 
+                  exiting={FadeOutLeft}
+                  className="text-white"
+                >
+                  Logout
+                </Animated.Text>
+              )}
+            </Pressable>
+          </View>
+        </Animated.View>
+      </Pressable>
 
-                {!collapsed && (
-                  <Animated.Text 
-                    entering={FadeInLeft} 
-                    exiting={FadeOutLeft} 
-                    className={active ? "text-black" : "text-white"}
-                  >
-                    {label}
-                  </Animated.Text>
-                )}
-              </Pressable>
-            );
-          })}
-        </View>
-
-        <View className="mx-4 h-px bg-white" />
-
-        <View>
-          <Pressable
-            onPress={logout}
-            className="flex-row items-center pl-4 py-4 gap-3"
-          >
-            <MaterialIcons name="logout" size={24} color="white" />
-
-            {!collapsed && (
-              <Animated.Text 
-                entering={FadeInLeft} 
-                exiting={FadeOutLeft}
-                className="text-white"
-              >
-                Logout
-              </Animated.Text>
-            )}
-          </Pressable>
-        </View>
-      </Animated.View>
-    </Pressable>
+      <BottomSheetModal
+        ref={sheetRef}
+        snapPoints={["25%", "50%", "90%"]}
+        index={0}
+      >
+        <BottomSheetView className="p-4">
+          {branchOptions.map((opt) => (
+            <Pressable
+              key={opt.value}
+              onPress={() => {
+                setBranchId(Number(opt.value))
+                setName(opt.label);
+                sheetRef.current?.dismiss();
+              }}
+              className="py-3 border-b border-gray-200"
+            >
+              <Text>{opt.label}</Text>
+            </Pressable>
+          ))}
+        </BottomSheetView>
+      </BottomSheetModal>
+    </>
   );
 }
 

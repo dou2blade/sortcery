@@ -6,7 +6,8 @@ export const userKeys = {
   lists: () => [...userKeys.all, "list"] as const,
   list: (params: UserQueryParams) => [...userKeys.lists(), params] as const,
 
-  detail: (id: number) => [...userKeys.all, "detail", id] as const,
+  details: () => [...userKeys.all, "detail"] as const,
+  detail: (id: number) => [...userKeys.details(), id] as const,
 
   options: () => [...userKeys.all, "options"] as const,
   stats: () => [...userKeys.all, "stats"] as const

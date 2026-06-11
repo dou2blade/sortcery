@@ -1,7 +1,9 @@
+import { Branch } from "@/features/branches/types";
+
 export interface Store {
   id: number;
   name: string;
-  branches: Record<string, any>[];
+  branches: Pick<Branch, "id" | "storeId" | "name" | "storeName">[];
   createdAt: string;
   updatedAt: string;
 }

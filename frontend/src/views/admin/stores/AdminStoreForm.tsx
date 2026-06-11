@@ -4,9 +4,10 @@ import { useCreateStore, useUpdateStore } from "@/features/stores/hooks";
 import { storeToFormData, StoreFormData, StoreSchema } from "@/features/stores/schemas";
 import { Store } from "@/features/stores/types";
 import { useSubmitHandler } from "@/hooks";
+import { toOptions } from "@/utils/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 
 interface AdminStoreFormProps {
   store?: Store;
@@ -26,8 +27,10 @@ export const AdminStoreForm = ({ store }: AdminStoreFormProps) => {
     update: useUpdateStore()
   });
 
+  const branchValues = toOptions(store?.branches ?? [], (row) => row.name, (row) => row.id);
+
   return (
-    <View className="flex-1 m-3 gap-3">
+    <ScrollView className="flex-1 m-3 gap-3">
       <CmsHeader 
         title={store ? "Edit Store" : "Add Store"} 
         subtitle={store ? "Edit existing store details" : "Add a new store account" }
@@ -35,10 +38,16 @@ export const AdminStoreForm = ({ store }: AdminStoreFormProps) => {
       <FormProvider {...formMethods}>
         <FormContainer>
           <FormGroup name="name" placeholder="Store name" />
+          <FormGroup
+            type="list-readonly" 
+            values={branchValues}
+            label="Branches"
+            href="/admin/stores/branches"
+          />
 
           <FormButtons onSubmit={onSubmit} />
         </FormContainer>
       </FormProvider>
-    </View>
+    </ScrollView>
   );
 }

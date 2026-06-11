@@ -8,6 +8,7 @@ export * from "./FormLabel";
 export * from "./FormInput";
 export * from "./FormSelect";
 export * from "./FormList";
+export * from "./FormListReadOnly";
 
 export * from "./FormFeedback";
 

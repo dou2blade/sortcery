@@ -1,7 +1,10 @@
 package com.sortcery.backend.dto.user;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.sortcery.backend.dto.branch.BranchSummaryDTO;
 import com.sortcery.backend.model.User;
 
 public class UserResponseDTO {
@@ -11,6 +14,7 @@ public class UserResponseDTO {
     private String lastName;
     private String email;
     private User.Role role;
+    private List<BranchSummaryDTO> branches = new ArrayList<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -21,6 +25,10 @@ public class UserResponseDTO {
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.role = user.getRole();
+        this.branches = user.getBranches()
+            .stream()
+            .map(BranchSummaryDTO::new)
+            .toList();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
     }
@@ -31,6 +39,7 @@ public class UserResponseDTO {
     public String getLastName() { return lastName; }
     public String getEmail() { return email; }
     public User.Role getRole() { return role; }
+    public List<BranchSummaryDTO> getBranches() { return branches; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 }

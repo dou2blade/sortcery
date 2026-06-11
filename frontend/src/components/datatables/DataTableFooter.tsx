@@ -22,7 +22,7 @@ export const DataTableFooter = ({
     ? 0
     : (start - 1) + size >= total ? total : (start - 1) + size;
   return (
-    <View className="flex-row items-center justify-end p-3 w-full rounded-b-lg border border-gray-300 bg-slate-200">
+    <View className="flex-row items-center justify-end p-3 w-full rounded-b-lg border border-gray-300 bg-slate-100">
       <Text className="text-xs text-slate-500 mr-2">
         {start} - {end} of {total}
       </Text>

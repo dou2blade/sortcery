@@ -35,6 +35,7 @@ public class BranchController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
         @RequestParam(required = false) String search,
+        @RequestParam(required = false) Long store,
         @RequestParam(defaultValue = "createdAt") String sortBy,
         @RequestParam(defaultValue = "desc") String sortDir
     ) {
@@ -42,7 +43,7 @@ public class BranchController {
             ? Sort.by(sortBy).ascending()
             : Sort.by(sortBy).descending();
         
-        Page<BranchResponseDTO> branchesPage = branchService.findPage(page, size, search, sort);
+        Page<BranchResponseDTO> branchesPage = branchService.findPage(page, size, search, store, sort);
         return ResponseEntity.ok(ApiResponse.of(branchesPage));
     }
 
@@ -70,5 +71,10 @@ public class BranchController {
     @DeleteMapping(path="/{id}")
     public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.of(branchService.delete(id)));
+    }
+
+    @GetMapping(path="/{id}/stats")
+    public ResponseEntity<ApiResponse> stats(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.of(branchService.stats(id)));
     }
 }

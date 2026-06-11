@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Drawer } from "react-native-drawer-layout";
-import StaffSidebar from "@/components/sidebars/StaffSidebar";
+import AdminSidebar from "@/components/sidebars/AdminSidebar";
 import { NavItem } from "@/features/ui/types";
 
 const navItems: NavItem[] = [
@@ -34,7 +34,7 @@ export default function AdminLayout() {
         onClose={() => setDrawerOpen(false)}
         drawerStyle={{ width: 256 }}
         renderDrawerContent={() => (
-          <StaffSidebar navItems={navItems} collapsed={false} onToggle={() => setDrawerOpen(!drawerOpen)} />
+          <AdminSidebar navItems={navItems} collapsed={false} onToggle={() => setDrawerOpen(!drawerOpen)} />
         )}
       >
         <View className="flex-1">
@@ -62,7 +62,7 @@ export default function AdminLayout() {
   if (isTablet) {
     return (
       <View className="flex-1 flex-row">
-        <StaffSidebar
+        <AdminSidebar
           navItems={navItems}
           collapsed={collapsed}
           onToggle={() =>
@@ -90,7 +90,7 @@ export default function AdminLayout() {
 
   return (
     <View className="flex-1 flex-row">
-      <StaffSidebar navItems={navItems} collapsed={false} />
+      <AdminSidebar navItems={navItems} collapsed={false} />
 
       <View className="flex-1">
         <Stack

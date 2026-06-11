@@ -6,39 +6,60 @@ import { FormSelect } from "./FormSelect";
 import { FormLabel } from "./FormLabel";
 import { FormFeedback } from "./FormFeedback";
 import { FormList } from "./FormList";
+import { FormListReadOnly } from "./FormListReadOnly";
+import { Href } from "expo-router";
 
-interface BaseFormGroupProps<T extends FieldValues> {
-  name: Path<T>;
+interface BaseFormGroupProps {
   label?: string;
   flex?: number;
+}
+
+interface TextFieldProps<T extends FieldValues> extends BaseFormGroupProps, TextInputProps {
+  type?: "text";
+  name: Path<T>;
   optional?: boolean;
   readOnly?: boolean;
 }
 
-interface TextFieldProps<T extends FieldValues> extends BaseFormGroupProps<T>, TextInputProps {
-  type?: "text";
-}
-
-interface SelectFieldProps<T extends FieldValues> extends BaseFormGroupProps<T> {
+interface SelectFieldProps<T extends FieldValues> extends BaseFormGroupProps {
   type: "select";
+  name: Path<T>;
   options: SelectOption[];
   placeholder?: string;
+  optional?: boolean;
+  readOnly?: boolean;
 }
 
-interface ListFieldProps<T extends FieldValues> extends BaseFormGroupProps<T> {
+interface ListFieldProps<T extends FieldValues> extends BaseFormGroupProps {
   type: "list";
+  name: Path<T>;
   options: SelectOption[];
+  href?: Href;
+  optional?: boolean;
+  readOnly?: boolean;
+}
+
+interface ListReadOnlyFieldProps extends BaseFormGroupProps {
+  type: "list-readonly";
+  label: string;
+  values: SelectOption[];
+  href?: Href;
+  name?: never;
+  optional?: never;
+  readOnly?: never;
+
 }
 
 type FormGroupProps<T extends FieldValues> = 
   | TextFieldProps<T>
   | SelectFieldProps<T>
   | ListFieldProps<T>
+  | ListReadOnlyFieldProps
 
 const FormGroup = <T extends FieldValues>(props: FormGroupProps<T>) => {
-  const { flex, name, label, type, optional, ...rest } = props;
+  const { flex, label, type, ...rest } = props;
 
-  const renderLabel = label ?? String(name).split('')
+  const renderLabel = label ?? String(props.name).split('')
     .map((c, idx) => { 
       if (idx === 0) return c.toUpperCase();
       const isUpperCase = c === c.toUpperCase() 
@@ -47,11 +68,11 @@ const FormGroup = <T extends FieldValues>(props: FormGroupProps<T>) => {
     })
     .join('');
 
-  let field = <FormInput name={name} {...rest} />;
+  let field;
   switch (type) {
     case "select": 
       field = <FormSelect 
-        name={name} 
+        name={props.name} 
         options={props.options}
         placeholder={props.placeholder}
         {...rest} 
@@ -59,22 +80,33 @@ const FormGroup = <T extends FieldValues>(props: FormGroupProps<T>) => {
       break;
     case "list":
       field = <FormList 
-        name={name}
+        name={props.name}
         options={props.options}
-        optional={optional}
+        optional={props.optional}
         label={renderLabel}
+        href={props.href}
+        readOnly={props.readOnly}
       />
+      break;
+    case "list-readonly":
+      field = <FormListReadOnly 
+        label={renderLabel}
+        values={props.values}
+        href={props.href}
+      />
+      break;
     default:
+      field = <FormInput name={props.name} {...rest} />
       break;
   }
 
-  if (type === "list") return field;
+  if (type === "list" || type === "list-readonly") return field;
 
   return (
     <View style={{ flex: flex ?? 1 }}>
-      <FormLabel optional={optional}>{ renderLabel }</FormLabel> 
+      <FormLabel optional={props.optional}>{ renderLabel }</FormLabel> 
         {field} 
-      <FormFeedback name={name} />
+      <FormFeedback name={props.name} />
     </View>
   );
 }
