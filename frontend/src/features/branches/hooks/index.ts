@@ -4,3 +4,5 @@ export * from "./useBranch";
 export * from "./useCreateBranch";
 export * from "./useUpdateBranch";
 export * from "./useDeleteBranch";
+
+export * from "./useMyBranches";

@@ -7,7 +7,7 @@ import { FormLabel } from "./FormLabel";
 interface FormListReadOnlyProps {
   label: string;
   values: SelectOption[];
-  href: Href;
+  href?: Href;
 }
 
 export const FormListReadOnly = ({
@@ -69,9 +69,11 @@ export const FormListReadOnly = ({
               </Text>
             </View>
             <View style={{ flex: 1, padding: 12, minWidth: 0 }} className="items-end justify-center">
-              <Pressable onPress={() => router.push(`${href}/${v.value}`)}>
-                <MaterialIcons name="arrow-forward" className="text-black" size={14}/>
-              </Pressable>
+              { href &&
+                <Pressable onPress={() => router.push(`${href}/${v.value}`)}>
+                  <MaterialIcons name="arrow-forward" className="text-black" size={14}/>
+                </Pressable>
+              }
             </View>
           </View>
         )) }

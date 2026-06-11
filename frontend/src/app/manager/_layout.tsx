@@ -7,17 +7,17 @@ import {
 } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Drawer } from "react-native-drawer-layout";
-import AdminSidebar from "@/components/sidebars/AdminSidebar";
+import StaffSidebar from "@/components/sidebars/StaffSidebar";
 import { NavItem } from "@/features/ui/types";
 
 const navItems: NavItem[] = [
-  { label: "Dashboard", icon: "dashboard", href: "/admin/dashboard" },
-  { label: "Users", icon: "people", href: "/admin/users" },
-  { label: "Stores", icon: "store", href: "/admin/stores" },
-  { label: "Products", icon: "local-grocery-store", href: "/admin/products" },
+  { label: "Dashboard", icon: "dashboard", href: "/manager/dashboard" },
+  { label: "Branch Details", icon: "store", href: "/manager/branch" },
+  { label: "Products", icon: "local-grocery-store", href: "/manager/products" },
+  { label: "Inventory", icon: "inventory", href: "/manager/inventory" }
 ] as const;
 
-export default function AdminLayout() {
+export default function StaffLayout() {
   const { width } = useWindowDimensions();
 
   const isMobile = width < 768;
@@ -34,7 +34,7 @@ export default function AdminLayout() {
         onClose={() => setDrawerOpen(false)}
         drawerStyle={{ width: 256 }}
         renderDrawerContent={() => (
-          <AdminSidebar navItems={navItems} collapsed={false} onToggle={() => setDrawerOpen(!drawerOpen)} />
+          <StaffSidebar navItems={navItems} collapsed={false} onToggle={() => setDrawerOpen(!drawerOpen)} />
         )}
       >
         <View className="flex-1">
@@ -62,7 +62,7 @@ export default function AdminLayout() {
   if (isTablet) {
     return (
       <View className="flex-1 flex-row">
-        <AdminSidebar
+        <StaffSidebar
           navItems={navItems}
           collapsed={collapsed}
           onToggle={() =>
@@ -90,7 +90,7 @@ export default function AdminLayout() {
 
   return (
     <View className="flex-1 flex-row">
-      <AdminSidebar navItems={navItems} collapsed={false} />
+      <StaffSidebar navItems={navItems} collapsed={false} />
 
       <View className="flex-1">
         <Stack

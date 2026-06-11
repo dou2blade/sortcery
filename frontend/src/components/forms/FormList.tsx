@@ -7,6 +7,7 @@ import { SelectOption } from "@/features/ui/types";
 import { Href, useLocalSearchParams, useRouter } from "expo-router";
 import { FormLabel } from "./FormLabel";
 import { FormFeedback } from "./FormFeedback";
+import { useAuthStore } from "@/features/auth/stores";
 
 interface FormListProps<T extends FieldValues> {
   name: Path<T>;
@@ -14,7 +15,7 @@ interface FormListProps<T extends FieldValues> {
   options: SelectOption[];
   optional?: boolean;
   readOnly?: boolean;
-  href: Href;
+  href?: Href;
 }
 
 export const FormList = <T extends FieldValues>({
@@ -33,9 +34,11 @@ export const FormList = <T extends FieldValues>({
   const { control } = useFormContext<T>();
   const { errors } = useFormState({ control, name });
 
-  const values = useWatch({ name }) as unknown[]
+  const values = useWatch({ name }) as unknown[];
 
   const sheetRef = useRef<BottomSheetModal>(null);
+
+  const { user } = useAuthStore();
 
   const invalid = !!errors?.[name];
 
@@ -99,13 +102,13 @@ export const FormList = <T extends FieldValues>({
                     </Text>
                   </View>
                   <View style={{ flex: 1, padding: 12, minWidth: 0 }} className="items-center justify-end flex-row gap-2">
-                    {(!!view || readOnly) &&
+                    {(!!view || readOnly) && href &&
                       <Pressable onPress={() => router.push(`${href}/${v}`)}>
                         <MaterialIcons name="arrow-forward" className="text-black" size={14}/>
                       </Pressable>
                     }
 
-                    {!view && !readOnly &&
+                    {!view && !readOnly && user?.id !== v &&
                       <Pressable
                         onPress={() => {
                           const newValue = [...value];

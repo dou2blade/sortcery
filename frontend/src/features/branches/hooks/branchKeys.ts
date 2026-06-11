@@ -9,4 +9,7 @@ export const branchKeys = {
   detail: (id: number) => [...branchKeys.all, "detail", id] as const,
 
   stats: () => [...branchKeys.all, "stats"] as const,
+  stat: (id: number) => [...branchKeys.stats(), "stats", id] as const,
+
+  my: () => [...branchKeys.all, "my"] as const
 };
