@@ -4,6 +4,7 @@ import { useCreateUser, useUpdateUser } from "@/features/users/hooks";
 import { userToFormData, UserFormData, UserSchema } from "@/features/users/schemas";
 import { User } from "@/features/users/types";
 import { useSubmitHandler } from "@/hooks";
+import { toOptions } from "@/utils/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { ScrollView } from "react-native";
@@ -25,6 +26,8 @@ export const AdminUserForm = ({ user }: AdminUserFormProps) => {
     create: useCreateUser(),
     update: useUpdateUser()
   });
+
+  const branchValues = toOptions(user?.branches ?? [], (row) => `${row.storeName} - ${row.name}`, (row) => row.id);
 
   return (
     <ScrollView className="flex-1 m-3 gap-3">
@@ -53,6 +56,15 @@ export const AdminUserForm = ({ user }: AdminUserFormProps) => {
               { label: "Retailer", value: "RETAILER" }
             ]} 
           />
+          
+          {user && ["MANAGER", "RETAILER"].includes(user.role) &&
+            <FormGroup 
+              type="list-readonly"
+              values={branchValues}
+              label="Assigned Branches"
+              href="/admin/stores/branches"
+            />
+          }
 
           <FormButtons onSubmit={onSubmit} />
         </FormContainer>
