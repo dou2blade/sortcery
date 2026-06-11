@@ -6,7 +6,7 @@ import { User } from "@/features/users/types";
 import { useSubmitHandler } from "@/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 
 interface AdminUserFormProps {
   user?: User;
@@ -27,7 +27,7 @@ export const AdminUserForm = ({ user }: AdminUserFormProps) => {
   });
 
   return (
-    <View className="flex-1 m-3 gap-3">
+    <ScrollView className="flex-1 m-3 gap-3">
       <CmsHeader 
         title={user ? "Edit User" : "Add User"} 
         subtitle={user ? "Edit existing user details" : "Add a new user account" }
@@ -57,6 +57,6 @@ export const AdminUserForm = ({ user }: AdminUserFormProps) => {
           <FormButtons onSubmit={onSubmit} />
         </FormContainer>
       </FormProvider>
-    </View>
+    </ScrollView>
   );
 }

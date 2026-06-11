@@ -6,7 +6,7 @@ import { Store } from "@/features/stores/types";
 import { useSubmitHandler } from "@/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 
 interface AdminStoreFormProps {
   store?: Store;
@@ -27,7 +27,7 @@ export const AdminStoreForm = ({ store }: AdminStoreFormProps) => {
   });
 
   return (
-    <View className="flex-1 m-3 gap-3">
+    <ScrollView className="flex-1 m-3 gap-3">
       <CmsHeader 
         title={store ? "Edit Store" : "Add Store"} 
         subtitle={store ? "Edit existing store details" : "Add a new store account" }
@@ -39,6 +39,6 @@ export const AdminStoreForm = ({ store }: AdminStoreFormProps) => {
           <FormButtons onSubmit={onSubmit} />
         </FormContainer>
       </FormProvider>
-    </View>
+    </ScrollView>
   );
 }

@@ -1,4 +1,3 @@
-import { View } from "react-native"
 import { useLocalSearchParams } from "expo-router";
 import { DataTableColumn } from "@/features/ui/types";
 import { Store } from "@/features/stores/types";
@@ -8,6 +7,7 @@ import { SearchFilter } from "@/components/filters";
 import { StatCard } from "@/components/cards";
 import { useStoreStats } from "@/features/stores/hooks/useStoreStats";
 import { CmsHeader } from "@/components/headers";
+import { CmsCardsContainer, CmsContainer, CmsFilterContainer, CmsFiltersContainer } from "@/components/containers";
 
 const columns: DataTableColumn<Store>[] = [
   { name: "Name", selector: (row) => row.name },
@@ -28,27 +28,27 @@ export const AdminStoresListView = () => {
   const deleteStore = useDeleteStore();
 
   return (
-    <View className="flex-1 m-3 gap-3">
+    <CmsContainer>
       <CmsHeader
 				title="Stores"
 				subtitle="Manage stores"
         addLabel="Add Store"
 				addHref="/admin/stores/create"
 			/>
-      <View className="flex-row gap-3 w-full">
-        <View className="flex-[3]">
+      <CmsFiltersContainer>
+        <CmsFilterContainer>
           <SearchFilter
             name="search"
             placeholder="Search..."
           />
-        </View>
-      </View>
+        </CmsFilterContainer>
+      </CmsFiltersContainer>
 
-      <View className="flex-row gap-3">
+      <CmsCardsContainer>
         <StatCard title="Stores" value={String(stats?.data?.totalStores ?? 0)} loading={statsLoading} />
         <StatCard title="Branches" value={String(stats?.data?.totalBranches ?? 0)} loading={statsLoading} href="/admin/stores/branches" />
-      </View>
+      </CmsCardsContainer>
       <DataTable columns={columns} data={stores} loading={storesLoading} deleteQuery={deleteStore} />
-    </View>
+    </CmsContainer>
   );
 }

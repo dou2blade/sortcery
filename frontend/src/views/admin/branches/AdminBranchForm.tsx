@@ -1,4 +1,4 @@
-import FormGroup, { FormButtons, FormContainer, FormLabel, FormList, FormRow } from "@/components/forms";
+import FormGroup, { FormButtons, FormContainer, FormLabel, FormRow } from "@/components/forms";
 import { CmsHeader } from "@/components/headers";
 import { MapSearch, MapView } from "@/components/maps";
 import { useCreateBranch, useUpdateBranch } from "@/features/branches/hooks";
@@ -10,7 +10,7 @@ import { useSubmitHandler } from "@/hooks";
 import { toOptions } from "@/utils/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 interface AdminBranchFormProps {
   branch?: Branch;
@@ -53,7 +53,7 @@ export const AdminBranchForm = ({ branch }: AdminBranchFormProps) => {
   );
 
   return (
-    <View className="flex-1 m-3 gap-3">
+    <ScrollView className="flex-1 m-3 gap-3">
       <CmsHeader 
         title={branch ? "Edit Branch" : "Add Branch"} 
         subtitle={branch ? "Edit existing branch details" : "Add a new branch account" }
@@ -83,6 +83,6 @@ export const AdminBranchForm = ({ branch }: AdminBranchFormProps) => {
           <FormButtons onSubmit={onSubmit} />
         </FormContainer>
       </FormProvider>
-    </View>
+    </ScrollView>
   );
 }
