@@ -1,19 +1,18 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import { Href, useRouter } from "expo-router";
 import { Pressable, Text } from "react-native"
-import Animated, { EntryOrExitLayoutType, FadeIn } from "react-native-reanimated"
+import Animated, { FadeIn } from "react-native-reanimated"
 
 interface AddItemButtonProps {
   label: string;
   href: Href;
-  fadeIn?: EntryOrExitLayoutType;
 }
 
-export const AddItemButton = ({ label, href, fadeIn }: AddItemButtonProps) => {
+export const AddItemButton = ({ label, href }: AddItemButtonProps) => {
   const router = useRouter();
   
   return (
-    <Animated.View entering={fadeIn ?? FadeIn}>
+    <Animated.View entering={FadeIn}>
       <Pressable
         onPress={() => router.push(href)}
         className="rounded-lg bg-green-600 px-3 py-2 flex-row items-center gap-1"

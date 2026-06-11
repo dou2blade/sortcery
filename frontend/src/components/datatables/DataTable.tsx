@@ -3,7 +3,7 @@ import { DataTableColumn } from "@/features/ui/types";
 import { ApiResponse } from "@/utils/api";
 import { useLocalSearchParams } from "expo-router";
 import { DataTableBody, DataTableFooter, DataTableHeader, RowActionsSheet } from "@/components/datatables";
-import Animated, { EntryOrExitLayoutType, FadeIn } from "react-native-reanimated";
+import Animated, { FadeIn } from "react-native-reanimated";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useRef, useState } from "react";
 import { UseMutationResult } from "@tanstack/react-query";
@@ -12,7 +12,6 @@ interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
   data?: ApiResponse<T[]>;
   loading: boolean;
-  fadeIn?: EntryOrExitLayoutType;
   deleteQuery: UseMutationResult<ApiResponse<unknown>, Error, number, unknown>;
 }
 
@@ -20,7 +19,6 @@ const DataTable = <T,>({
   columns, 
   data,
   loading,
-  fadeIn,
   deleteQuery
 }: DataTableProps<T>) => {
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
@@ -32,7 +30,7 @@ const DataTable = <T,>({
 
   if (loading) {
     return (
-      <Animated.View className="w-full" entering={fadeIn ?? FadeIn}>
+      <Animated.View className="w-full" entering={FadeIn}>
         <DataTableHeader columns={columns} />
         <ActivityIndicator color="green" />
       </Animated.View>
@@ -41,7 +39,7 @@ const DataTable = <T,>({
 
   if (!data?.data || !data?.meta || !data.data.length) {
     return (
-      <Animated.View className="w-full" entering={fadeIn ?? FadeIn}>
+      <Animated.View className="w-full" entering={FadeIn}>
         <DataTableHeader columns={columns} />
         <Text className="w-full p-3 text-slate-500 border-x border-slate-300 text-center">
           There are no records to display
@@ -67,7 +65,7 @@ const DataTable = <T,>({
   }
 
   return (
-    <Animated.View className="w-full" entering={fadeIn ?? FadeIn}>
+    <Animated.View className="w-full" entering={FadeIn}>
       <DataTableHeader columns={columns} />
       <DataTableBody 
         data={data.data} 

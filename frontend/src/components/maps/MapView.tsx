@@ -10,6 +10,7 @@ export const MapView = ({ latitude, longitude }: {
       height="300"
       loading="lazy"
       src={src}
+      className="rounded-xl border border-slate-300"
     />
   );
 }

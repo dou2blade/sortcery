@@ -4,16 +4,15 @@ import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useRef } from "react";
 import { Pressable, PressableProps, Text } from "react-native";
-import Animated, { EntryOrExitLayoutType, FadeIn } from "react-native-reanimated";
+import Animated, { FadeIn } from "react-native-reanimated";
 
 interface SelectFilterProps extends PressableProps {
   name: string;
   options: SelectOption[];
   placeholder?: string;
-  fadeIn?: EntryOrExitLayoutType;
 }
 
-export const SelectFilter = ({ name, options, placeholder, fadeIn, ...rest }: SelectFilterProps) => {
+export const SelectFilter = ({ name, options, placeholder, ...rest }: SelectFilterProps) => {
   const router = useRouter();
   const { [name]: value } = useLocalSearchParams();
 
@@ -24,7 +23,7 @@ export const SelectFilter = ({ name, options, placeholder, fadeIn, ...rest }: Se
   const { className, ...props } = rest;
 
   return (
-    <Animated.View entering={fadeIn ?? FadeIn}>
+    <Animated.View entering={FadeIn}>
       <Pressable
         onPress={() => sheetRef.current?.present()}
         className={`

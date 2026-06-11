@@ -2,15 +2,14 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { TextInput, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Animated, { EntryOrExitLayoutType, FadeIn } from "react-native-reanimated";
+import Animated, { FadeIn } from "react-native-reanimated";
 
 interface SearchFilterProps {
   name: string;
   placeholder?: string;
-  fadeIn?: EntryOrExitLayoutType
 }
 
-export const SearchFilter = ({ name, placeholder, fadeIn }: SearchFilterProps) => {
+export const SearchFilter = ({ name, placeholder }: SearchFilterProps) => {
   const router = useRouter();
   const { [name]: queryValue = "" } = useLocalSearchParams();
 
@@ -27,7 +26,7 @@ export const SearchFilter = ({ name, placeholder, fadeIn }: SearchFilterProps) =
   }, [value]);
 
   return (
-    <Animated.View className="relative w-full" entering={fadeIn ?? FadeIn}>
+    <Animated.View className="relative w-full" entering={FadeIn}>
       <View className="absolute left-3 top-3 z-10">
         <MaterialIcons name="search" size={22} color="gray" />
       </View>

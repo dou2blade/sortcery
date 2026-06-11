@@ -1,12 +1,11 @@
 import { Text, View } from "react-native";
 import { AddItemButton } from "../buttons";
-import Animated, { EntryOrExitLayoutType, FadeIn } from "react-native-reanimated";
+import Animated, { FadeIn } from "react-native-reanimated";
 import { Href } from "expo-router";
 
 interface CmsHeaderPropsBase {
   title: string;
   subtitle: string;
-  fadeIn?: EntryOrExitLayoutType;
 }
 
 interface CmsHeaderPropsAdd extends CmsHeaderPropsBase {
@@ -23,9 +22,9 @@ type CmsHeaderProps =
   | CmsHeaderPropsAdd
   | CmsHeaderPropsNoAdd;
 
-export const CmsHeader = ({ title, subtitle, addHref, addLabel, fadeIn }: CmsHeaderProps) => {
+export const CmsHeader = ({ title, subtitle, addHref, addLabel }: CmsHeaderProps) => {
   return (
-    <Animated.View entering={fadeIn ?? FadeIn}>
+    <Animated.View entering={FadeIn}>
       <View className="w-full flex-row justify-between items-center p-2">
         <View className="flex">
           <Text className="text-3xl font-bold">{title}</Text>

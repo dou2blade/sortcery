@@ -6,6 +6,6 @@ import { Branch } from "../types";
 export const useMyBranches = () => {
   return useQuery({
     queryKey: branchKeys.my(),
-    queryFn: async () => await apiGet<Pick<Branch, "id" | "storeId" | "name" | "storeName">[]>("my/branches")
+    queryFn: async () => await apiGet<Branch[]>("my/branches")
   });
 };

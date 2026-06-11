@@ -33,7 +33,7 @@ export const AdminBrandForm = ({ brand }: AdminBrandFormProps) => {
     <ScrollView className="flex-1 m-3 gap-3">
       <CmsHeader 
         title={brand ? "Edit Brand" : "Add Brand"} 
-        subtitle={brand ? "Edit existing brand details" : "Add a new brand account" }
+        subtitle={brand ? "Edit existing brand details" : "Add a new brand" }
       />     
       <FormProvider {...formMethods}>
         <FormContainer>

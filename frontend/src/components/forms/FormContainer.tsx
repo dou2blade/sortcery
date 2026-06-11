@@ -1,13 +1,12 @@
-import Animated, { EntryOrExitLayoutType, FadeIn } from "react-native-reanimated"
+import Animated, { FadeIn } from "react-native-reanimated"
 
 interface FormContainerProps {
   children: React.ReactNode;
-  fadeIn?: EntryOrExitLayoutType;
+  
 }
 
 export const FormContainer = ({
   children,
-  fadeIn,
 }: FormContainerProps) => {
   return (
     <Animated.View
@@ -19,7 +18,7 @@ export const FormContainer = ({
         p-4
         gap-4
       "
-      entering={fadeIn ?? FadeIn}
+      entering={FadeIn}
     >
       {children}
     </Animated.View>

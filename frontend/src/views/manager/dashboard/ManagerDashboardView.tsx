@@ -1,17 +1,20 @@
 import { StatCard } from "@/components/cards";
 import { CmsCardsContainer, CmsContainer } from "@/components/containers";
 import { CmsHeader } from "@/components/headers";
+import { MapView } from "@/components/maps";
 import { useAuthStore } from "@/features/auth/stores";
 import { useBranchStats } from "@/features/branches/hooks/useBranchStats";
 import { useStaffBranchContextStore } from "@/features/ui/stores";
+import { Text, View } from "react-native";
+import Animated, { FadeIn } from "react-native-reanimated";
 
 export const ManagerDashboardView = () => {
   const { user } = useAuthStore();
-  const { branchId, name } = useStaffBranchContextStore();
+  const { branch } = useStaffBranchContextStore();
 
-  const { data: branchStats, isLoading: branchLoading } = useBranchStats(branchId);
+  const { data: branchStats, isLoading: branchLoading } = useBranchStats(branch?.id);
 
-  if (branchId === undefined) return null;
+  if (branch === undefined) return null;
   if (branchStats?.data === undefined) return null;
   if (!user) return null;
 
@@ -25,7 +28,12 @@ export const ManagerDashboardView = () => {
 
   return (
     <CmsContainer>
-      <CmsHeader title={`${name} Dashboard`} subtitle={`Welcome back, ${user?.firstName} ${user?.lastName}`} />
+      <CmsHeader title="Dashboard" subtitle={`Welcome back, ${user?.firstName} ${user?.lastName}`} />
+      <Animated.View entering={FadeIn}>
+        <Text className="text-2xl font-bold p-2">{branch.storeName} - {branch.name}</Text>
+        <MapView latitude={branch.latitude} longitude={branch.longitude} />
+        <Text className="text-xs p-2 font-bold" numberOfLines={1} ellipsizeMode="tail">{branch.address}</Text>
+      </Animated.View>
       <CmsCardsContainer title="Personnel">
         <StatCard title="Managers" value={totalManagers} loading={branchLoading} />
         <StatCard title="Retailers" value={totalRetailers} loading={branchLoading} />

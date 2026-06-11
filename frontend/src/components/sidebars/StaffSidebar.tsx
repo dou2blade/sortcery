@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Pressable, Text, View } from "react-native";
-import { NavItem, SelectOption } from "@/features/ui/types";
+import { NavItem } from "@/features/ui/types";
 import { logout } from "@/utils/auth";
 import { useStaffBranchContextStore } from "@/features/ui/stores";
 import { useEffect, useRef } from "react";
@@ -26,19 +26,17 @@ const StaffSidebar = ({
   collapsed,
   onToggle,
 }: StaffSidebarProps) => {
-  const { branchId, setBranchId, setName } = useStaffBranchContextStore();
+  const { branch, setBranch } = useStaffBranchContextStore();
   const { data: branches } = useMyBranches();
 
   useEffect(() => {
-    if (branchId !== undefined) return;
+    if (branch !== undefined) return;
 
-    const defaultId = branches?.data?.[0].id;
-    if (defaultId !== undefined) {
-      setBranchId(defaultId);
-      setName(`${branches!.data![0].storeName} - ${branches!.data![0].name}`);
+    const defaultBranch = branches?.data?.[0];
+    if (defaultBranch !== undefined) {
+      setBranch(defaultBranch);
     }
   }, [branches]);
-
 
   const pathname = usePathname();
   const router = useRouter();
@@ -96,7 +94,7 @@ const StaffSidebar = ({
               {!collapsed &&
                 <Text className="text-base text-white" numberOfLines={1} ellipsizeMode="tail">
                   {branchOptions.length 
-                    ? branchOptions.find((opt) => opt.value === branchId)?.label 
+                    ? branchOptions.find((opt) => opt.value === branch?.id)?.label ?? ""
                     : "No branches assigned"
                   }
                 </Text>
@@ -167,8 +165,8 @@ const StaffSidebar = ({
             <Pressable
               key={opt.value}
               onPress={() => {
-                setBranchId(Number(opt.value))
-                setName(opt.label);
+                const branch = branches?.data?.find((branch) => branch.id === opt.value);
+                if (branch) setBranch(branch);
                 sheetRef.current?.dismiss();
               }}
               className="py-3 border-b border-gray-200"

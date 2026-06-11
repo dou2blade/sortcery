@@ -1,7 +1,7 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Href, useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
-import Animated, { EntryOrExitLayoutType, FadeIn } from "react-native-reanimated";
+import Animated, { FadeIn } from "react-native-reanimated";
 
 interface StatCardProps {
   title: string;
@@ -9,7 +9,6 @@ interface StatCardProps {
   loading?: boolean;
   trend?: string;
   href?: Href;
-  fadeIn?: EntryOrExitLayoutType;
 }
 
 export const StatCard = ({
@@ -18,13 +17,12 @@ export const StatCard = ({
   loading = false,
   trend,
   href,
-  fadeIn
 }: StatCardProps) => {
   const router = useRouter();
 
   return (
     <Animated.View
-      entering={fadeIn ?? FadeIn}
+      entering={FadeIn}
       className="flex-1 bg-white rounded-2xl border border-slate-300"
     >
       <Pressable 

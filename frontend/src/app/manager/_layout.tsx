@@ -12,7 +12,7 @@ import { NavItem } from "@/features/ui/types";
 
 const navItems: NavItem[] = [
   { label: "Dashboard", icon: "dashboard", href: "/manager/dashboard" },
-  { label: "Branch Details", icon: "store", href: "/manager/branch" },
+  { label: "Personnel", icon: "people", href: "/manager/personnel" },
   { label: "Products", icon: "local-grocery-store", href: "/manager/products" },
   { label: "Inventory", icon: "inventory", href: "/manager/inventory" }
 ] as const;

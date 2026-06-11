@@ -5,38 +5,60 @@ import { UseMutationResult } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { FieldValues, SubmitHandler, UseFormReturn } from "react-hook-form";
 
+type CreateMutation<T extends FieldValues> =
+  UseMutationResult<ApiResponse<unknown>, Error, T>;
+
+type UpdateMutation<T extends FieldValues> =
+  UseMutationResult<ApiResponse<unknown>, Error, { id: number; payload: T }>;
+
 interface UseSubmitHandlerProps<T extends FieldValues> {
   form: UseFormReturn<T>;
-  id?: number;
   entity: string;
-  create: UseMutationResult<ApiResponse<unknown>, Error, T>;
-  update: UseMutationResult<ApiResponse<unknown>, Error, { id: number; payload: T }>;
+  id?: number;
+
+  create?: CreateMutation<T>;
+  update?: UpdateMutation<T>;
 }
 
 export const useSubmitHandler = <T extends FieldValues>({
   form,
-  id,
   entity,
+  id,
   create,
-  update
+  update,
 }: UseSubmitHandlerProps<T>): SubmitHandler<T> => {
   const router = useRouter();
 
   return async (payload) => {
     try {
-      const { errors } = id
-        ? await update.mutateAsync({ id, payload })
-        : await create.mutateAsync(payload)
+      let response: ApiResponse<unknown>;
 
-      if (errors) {
-        mapErrors(form.setError, errors);
+      if (id !== undefined) {
+        if (!update) {
+          throw new Error("Update mutation not provided");
+        }
+
+        response = await update.mutateAsync({
+          id,
+          payload,
+        });
+      } else {
+        if (!create) {
+          throw new Error("Create mutation not provided");
+        }
+
+        response = await create.mutateAsync(payload);
+      }
+
+      if (response.errors) {
+        mapErrors(form.setError, response.errors);
         return;
       }
 
-      toast.cmsSuccess(!id, entity);
+      toast.cmsSuccess(id === undefined, entity);
       router.dismiss();
     } catch {
-      toast.cmsError(!id, entity);
+      toast.cmsError(id === undefined, entity);
     }
   };
-}
+};

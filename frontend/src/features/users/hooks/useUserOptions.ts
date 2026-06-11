@@ -3,12 +3,13 @@ import { apiGet } from "@/utils/api";
 import { userKeys } from "./userKeys";
 import { UserOption } from "../types";
 
-export const useUserOptions = () => {
+export const useUserOptions = (search?: string) => {
   return useQuery({
-    queryKey: userKeys.options(),
+    queryKey: userKeys.option(search ?? ""),
+
     queryFn: async () => await apiGet<{ 
       RETAILER: UserOption[]; 
       MANAGER: UserOption[] 
-    }>("users/options")
+    }>("users/options", { search })
   });
 };

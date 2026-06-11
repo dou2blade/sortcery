@@ -56,7 +56,7 @@ export const AdminBranchForm = ({ branch }: AdminBranchFormProps) => {
     <ScrollView className="flex-1 m-3 gap-3">
       <CmsHeader 
         title={branch ? "Edit Branch" : "Add Branch"} 
-        subtitle={branch ? "Edit existing branch details" : "Add a new branch account" }
+        subtitle={branch ? "Edit existing branch details" : "Add a new branch" }
       />     
       <FormProvider {...formMethods}>
         <FormContainer>
