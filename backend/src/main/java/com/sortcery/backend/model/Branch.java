@@ -3,6 +3,8 @@ package com.sortcery.backend.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -41,6 +43,9 @@ public class Branch {
     @OneToMany(mappedBy = "branch")
     private List<UserBranch> userBranches = new ArrayList<>();
 
+    @OneToMany(mappedBy = "branch")
+    private List<BranchProductVariant> branchProductVariants = new ArrayList<>();
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -71,6 +76,7 @@ public class Branch {
     public Double getLatitude() { return latitude; }
     public Double getLongitude() { return longitude; }
     public List<UserBranch> getUserBranches() { return userBranches; }
+    public List<BranchProductVariant> getBranchProductVariants() { return branchProductVariants; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
@@ -103,5 +109,4 @@ public class Branch {
             .filter((user) -> user.getRole() == User.Role.MANAGER)
             .toList();
     }
-
 }

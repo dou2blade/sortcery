@@ -1,18 +1,22 @@
 package com.sortcery.backend.service;
 
 import com.sortcery.backend.model.Branch;
+import com.sortcery.backend.model.BranchProductVariant;
+import com.sortcery.backend.model.Product;
+import com.sortcery.backend.model.ProductVariant;
 import com.sortcery.backend.model.Store;
 import com.sortcery.backend.model.User;
 import com.sortcery.backend.model.UserBranch;
 import com.sortcery.backend.dto.branch.BranchRequestDTO;
 import com.sortcery.backend.dto.branch.BranchResponseDTO;
-
+import com.sortcery.backend.dto.branch.BranchStatsDTO;
 import com.sortcery.backend.repository.StoreRepository;
 import com.sortcery.backend.repository.UserBranchRepository;
 import com.sortcery.backend.repository.UserRepository;
 
 
 import com.sortcery.backend.repository.BranchRepository;
+import com.sortcery.backend.repository.InventoryMovementRepository;
 import com.sortcery.backend.exception.NotFoundException;
 import com.sortcery.backend.exception.ValidationException;
 
@@ -23,6 +27,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,17 +41,20 @@ public class BranchService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
     private final UserBranchRepository userBranchRepository;
+    private final InventoryMovementRepository inventoryMovementRepository;
 
     public BranchService(
         BranchRepository branchRepository,
 		StoreRepository storeRepository,
 		UserRepository userRepository,
-        UserBranchRepository userBranchRepository
+        UserBranchRepository userBranchRepository,
+        InventoryMovementRepository inventoryMovementRepository
     ) {
         this.branchRepository = branchRepository;
         this.storeRepository = storeRepository;
         this.userRepository = userRepository;
         this.userBranchRepository = userBranchRepository;
+        this.inventoryMovementRepository = inventoryMovementRepository;
     }
 
     public Page<BranchResponseDTO> findPage(
@@ -197,4 +205,35 @@ public class BranchService {
 
         return new BranchResponseDTO(deleted);
     }
+
+public BranchStatsDTO stats(Long id) {
+    Branch branch = branchRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException(Branch.class, id));
+
+    Set<Product> products = branch.getBranchProductVariants()
+        .stream()
+        .map(BranchProductVariant::getProductVariant)
+        .map(ProductVariant::getProduct)
+        .collect(Collectors.toSet());
+
+    LocalDateTime now = LocalDateTime.now();
+
+    long weeklySales = inventoryMovementRepository.sumSalesSince(
+        id,
+        now.minusWeeks(1)
+    );
+
+    long monthlySales = inventoryMovementRepository.sumSalesSince(
+        id,
+        now.minusMonths(1)
+    );
+
+    return new BranchStatsDTO(
+        branch.getManagers().size(),
+        branch.getRetailers().size(),
+        products.size(),
+        weeklySales,
+        monthlySales
+    );
+}
 }

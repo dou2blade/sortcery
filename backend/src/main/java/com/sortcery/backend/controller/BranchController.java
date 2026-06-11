@@ -72,4 +72,9 @@ public class BranchController {
     public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.of(branchService.delete(id)));
     }
+
+    @GetMapping(path="/{id}/stats")
+    public ResponseEntity<ApiResponse> stats(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.of(branchService.stats(id)));
+    }
 }
