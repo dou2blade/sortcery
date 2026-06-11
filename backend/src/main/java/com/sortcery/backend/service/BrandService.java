@@ -1,10 +1,16 @@
 package com.sortcery.backend.service;
 
 import com.sortcery.backend.model.Brand;
+import com.sortcery.backend.dto.brand.BrandOptionDTO;
 import com.sortcery.backend.dto.brand.BrandRequestDTO;
 import com.sortcery.backend.dto.brand.BrandResponseDTO;
 import com.sortcery.backend.repository.BrandRepository;
 import com.sortcery.backend.exception.NotFoundException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -16,10 +22,32 @@ public class BrandService {
         this.brandRepository = brandRepository;
     }
 
-    public List<BrandResponseDTO> findAll() {
+    public Page<BrandResponseDTO> findPage(
+        int page,
+        int size,
+        String search,
+        Sort sort
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        Specification<Brand> spec = (root, query, cb) -> cb.conjunction();
+
+        if (search != null && !search.isBlank()) {
+            String term = "%" + search.toLowerCase() + "%";
+            spec = spec.and((root, query, cb) -> (
+                cb.like(cb.lower(root.get("name")), term)
+            ));
+        }
+
+        return brandRepository
+            .findAll(spec, pageRequest)
+            .map(BrandResponseDTO::new);
+    }
+
+    public List<BrandOptionDTO> findOptions() {
         return brandRepository.findAll()
             .stream()
-            .map((brand) -> new BrandResponseDTO(brand))
+            .map(BrandOptionDTO::new)
             .toList();
     }
 
