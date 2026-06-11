@@ -4,7 +4,7 @@ import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { SelectOption } from "@/features/ui/types";
-import { useLocalSearchParams } from "expo-router";
+import { Href, useLocalSearchParams, useRouter } from "expo-router";
 import { FormLabel } from "./FormLabel";
 import { FormFeedback } from "./FormFeedback";
 
@@ -14,6 +14,7 @@ interface FormListProps<T extends FieldValues> {
   options: SelectOption[];
   optional?: boolean;
   readOnly?: boolean;
+  href: Href;
 }
 
 export const FormList = <T extends FieldValues>({
@@ -21,8 +22,11 @@ export const FormList = <T extends FieldValues>({
   label,
   options,
   optional,
-  readOnly
+  readOnly,
+  href
 }: FormListProps<T>) => {
+  const router = useRouter();
+
   const { view } = useLocalSearchParams();
   const [search, setSearch] = useState("");
 
@@ -94,16 +98,24 @@ export const FormList = <T extends FieldValues>({
                       {options.find((opt) => opt.value === v)?.label}
                     </Text>
                   </View>
-                  <View style={{ flex: 1, padding: 12, minWidth: 0 }} className="items-end justify-center">
-                    <Pressable
-                      onPress={() => {
-                        const newValue = [...value];
-                        newValue.splice(idx, 1);
-                        onChange(newValue);
-                      }}
-                    >
-                      <MaterialIcons name="highlight-remove" className="text-red-500" size={14}/>
-                    </Pressable>
+                  <View style={{ flex: 1, padding: 12, minWidth: 0 }} className="items-center justify-end flex-row gap-2">
+                    {(!!view || readOnly) &&
+                      <Pressable onPress={() => router.push(`${href}/${v}`)}>
+                        <MaterialIcons name="arrow-forward" className="text-black" size={14}/>
+                      </Pressable>
+                    }
+
+                    {!view && !readOnly &&
+                      <Pressable
+                        onPress={() => {
+                          const newValue = [...value];
+                          newValue.splice(idx, 1);
+                          onChange(newValue);
+                        }}
+                      >
+                        <MaterialIcons name="highlight-remove" className="text-red-500" size={14}/>
+                      </Pressable>
+                    }
                   </View>
                 </View>
               )) }

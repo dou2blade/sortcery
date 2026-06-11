@@ -77,8 +77,8 @@ export const AdminBranchForm = ({ branch }: AdminBranchFormProps) => {
             </View>
           </FormRow>
           <MapView latitude={latitude ?? 0} longitude={longitude ?? 0} />
-          <FormGroup type="list" label="Managers" name="managerIds" options={managerOptions} optional />
-          <FormGroup type="list" label="Retailers" name="retailerIds" options={retailerOptions} optional />
+          <FormGroup type="list" label="Managers" name="managerIds" options={managerOptions} href="/admin/users" optional />
+          <FormGroup type="list" label="Retailers" name="retailerIds" options={retailerOptions} href="/admin/users" optional />
 
           <FormButtons onSubmit={onSubmit} />
         </FormContainer>

@@ -34,6 +34,7 @@ interface ListFieldProps<T extends FieldValues> extends BaseFormGroupProps {
   type: "list";
   name: Path<T>;
   options: SelectOption[];
+  href: Href;
   optional?: boolean;
   readOnly?: boolean;
 }
@@ -83,6 +84,7 @@ const FormGroup = <T extends FieldValues>(props: FormGroupProps<T>) => {
         options={props.options}
         optional={props.optional}
         label={renderLabel}
+        href={props.href}
       />
       break;
     case "list-readonly":
