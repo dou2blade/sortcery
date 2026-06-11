@@ -63,9 +63,33 @@ export const AdminUsersListView = () => {
       </CmsFiltersContainer>
 
       <CmsCardsContainer>
-        <StatCard title="Managers" value={String(stats?.data?.byRole.MANAGER ?? 0)} loading={statsLoading} />
-        <StatCard title="Retailers" value={String(stats?.data?.byRole.RETAILER ?? 0)} loading={statsLoading} />
-        <StatCard title="Consumers" value={String(stats?.data?.byRole.CONSUMER ?? 0)} loading={statsLoading} />
+        <StatCard 
+          title="Managers"
+          value={String(stats?.data?.byRole.MANAGER ?? 0)}
+          loading={statsLoading} 
+          href={role !== "MANAGER"
+            ? "/admin/users?role=MANAGER"
+            : undefined
+          } 
+        />
+        <StatCard 
+          title="Retailers"
+          value={String(stats?.data?.byRole.RETAILER ?? 0)}
+          loading={statsLoading}
+          href={role !== "RETAILER" 
+            ? "/admin/users?role=RETAILER" 
+            : undefined
+          } 
+        />
+        <StatCard
+          title="Consumers"
+          value={String(stats?.data?.byRole.CONSUMER ?? 0)}
+          loading={statsLoading}
+          href={role !== "CONSUMER"
+            ? "/admin/users?role=CONSUMER"
+            : undefined
+          }
+        />
       </CmsCardsContainer>
       <DataTable columns={columns} data={users} loading={usersLoading} deleteQuery={deleteUser} />
     </CmsContainer>

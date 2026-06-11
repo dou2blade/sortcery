@@ -1,11 +1,7 @@
-import { Text, View } from "react-native"
+import { AdminDashboardView } from "@/views/admin/dashboard";
 
 const AdminDashboardPage = () => {
-  return (
-    <View>
-      <Text>HIIII</Text>
-    </View>
-  )
+  return <AdminDashboardView />
 }
 
 export default AdminDashboardPage;
