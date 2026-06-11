@@ -68,6 +68,14 @@ public class BranchController {
         return ResponseEntity.ok(ApiResponse.of(branchService.update(id, request)));
     }
 
+    @PutMapping(path="/{id}/personnel")
+    public ResponseEntity<ApiResponse> updateUsers(
+        @PathVariable Long id,
+        @RequestBody @Validated(Update.class) BranchRequestDTO request
+    ) {
+        return ResponseEntity.ok(ApiResponse.of(branchService.updateUsers(id, request)));
+    }
+
     @DeleteMapping(path="/{id}")
     public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.of(branchService.delete(id)));

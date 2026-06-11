@@ -144,6 +144,32 @@ public class BranchService {
         return new BranchResponseDTO(saved);
     }
 
+    private void syncUsers(Branch branch, Set<Long> userIds) {
+        List<User> targetUsers = userRepository.findAllById(userIds);
+        if (targetUsers.size() != userIds.size()) {
+            throw new ValidationException(Map.of(
+                "managerIds", "One or more users do not exist",
+                "retailerIds", "One or more users do not exist"
+            ));
+        }
+
+        List<UserBranch> existingRelations = userBranchRepository.findByBranchId(branch.getId());
+        Set<Long> existingUserIds = existingRelations.stream()
+            .map((rel) -> rel.getUser().getId())
+            .collect(Collectors.toSet());
+
+        List<UserBranch> additions = targetUsers.stream()
+            .filter((user) -> !existingUserIds.contains(user.getId()))
+            .map((user) -> new UserBranch(user, branch))
+            .toList();
+        List<UserBranch> removals = existingRelations.stream()
+            .filter((rel) -> !userIds.contains(rel.getUser().getId()))
+            .toList();
+
+        userBranchRepository.saveAll(additions);
+        userBranchRepository.deleteAll(removals);
+    }
+
     public BranchResponseDTO update(Long id, BranchRequestDTO request) {
         Branch existing = branchRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(Branch.class, id));
@@ -166,31 +192,21 @@ public class BranchService {
         Set<Long> userIds = new HashSet<>(request.getManagerIds());
         userIds.addAll(request.getRetailerIds());
 
-        if (!userIds.isEmpty()) {
-            List<User> targetUsers = userRepository.findAllById(userIds);
-            if (targetUsers.size() != userIds.size()) {
-                throw new ValidationException(Map.of(
-                    "managerIds", "One or more users do not exist",
-                    "retailerIds", "One or more users do not exist"
-                ));
-            }
+        if (!userIds.isEmpty()) syncUsers(existing, userIds);
 
-            List<UserBranch> existingRelations = userBranchRepository.findByBranchId(id);
-            Set<Long> existingUserIds = existingRelations.stream()
-                .map((rel) -> rel.getUser().getId())
-                .collect(Collectors.toSet());
+        Branch saved = branchRepository.save(existing);
 
-            List<UserBranch> additions = targetUsers.stream()
-                .filter((user) -> !existingUserIds.contains(user.getId()))
-                .map((user) -> new UserBranch(user, existing))
-                .toList();
-            List<UserBranch> removals = existingRelations.stream()
-                .filter((rel) -> !userIds.contains(rel.getUser().getId()))
-                .toList();
+        return new BranchResponseDTO(saved);
+    }
 
-            userBranchRepository.saveAll(additions);
-            userBranchRepository.deleteAll(removals);
-        }
+    public BranchResponseDTO updateUsers(Long id, BranchRequestDTO request) {
+        Branch existing = branchRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Branch.class, id));
+
+        Set<Long> userIds = new HashSet<>(request.getManagerIds());
+        userIds.addAll(request.getRetailerIds());
+
+        if (!userIds.isEmpty()) syncUsers(existing, userIds);
 
         Branch saved = branchRepository.save(existing);
 
@@ -206,34 +222,34 @@ public class BranchService {
         return new BranchResponseDTO(deleted);
     }
 
-public BranchStatsDTO stats(Long id) {
-    Branch branch = branchRepository.findById(id)
-        .orElseThrow(() -> new NotFoundException(Branch.class, id));
+    public BranchStatsDTO stats(Long id) {
+        Branch branch = branchRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(Branch.class, id));
 
-    Set<Product> products = branch.getBranchProductVariants()
-        .stream()
-        .map(BranchProductVariant::getProductVariant)
-        .map(ProductVariant::getProduct)
-        .collect(Collectors.toSet());
+        Set<Product> products = branch.getBranchProductVariants()
+            .stream()
+            .map(BranchProductVariant::getProductVariant)
+            .map(ProductVariant::getProduct)
+            .collect(Collectors.toSet());
 
-    LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
 
-    long weeklySales = inventoryMovementRepository.sumSalesSince(
-        id,
-        now.minusWeeks(1)
-    );
+        long weeklySales = inventoryMovementRepository.sumSalesSince(
+            id,
+            now.minusWeeks(1)
+        );
 
-    long monthlySales = inventoryMovementRepository.sumSalesSince(
-        id,
-        now.minusMonths(1)
-    );
+        long monthlySales = inventoryMovementRepository.sumSalesSince(
+            id,
+            now.minusMonths(1)
+        );
 
-    return new BranchStatsDTO(
-        branch.getManagers().size(),
-        branch.getRetailers().size(),
-        products.size(),
-        weeklySales,
-        monthlySales
-    );
-}
+        return new BranchStatsDTO(
+            branch.getManagers().size(),
+            branch.getRetailers().size(),
+            products.size(),
+            weeklySales,
+            monthlySales
+        );
+    }
 }
