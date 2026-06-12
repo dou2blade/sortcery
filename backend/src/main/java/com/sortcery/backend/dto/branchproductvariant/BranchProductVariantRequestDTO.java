@@ -11,9 +11,6 @@ import jakarta.validation.constraints.NotNull;
 public class BranchProductVariantRequestDTO {
 
     @NotNull(groups = Create.class)
-    private Long branchId;
-
-    @NotNull(groups = Create.class)
     private Long productVariantId;
 
     @NotBlank(groups=Create.class)
@@ -25,13 +22,11 @@ public class BranchProductVariantRequestDTO {
     @Min(value=0)
     private Integer quantity;
 
-    public Long getBranchId() { return branchId; }
     public Long getProductVariantId() { return productVariantId; }
     public String getSku() { return sku; }
     public BigDecimal getPrice() { return price; }
     public Integer getQuantity() { return quantity; }
 
-    public void setBranchId(Long branchId) { this.branchId = branchId; }
     public void setProductVariantId(Long productVariantId) { this.productVariantId = productVariantId; }
     public void setSku(String sku) { this.sku = sku; }
     public void setPrice(BigDecimal price) { this.price = price; }

@@ -75,15 +75,15 @@ public class BranchProductVariantService {
             .map(BranchProductVariantResponseDTO::new);
     }
 
-    public BranchProductVariantResponseDTO findById(Long id) {
+    public BranchProductVariantResponseDTO findById(Long id, Long branchId) {
         return branchProductVariantRepository.findById(id)
             .map((product) -> new BranchProductVariantResponseDTO(product))
             .orElseThrow(() -> new NotFoundException(Product.class, id));
     }
 
-    public BranchProductVariantResponseDTO save(BranchProductVariantRequestDTO request) {
-        Branch branch = branchRepository.findById(request.getBranchId())
-            .orElseThrow(() -> new NotFoundException(Branch.class, request.getBranchId()));
+    public BranchProductVariantResponseDTO save(Long branchId, BranchProductVariantRequestDTO request) {
+        Branch branch = branchRepository.findById(branchId)
+            .orElseThrow(() -> new NotFoundException(Branch.class, branchId));
 
         ProductVariant productVariant = productVariantRepository.findById(request.getProductVariantId())
             .orElseThrow(() -> new NotFoundException(ProductVariant.class, request.getProductVariantId()));
@@ -99,15 +99,9 @@ public class BranchProductVariantService {
         return new BranchProductVariantResponseDTO(saved);
     }
 
-    public BranchProductVariantResponseDTO update(Long id, BranchProductVariantRequestDTO request) {
+    public BranchProductVariantResponseDTO update(Long id, Long branchId, BranchProductVariantRequestDTO request) {
         BranchProductVariant existing = branchProductVariantRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(BranchProductVariant.class, id));
-
-        if (request.getBranchId() != null) {
-            Branch branch = branchRepository.findById(request.getBranchId())
-                .orElseThrow(() -> new NotFoundException(Branch.class, request.getBranchId()));
-            existing.setBranch(branch);
-        }
 
         if (request.getProductVariantId() != null) {
             ProductVariant productVariant = productVariantRepository.findById(request.getProductVariantId())
@@ -124,7 +118,7 @@ public class BranchProductVariantService {
         return new BranchProductVariantResponseDTO(saved);
     }
 
-    public BranchProductVariantResponseDTO delete(Long id) {
+    public BranchProductVariantResponseDTO delete(Long id, Long branchId) {
         BranchProductVariant deleted = branchProductVariantRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(BranchProductVariant.class, id));
 

@@ -51,31 +51,36 @@ public class BranchProductVariantController {
     }
 
     @GetMapping(path="/{id}")
-    public ResponseEntity<BranchProductVariantResponseDTO> findById(
+    public ResponseEntity<ApiResponse> findById(
         @PathVariable Long id,
-        @RequestParam(required = true) Long branchId
+        @RequestParam(required = true) Long branch
     ) {
-        return ResponseEntity.ok(branchProductVariantService.findById(id));
+        return ResponseEntity.ok(ApiResponse.of(branchProductVariantService.findById(id, branch)));
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse> save(
-        @RequestBody @Validated(Create.class) BranchProductVariantRequestDTO request
+        @RequestBody @Validated(Create.class) BranchProductVariantRequestDTO request,
+        @RequestParam(required = true) Long branch
     ) {
-        BranchProductVariantResponseDTO savedBranchProductVariant = branchProductVariantService.save(request);
+        BranchProductVariantResponseDTO savedBranchProductVariant = branchProductVariantService.save(branch, request);
         return ResponseEntity.status(201).body(ApiResponse.of(savedBranchProductVariant));
     }
 
     @PutMapping(path="/{id}")
     public ResponseEntity<ApiResponse> update(
         @PathVariable Long id,
-        @RequestBody @Validated(Update.class) BranchProductVariantRequestDTO request
+        @RequestBody @Validated(Update.class) BranchProductVariantRequestDTO request,
+        @RequestParam(required = true) Long branch
     ) {
-        return ResponseEntity.ok(ApiResponse.of(branchProductVariantService.update(id, request)));
+        return ResponseEntity.ok(ApiResponse.of(branchProductVariantService.update(id, branch, request)));
     }
 
     @DeleteMapping(path="/{id}")
-    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.of(branchProductVariantService.delete(id)));
+    public ResponseEntity<ApiResponse> delete(
+        @PathVariable Long id,
+        @RequestParam(required = true) Long branch
+    ) {
+        return ResponseEntity.ok(ApiResponse.of(branchProductVariantService.delete(id, branch)));
     }
 }
