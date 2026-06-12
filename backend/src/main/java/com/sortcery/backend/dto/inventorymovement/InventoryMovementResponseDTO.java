@@ -69,6 +69,6 @@ public class InventoryMovementResponseDTO {
     public String getNotes() { return notes; }
 
     public Long getCreatedById() { return createdById; }
-    private String getCreatedByEmail() { return createdByEmail; }
+    public String getCreatedByEmail() { return createdByEmail; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 }

@@ -3,23 +3,22 @@ package com.sortcery.backend.dto.inventorymovement;
 import com.sortcery.backend.model.InventoryMovement;
 import com.sortcery.backend.validation.Create;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class InventoryMovementRequestDTO {
 
-    @NotBlank(groups=Create.class)
+    @NotNull(groups=Create.class)
     private Long branchProductVariantId;
 
-    @NotBlank(groups=Create.class)
+    @NotNull(groups=Create.class)
     private InventoryMovement.Type type;
 
-    @NotBlank(groups=Create.class)
+    @NotNull(groups=Create.class)
     private Integer quantityChange;
 
-    @NotBlank(groups=Create.class)
     private String notes;
 
-    @NotBlank(groups=Create.class)
+    @NotNull(groups=Create.class)
     private Long createdById;
 
     public Long getBranchProductVariantId() { return branchProductVariantId; }
