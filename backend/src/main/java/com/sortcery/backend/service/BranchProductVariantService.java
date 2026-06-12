@@ -1,11 +1,14 @@
 package com.sortcery.backend.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.sortcery.backend.dto.branchproductvariant.BranchProductVariantOptionDTO;
 import com.sortcery.backend.dto.branchproductvariant.BranchProductVariantRequestDTO;
 import com.sortcery.backend.dto.branchproductvariant.BranchProductVariantResponseDTO;
 import com.sortcery.backend.exception.NotFoundException;
@@ -73,6 +76,20 @@ public class BranchProductVariantService {
         return branchProductVariantRepository
             .findAll(spec, pageRequest)
             .map(BranchProductVariantResponseDTO::new);
+    }
+
+    public List<BranchProductVariantOptionDTO> findOptions(Long branchId) {
+        Specification<BranchProductVariant> spec = (root, query, cb) -> (
+            cb.equal(
+                root.get("branch").get("id"),
+                branchId
+            )
+        );
+
+        return branchProductVariantRepository.findAll(spec)
+            .stream()
+            .map(BranchProductVariantOptionDTO::new)
+            .toList();
     }
 
     public BranchProductVariantResponseDTO findById(Long id, Long branchId) {

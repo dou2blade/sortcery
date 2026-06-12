@@ -50,6 +50,13 @@ public class BranchProductVariantController {
         return ResponseEntity.ok(ApiResponse.of(branchProductVariantsPage));
     }
 
+    @GetMapping(path="/options")
+    public ResponseEntity<ApiResponse> findOptions(
+        @RequestParam(required = true) Long branch
+    ) {
+        return ResponseEntity.ok(ApiResponse.of(branchProductVariantService.findOptions(branch)));
+    }
+
     @GetMapping(path="/{id}")
     public ResponseEntity<ApiResponse> findById(
         @PathVariable Long id,
