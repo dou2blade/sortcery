@@ -11,13 +11,11 @@ import StaffSidebar from "@/components/sidebars/StaffSidebar";
 import { NavItem } from "@/features/ui/types";
 
 const navItems: NavItem[] = [
-  { label: "Dashboard", icon: "dashboard", href: "/manager/dashboard" },
-  { label: "Personnel", icon: "people", href: "/manager/personnel" },
-  { label: "Product Catalog", icon: "local-grocery-store", href: "/manager/product-catalog" },
-  { label: "Inventory", icon: "inventory", href: "/manager/inventory" }
+  { label: "Dashboard", icon: "dashboard", href: "/retailer/dashboard" },
+  { label: "Inventory", icon: "inventory", href: "/retailer/inventory" }
 ] as const;
 
-const ManagerLayout = () => {
+const RetailerLayout = () => {
   const { width } = useWindowDimensions();
 
   const isMobile = width < 768;
@@ -34,7 +32,7 @@ const ManagerLayout = () => {
         onClose={() => setDrawerOpen(false)}
         drawerStyle={{ width: 256 }}
         renderDrawerContent={() => (
-          <StaffSidebar title="Sortcery Manager" navItems={navItems} collapsed={false} onToggle={() => setDrawerOpen(!drawerOpen)} />
+          <StaffSidebar title="Sortcery Retailer" navItems={navItems} collapsed={false} onToggle={() => setDrawerOpen(!drawerOpen)} />
         )}
       >
         <View className="flex-1">
@@ -63,7 +61,7 @@ const ManagerLayout = () => {
     return (
       <View className="flex-1 flex-row">
         <StaffSidebar
-          title="Sortcery Manager"
+          title="Sortcery Retailer"
           navItems={navItems}
           collapsed={collapsed}
           onToggle={() =>
@@ -91,7 +89,7 @@ const ManagerLayout = () => {
 
   return (
     <View className="flex-1 flex-row">
-      <StaffSidebar title="Sortcery Manager" navItems={navItems} collapsed={false} />
+      <StaffSidebar title="Sortcery Retailer" navItems={navItems} collapsed={false} />
 
       <View className="flex-1">
         <Stack
@@ -104,4 +102,4 @@ const ManagerLayout = () => {
   );
 }
 
-export default ManagerLayout;
+export default RetailerLayout;
