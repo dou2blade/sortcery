@@ -1,7 +1,9 @@
 package com.sortcery.backend.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.sortcery.backend.dto.branchproductvariant.BranchProductVariantRequestDTO;
@@ -31,11 +33,46 @@ public class BranchProductVariantService {
         this.branchRepository = branchRepository;
     }
 
-    public List<BranchProductVariantResponseDTO> findAll() {
-        return branchProductVariantRepository.findAll()
-            .stream()
-            .map((product) -> new BranchProductVariantResponseDTO(product))
-            .toList();
+    public Page<BranchProductVariantResponseDTO> findPage(
+        int page,
+        int size,
+        String search,
+        Long productId,
+        Long branchId,
+        Sort sort
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        Specification<BranchProductVariant> spec = (root, query, cb) -> (
+            cb.equal(
+                root.get("branch").get("id"),
+                branchId
+            )
+        );
+
+        if (productId != null) {
+            spec = spec.and((root, query, cb) -> (
+                cb.equal(
+                    root.get("productVariant").get("product").get("id"),
+                    productId
+                )
+            ));
+        }
+
+        if (search != null && !search.isBlank()) {
+            String term = "%" + search.toLowerCase() + "%";
+            spec = spec.and((root, query, cb) -> (
+                cb.or(
+                    cb.like(cb.lower(root.get("productVariant").get("product").get("name")), term),
+                    cb.like(cb.lower(root.get("productVariant").get("name")), term),
+                    cb.like(cb.lower(root.get("sku")), term)
+                )
+            ));
+        }
+
+        return branchProductVariantRepository
+            .findAll(spec, pageRequest)
+            .map(BranchProductVariantResponseDTO::new);
     }
 
     public BranchProductVariantResponseDTO findById(Long id) {
