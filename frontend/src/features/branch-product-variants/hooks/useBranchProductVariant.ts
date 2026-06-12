@@ -5,7 +5,7 @@ import { BranchProductVariant } from "../types";
 
 export const useBranchProductVariant = (id: number, branch?: number) => {
   return useQuery({
-    queryKey: branchProductVariantKeys.detail(id),
+    queryKey: branchProductVariantKeys.detail(branch!, id),
     queryFn: async () => await apiGet<BranchProductVariant>(`branch-product-variants/${id}`, { branch }),
     enabled: branch !== undefined
   });

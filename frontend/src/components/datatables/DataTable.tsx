@@ -12,14 +12,16 @@ interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
   data?: ApiResponse<T[]>;
   loading: boolean;
-  deleteQuery: UseMutationResult<ApiResponse<unknown>, Error, number, unknown>;
+  deleteQuery?: UseMutationResult<ApiResponse<unknown>, Error, number, unknown>;
+  disableEdit?: boolean;
 }
 
 const DataTable = <T,>({ 
   columns, 
   data,
   loading,
-  deleteQuery
+  deleteQuery,
+  disableEdit
 }: DataTableProps<T>) => {
   const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
   const { page = "0" } = useLocalSearchParams<{
@@ -60,7 +62,7 @@ const DataTable = <T,>({
   }
 
   const handleDelete = async (id: number) => {
-    await deleteQuery.mutateAsync(id);
+    await deleteQuery?.mutateAsync(id);
     sheetRef.current?.dismiss();
   }
 
@@ -84,6 +86,8 @@ const DataTable = <T,>({
         id={selectedId} 
         handleClose={() => sheetRef.current?.dismiss()}
         handleDelete={handleDelete}
+        disableDelete={!!deleteQuery}
+        disableEdit={!!disableEdit}
       />
     </Animated.View>
   );

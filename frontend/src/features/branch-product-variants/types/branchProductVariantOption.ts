@@ -1,4 +1,6 @@
 export interface BranchProductVariantOption {
   id: number;
-  name: string;
+  productName: string;
+  productVariantName: string;
+  sku: string;
 }

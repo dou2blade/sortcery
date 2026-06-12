@@ -3,9 +3,10 @@ import { apiGet } from "@/utils/api";
 import { branchProductVariantKeys } from "./branchProductVariantKeys";
 import { BranchProductVariantOption } from "../types";
 
-export const useBranchProductVariantOptions = () => {
+export const useBranchProductVariantOptions = (branch?: number) => {
   return useQuery({
-    queryKey: branchProductVariantKeys.options(),
-    queryFn: async () => await apiGet<BranchProductVariantOption[]>("branch-product-variants/options")
+    queryKey: branchProductVariantKeys.options(branch!),
+    queryFn: async () => await apiGet<BranchProductVariantOption[]>("branch-product-variants/options", { branch }),
+    enabled: branch !== undefined
   });
 };

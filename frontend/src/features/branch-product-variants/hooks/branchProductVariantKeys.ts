@@ -6,7 +6,7 @@ export const branchProductVariantKeys = {
   lists: () => [...branchProductVariantKeys.all, "list"] as const,
   list: (params: BranchProductVariantQueryParams) => [...branchProductVariantKeys.lists(), params] as const,
 
-  detail: (id: number) => [...branchProductVariantKeys.all, "detail", id] as const,
+  detail: (branch: number, id: number) => [...branchProductVariantKeys.all, "detail", branch, id] as const,
 
-  options: () => [...branchProductVariantKeys.all, "options"] as const,
+  options: (branch: number) => [...branchProductVariantKeys.all, "options", branch] as const,
 };

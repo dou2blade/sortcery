@@ -8,10 +8,12 @@ interface RowActionsSheetProps {
   id?: number;
   handleClose: () => void;
   handleDelete: (id: number) => void;
+  disableDelete: boolean;
+  disableEdit: boolean;
 }
 
 export const RowActionsSheet = forwardRef<BottomSheetModal, RowActionsSheetProps>((
-  { id, handleClose, handleDelete },
+  { id, handleClose, handleDelete, disableEdit, disableDelete },
   ref
 ) => {
   const router = useRouter();
@@ -36,21 +38,25 @@ export const RowActionsSheet = forwardRef<BottomSheetModal, RowActionsSheetProps
           <Text>View</Text>
         </Pressable>
 
-        <Pressable
-          className="py-3"
-          onPress={() => handleNav(false)}
-        >
-          <Text>Edit</Text>
-        </Pressable>
+        {!disableEdit &&
+          <Pressable
+            className="py-3"
+            onPress={() => handleNav(false)}
+          >
+            <Text>Edit</Text>
+          </Pressable>
+        }
 
-        <Pressable
-          className="py-3"
-          onPress={() => id !== undefined ? handleDelete(id) : null}
-        >
-          <Text className="text-red-500">
-            Delete
-          </Text>
-        </Pressable>
+        {!disableDelete &&
+          <Pressable
+            className="py-3"
+            onPress={() => id !== undefined ? handleDelete(id) : null}
+          >
+            <Text className="text-red-500">
+              Delete
+            </Text>
+          </Pressable>
+        }
       </BottomSheetView>
     </BottomSheetModal>
   );
