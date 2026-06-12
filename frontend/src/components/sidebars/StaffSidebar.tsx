@@ -16,12 +16,14 @@ import { useMyBranches } from "@/features/branches/hooks";
 import { toOptions } from "@/utils/forms";
 
 interface StaffSidebarProps {
+  title: string;
   navItems: NavItem[];
   collapsed: boolean;
   onToggle?: () => void;
 }
 
 const StaffSidebar = ({
+  title,
   navItems,
   collapsed,
   onToggle,
@@ -74,7 +76,7 @@ const StaffSidebar = ({
                   numberOfLines={1}
                   className="font-bold text-lg text-white"
                 >
-                  Sortcery Manager
+                  {title}
                 </Animated.Text>
               )}
             </View>
