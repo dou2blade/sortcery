@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
 import { DataTableColumn } from "@/features/ui/types";
-import { Brand } from "@/features/brands/types";
-import { useDeleteBrand, useBrands } from "@/features/brands/hooks";
+import { ProductVariant } from "@/features/product-variants/types";
+import { useDeleteProductVariant, useProductVariants } from "@/features/product-variants/hooks";
 import DataTable from "@/components/datatables";
 import { SearchFilter } from "@/components/filters";
 import { StatCard } from "@/components/cards";
@@ -9,12 +9,12 @@ import { CmsHeader } from "@/components/headers";
 import { CmsCardsContainer, CmsContainer, CmsFilterContainer, CmsFiltersContainer } from "@/components/containers";
 import { useProductStats } from "@/features/products/hooks";
 
-const columns: DataTableColumn<Brand>[] = [
-  { name: "Name", selector: (row) => row.name },
-  { name: "Products", selector: (row) => row.products.length.toString() }
+const columns: DataTableColumn<ProductVariant>[] = [
+  { name: "Product", selector: (row) => row.productName },
+  { name: "Variant", selector: (row) => row.name }
 ];
 
-export const AdminBrandsListView = () => {
+export const AdminProductVariantsListView = () => {
   const { 
     page = "0",
     search
@@ -23,17 +23,17 @@ export const AdminBrandsListView = () => {
     search: string;
   }>();
 
-  const { data: brands, isLoading: brandsLoading } = useBrands({ page: Number(page), search });
+  const { data: productVariants, isLoading: productVariantsLoading } = useProductVariants({ page: Number(page), search });
   const { data: stats, isLoading: statsLoading } = useProductStats();
-  const deleteBrand = useDeleteBrand();
+  const deleteProductVariant = useDeleteProductVariant();
 
   return (
     <CmsContainer>
       <CmsHeader 
-        title="Brands" 
-        subtitle="Manage brands" 
-        addLabel="Add Brand" 
-        addHref="/admin/products/brands/create" 
+        title="Product Variants" 
+        subtitle="Manage Product Variants" 
+        addLabel="Add Product Variant" 
+        addHref="/admin/products/product-variants/create" 
       />
       <CmsFiltersContainer>
         <CmsFilterContainer flex={3}>
@@ -49,11 +49,11 @@ export const AdminBrandsListView = () => {
         <StatCard title="Variants" value={String(stats?.data?.totalProductVariants ?? 0)} loading={statsLoading} href="/admin/products/product-variants" />
       </CmsCardsContainer>
       <CmsCardsContainer>
-        <StatCard title="Brands" value={String(stats?.data?.totalBrands ?? 0)} loading={statsLoading} />
+        <StatCard title="Brands" value={String(stats?.data?.totalBrands ?? 0)} loading={statsLoading} href="/admin/products/brands" />
         <StatCard title="Categories" value={String(stats?.data?.totalProductCategories ?? 0)} loading={statsLoading} href="/admin/products/product-categories" />
       </CmsCardsContainer>
 
-      <DataTable columns={columns} data={brands} loading={brandsLoading} deleteQuery={deleteBrand} />
+      <DataTable columns={columns} data={productVariants} loading={productVariantsLoading} deleteQuery={deleteProductVariant} />
     </CmsContainer>
   );
 }

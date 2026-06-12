@@ -46,9 +46,13 @@ export const AdminProductsListView = () => {
 
       <CmsCardsContainer>
         <StatCard title="Products" value={String(stats?.data?.totalProducts ?? 0)} loading={statsLoading} />
+        <StatCard title="Variants" value={String(stats?.data?.totalProductVariants ?? 0)} loading={statsLoading} href="/admin/products/product-variants" />
+      </CmsCardsContainer>
+      <CmsCardsContainer>
         <StatCard title="Brands" value={String(stats?.data?.totalBrands ?? 0)} loading={statsLoading} href="/admin/products/brands" />
         <StatCard title="Categories" value={String(stats?.data?.totalProductCategories ?? 0)} loading={statsLoading} href="/admin/products/product-categories" />
       </CmsCardsContainer>
+
       <DataTable columns={columns} data={products} loading={productsLoading} deleteQuery={deleteProduct} />
     </CmsContainer>
   );

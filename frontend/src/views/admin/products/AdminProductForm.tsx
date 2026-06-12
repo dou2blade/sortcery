@@ -32,6 +32,7 @@ export const AdminProductForm = ({ product }: AdminProductFormProps) => {
   const { data: brands } = useBrandOptions();
   const { data: productCategories } = useProductCategoryOptions();
 
+  const variantValues = toOptions(product?.productVariants ?? [], (row) => row.name, (row) => row.id);
   const brandOptions = toOptions(brands?.data ?? [], (row) => row.name, (row) => row.id);
   const productCategoryOptions = toOptions(productCategories?.data ?? [], (row) => row.name, (row) => row.id);
 
@@ -58,6 +59,13 @@ export const AdminProductForm = ({ product }: AdminProductFormProps) => {
             placeholder="Select a category"
           />
           <FormGroup name="name" placeholder="Product name" />
+
+          <FormGroup
+            type="list-readonly"
+            values={variantValues}  
+            label="Product Variants"
+            href="/admin/products/product-variants"
+          />
 
           <FormButtons onSubmit={onSubmit} />
         </FormContainer>
