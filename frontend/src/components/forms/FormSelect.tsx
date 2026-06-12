@@ -57,47 +57,47 @@ export const FormSelect = <T extends FieldValues>({
             index={0}
           >
             <BottomSheetView className="p-4">
-            <View className="relative w-full mb-3">
-              <View className="absolute left-3 top-3 z-10">
-                <MaterialIcons name="search" size={22} color="gray" />
+              <View className="relative w-full mb-3">
+                <View className="absolute left-3 top-3 z-10">
+                  <MaterialIcons name="search" size={22} color="gray" />
+                </View>
+
+                <TextInput
+                  value={search}
+                  onChangeText={setSearch}
+                  placeholder="Search..."
+                  className={`
+                    w-full
+                    rounded-xl
+                    border
+                    bg-white
+                    pl-10
+                    pr-4
+                    py-3
+                    text-base
+                    border-gray-300
+                    ${search ? "" : "text-slate-500"}
+                  `}
+                />
               </View>
 
-              <TextInput
-                value={search}
-                onChangeText={setSearch}
-                placeholder="Search..."
-                className={`
-                  w-full
-                  rounded-xl
-                  border
-                  bg-white
-                  pl-10
-                  pr-4
-                  py-3
-                  text-base
-                  border-gray-300
-                  ${search ? "" : "text-slate-500"}
-                `}
-              />
-            </View>
-
-            <ScrollView>
-              {options.filter((opt) => !search 
-                || opt.label.toLowerCase().includes(search.toLowerCase()) 
-              ).map((opt) => (
-                  <Pressable
-                    key={opt.value}
-                    onPress={() => {
-                      onChange(opt.value);
-                      sheetRef.current?.dismiss();
-                    }}
-                    className="py-3 border-b border-gray-200"
-                  >
-                    <Text>{opt.label}</Text>
-                  </Pressable>
-                ))
-              }
-            </ScrollView>
+              <ScrollView>
+                {options.filter((opt) => !search 
+                  || opt.label.toLowerCase().includes(search.toLowerCase()) 
+                ).map((opt) => (
+                    <Pressable
+                      key={opt.value}
+                      onPress={() => {
+                        onChange(opt.value);
+                        sheetRef.current?.dismiss();
+                      }}
+                      className="py-3 border-b border-gray-200"
+                    >
+                      <Text>{opt.label}</Text>
+                    </Pressable>
+                  ))
+                }
+              </ScrollView>
             </BottomSheetView>
           </BottomSheetModal>
         </>

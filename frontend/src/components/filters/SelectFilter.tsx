@@ -2,8 +2,8 @@ import { SelectOption } from "@/features/ui/types";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useRef } from "react";
-import { Pressable, PressableProps, Text } from "react-native";
+import { useRef, useState } from "react";
+import { Pressable, PressableProps, ScrollView, Text, TextInput, View } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 
 interface SelectFilterProps extends PressableProps {
@@ -15,6 +15,7 @@ interface SelectFilterProps extends PressableProps {
 export const SelectFilter = ({ name, options, placeholder, ...rest }: SelectFilterProps) => {
   const router = useRouter();
   const { [name]: value } = useLocalSearchParams();
+  const [search, setSearch] = useState("");
 
   const sheetRef = useRef<BottomSheetModal>(null);
 
@@ -45,29 +46,57 @@ export const SelectFilter = ({ name, options, placeholder, ...rest }: SelectFilt
         index={0}
       >
         <BottomSheetView className="p-4">
+          <View className="relative w-full mb-3">
+            <View className="absolute left-3 top-3 z-10">
+              <MaterialIcons name="search" size={22} color="gray" />
+            </View>
 
-          <Pressable
-            onPress={() => {
-              router.setParams({ [name]: undefined });
-              sheetRef.current?.dismiss();
-            }}
-            className="py-3 border-b border-gray-200"
-          >
-            <Text>Clear</Text>
-          </Pressable>
+            <TextInput
+              value={search}
+              onChangeText={setSearch}
+              placeholder="Search..."
+              className={`
+                w-full
+                rounded-xl
+                border
+                bg-white
+                pl-10
+                pr-4
+                py-3
+                text-base
+                border-gray-300
+                ${search ? "" : "text-slate-500"}
+              `}
+            />
+          </View>
 
-          {options.map((opt) => (
+          <ScrollView>
             <Pressable
-              key={opt.value}
               onPress={() => {
-                router.setParams({ [name]: opt.value })
+                router.setParams({ [name]: undefined });
                 sheetRef.current?.dismiss();
               }}
               className="py-3 border-b border-gray-200"
             >
-              <Text>{opt.label}</Text>
+              <Text>Clear</Text>
             </Pressable>
-          ))}
+
+            {options.filter((opt) => !search 
+              || opt.label.toLowerCase().includes(search.toLowerCase()) 
+            ).map((opt) => (
+                <Pressable
+                  key={opt.value}
+                  onPress={() => {
+                    router.setParams({ [name]: opt.value })
+                    sheetRef.current?.dismiss();
+                  }}
+                  className="py-3 border-b border-gray-200"
+                >
+                  <Text>{opt.label}</Text>
+                </Pressable>
+              ))
+            }
+          </ScrollView>
         </BottomSheetView>
       </BottomSheetModal>
     </Animated.View>
