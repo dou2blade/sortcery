@@ -77,6 +77,7 @@ public class BearerTokenAuthFilter extends OncePerRequestFilter {
 
         return path.startsWith("/api/auth/login")
             || path.equals("/api/auth/register")
-            || path.equals("/api/auth/logout");
+            || path.equals("/api/auth/logout")
+            || path.startsWith("/api/public");
     }
 }

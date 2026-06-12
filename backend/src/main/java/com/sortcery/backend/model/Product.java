@@ -50,6 +50,7 @@ public class Product {
     private List<ProductVariant> productVariants = new ArrayList<>();
 
     private String name;
+    private String imageUrl;
 
     @CreatedDate
     @Column(updatable = false)
@@ -63,11 +64,13 @@ public class Product {
     public Product(
         ProductCategory productCategory,
         Brand brand,
-        String name
+        String name,
+        String imageUrl
     ) {
         this.productCategory = productCategory;
         this.brand = brand;
         this.name = name;
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() { return id; }
@@ -75,6 +78,7 @@ public class Product {
     public Brand getBrand() { return brand; }
     public List<ProductVariant> getProductVariants() { return productVariants; }
     public String getName() { return name; }
+    public String getImageUrl() { return imageUrl; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
@@ -82,6 +86,7 @@ public class Product {
     public void setProductCategory(ProductCategory productCategory) { this.productCategory = productCategory; }
     public void setBrand(Brand brand) { this.brand = brand; }
     public void setName(String name) { this.name = name; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public void setProductVariants(List<ProductVariant> productVariants) { 
         this.productVariants.clear();

@@ -8,6 +8,7 @@ import java.util.List;
 public class BrandResponseDTO {
     private final Long id;
     private final String name;
+    private final String imageUrl;
     private final List<ProductOptionDTO> products;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
@@ -15,6 +16,7 @@ public class BrandResponseDTO {
     public BrandResponseDTO(Brand brand) {
         this.id = brand.getId();
         this.name = brand.getName();
+        this.imageUrl = brand.getImageUrl();
         this.products = brand.getProducts()
             .stream()
             .map(ProductOptionDTO::new)
@@ -25,6 +27,7 @@ public class BrandResponseDTO {
 
     public Long getId() { return id; }
     public String getName() { return name; }
+    public String getImageUrl() { return imageUrl; }
     public List<ProductOptionDTO> getProducts() { return products; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }

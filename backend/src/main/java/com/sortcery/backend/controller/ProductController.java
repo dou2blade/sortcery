@@ -43,6 +43,7 @@ public class ProductController {
             : Sort.by(sortBy).descending();
         
         Page<ProductResponseDTO> productsPage = productService.findPage(page, size, search, sort);
+
         return ResponseEntity.ok(ApiResponse.of(productsPage));
     }
 

@@ -26,6 +26,7 @@ public class Brand {
     private Long id;
 
     private String name;
+    private String imageUrl;
 
     @OneToMany(mappedBy = "brand")
     private List<Product> products = new ArrayList<>();
@@ -39,18 +40,21 @@ public class Brand {
 
     public Brand() {}
 
-    public Brand(String name) {
+    public Brand(String name, String imageUrl) {
         this.name = name;
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() { return id; }
     public String getName() { return name; }
+    public String getImageUrl() { return imageUrl; }
     public List<Product> getProducts() { return products; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
     public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public void setProducts(List<Product> products) { this.products = products; }
 
     public void addProduct(Product product) {

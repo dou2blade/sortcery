@@ -33,7 +33,7 @@ public class SecurityConfig {
         http
             .cors(cors -> {})
             .authorizeHttpRequests(request -> {
-                request.requestMatchers("/api/auth/login/**", "/api/auth/logout").permitAll();
+                request.requestMatchers("/api/auth/login/**", "/api/auth/logout", "/api/public/**").permitAll();
                 request.requestMatchers("/api/**").authenticated();
                 request.anyRequest().hasAnyRole(User.Role.ADMIN.toString());
             })

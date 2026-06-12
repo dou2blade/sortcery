@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.sortcery.backend.dto.product.ProductOptionDTO;
 import com.sortcery.backend.dto.product.ProductRequestDTO;
 import com.sortcery.backend.dto.product.ProductResponseDTO;
+import com.sortcery.backend.dto.product.ProductSalesDTO;
 import com.sortcery.backend.dto.product.ProductStatsDTO;
 import com.sortcery.backend.exception.NotFoundException;
 import com.sortcery.backend.model.Brand;
@@ -92,7 +93,8 @@ public class ProductService {
     Product saved = productRepository.save(new Product(
         productCategory,
         brand,
-        request.getName()
+        request.getName(),
+        request.getImageUrl()
     ));
 
     return new ProductResponseDTO(saved);
@@ -103,6 +105,7 @@ public class ProductService {
                 .orElseThrow(() -> new NotFoundException(Product.class, id));
 
         if (request.getName() != null && !request.getName().isBlank()) existing.setName(request.getName());
+        if (request.getImageUrl() != null && !request.getImageUrl().isBlank()) existing.setImageUrl(request.getImageUrl());
 
         Product saved = productRepository.save(existing);
 
@@ -125,5 +128,9 @@ public class ProductService {
             productCategoryRepository.count(),
             productVariantRepository.count()
         );
+    }
+
+    public List<ProductSalesDTO> findTopSellers(int size) { 
+        return productRepository.findTopSellers().subList(0, size);
     }
 }

@@ -44,7 +44,7 @@ public class BrandSeeder {
             );
 
             List<Brand> brands = brandNames.stream()
-                .map(Brand::new)
+                .map((name) -> new Brand(name, null))
                 .toList();
 
             brandRepository.saveAll(brands);

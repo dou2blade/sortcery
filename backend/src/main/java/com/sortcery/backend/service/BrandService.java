@@ -59,7 +59,8 @@ public class BrandService {
 
     public BrandResponseDTO save(BrandRequestDTO request) {
         Brand saved = brandRepository.save(new Brand(
-            request.getName()
+            request.getName(),
+            request.getImageUrl()
         ));
         return new BrandResponseDTO(saved);
     }
@@ -69,6 +70,7 @@ public class BrandService {
                 .orElseThrow(() -> new NotFoundException(Brand.class, id));
 
         if (request.getName() != null && !request.getName().isBlank()) existing.setName(request.getName());
+        if (request.getImageUrl() != null && !request.getImageUrl().isBlank()) existing.setImageUrl(request.getImageUrl());
 
         Brand saved = brandRepository.save(existing);
 

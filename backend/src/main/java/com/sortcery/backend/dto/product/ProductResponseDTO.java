@@ -10,6 +10,7 @@ public class ProductResponseDTO {
     private final Long productCategoryId;
     private final Long brandId;
     private final String name;
+    private final String imageUrl;
     private final List<ProductVariantResponseDTO> productVariants;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
@@ -19,6 +20,7 @@ public class ProductResponseDTO {
         this.productCategoryId = product.getProductCategory().getId();
         this.brandId = product.getBrand().getId();
         this.name = product.getName();
+        this.imageUrl = product.getImageUrl();
         this.productVariants = product.getProductVariants()
             .stream()
             .map(ProductVariantResponseDTO::new)
@@ -31,6 +33,7 @@ public class ProductResponseDTO {
     public Long getProductCategoryId() { return productCategoryId; }
     public Long getBrandId() { return brandId; }
     public String getName() { return name; }
+    public String getImageUrl() { return imageUrl; }
     public List<ProductVariantResponseDTO> getProductVariants() { return productVariants; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }

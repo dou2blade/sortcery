@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS brands (
 
     name VARCHAR(128) NOT NULL UNIQUE,
 
+    image_url VARCHAR(2048),
+
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );

@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS products (
     name VARCHAR(128) NOT NULL,
     description TEXT,
 
+    image_url VARCHAR(2048),
+
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
 
