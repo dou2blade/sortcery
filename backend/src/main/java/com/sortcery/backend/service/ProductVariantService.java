@@ -2,8 +2,13 @@ package com.sortcery.backend.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.sortcery.backend.dto.productvariant.ProductVariantOptionDTO;
 import com.sortcery.backend.dto.productvariant.ProductVariantRequestDTO;
 import com.sortcery.backend.dto.productvariant.ProductVariantResponseDTO;
 import com.sortcery.backend.exception.NotFoundException;
@@ -25,10 +30,42 @@ public class ProductVariantService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductVariantResponseDTO> findAll() {
+    public Page<ProductVariantResponseDTO> findPage(
+        int page,
+        int size,
+        String search,
+        Long productId,
+        Sort sort
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        Specification<ProductVariant> spec = (root, query, cb) -> cb.conjunction();
+
+        if (search != null && !search.isBlank()) {
+            String term = "%" + search.toLowerCase() + "%";
+            spec = spec.and((root, query, cb) -> (
+                cb.like(cb.lower(root.get("name")), term)
+            ));
+        }
+
+        if (productId != null) {
+            spec = spec.and((root, query, cb) -> (
+                cb.equal(
+                    root.get("product").get("id"),
+                    productId)
+                )
+            );
+        }
+
+        return productVariantRepository
+            .findAll(spec, pageRequest)
+            .map(ProductVariantResponseDTO::new);
+    }
+
+    public List<ProductVariantOptionDTO> findOptions() {
         return productVariantRepository.findAll()
             .stream()
-            .map(ProductVariantResponseDTO::new)
+            .map(ProductVariantOptionDTO::new)
             .toList();
     }
 

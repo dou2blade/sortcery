@@ -1,7 +1,7 @@
 package com.sortcery.backend.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sortcery.backend.dto.productvariant.ProductVariantRequestDTO;
@@ -30,19 +31,30 @@ public class ProductVariantController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> findAll() {
-        List<ProductVariantResponseDTO> productVariants = productVariantService.findAll();
+    public ResponseEntity<ApiResponse> findAll(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "15") int size,
+        @RequestParam(required = false) String search,
+        @RequestParam(required = false) Long productId,
+        @RequestParam(defaultValue = "createdAt") String sortBy,
+        @RequestParam(defaultValue = "desc") String sortDir
+    ) {
+        Sort sort = sortDir.equalsIgnoreCase("asc") 
+            ? Sort.by(sortBy).ascending()
+            : Sort.by(sortBy).descending();
+        
+        Page<ProductVariantResponseDTO> productsPage = productVariantService.findPage(page, size, search, productId, sort);
+        return ResponseEntity.ok(ApiResponse.of(productsPage));
+    }
 
-        if (productVariants.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(ApiResponse.of(productVariants));
+    @GetMapping(path="/options")
+    public ResponseEntity<ApiResponse> findOptions() {
+        return ResponseEntity.ok(ApiResponse.of(productVariantService.findOptions()));
     }
 
     @GetMapping(path="/{id}")
-    public ResponseEntity<ProductVariantResponseDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(productVariantService.findById(id));
+    public ResponseEntity<ApiResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.of(productVariantService.findById(id)));
     }
 
     @PostMapping
@@ -64,10 +76,5 @@ public class ProductVariantController {
     @DeleteMapping(path="/{id}")
     public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.of(productVariantService.delete(id)));
-    }
-
-    @GetMapping(path="/products/{id}/product-variants")
-    public ResponseEntity<ApiResponse> findByProduct(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.of(productVariantService.findByProductId(id)));
     }
 }
