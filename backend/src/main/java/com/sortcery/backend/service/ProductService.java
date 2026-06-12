@@ -18,20 +18,26 @@ import com.sortcery.backend.model.ProductCategory;
 import com.sortcery.backend.repository.BrandRepository;
 import com.sortcery.backend.repository.ProductCategoryRepository;
 import com.sortcery.backend.repository.ProductRepository;
+import com.sortcery.backend.repository.ProductVariantRepository;
 
 
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
-
     private final ProductCategoryRepository productCategoryRepository;
-
     private final BrandRepository brandRepository;
+    private final ProductVariantRepository productVariantRepository;
 
-    public ProductService(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository, BrandRepository brandRepository) {
+    public ProductService(
+        ProductRepository productRepository,
+		ProductCategoryRepository productCategoryRepository,
+		BrandRepository brandRepository,
+        ProductVariantRepository productVariantRepository
+    ) {
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
+        this.productVariantRepository = productVariantRepository;
     }
 
     public Page<ProductResponseDTO> findPage(
@@ -116,7 +122,8 @@ public class ProductService {
         return new ProductStatsDTO(
             productRepository.count(), 
             brandRepository.count(),
-            productCategoryRepository.count()
+            productCategoryRepository.count(),
+            productVariantRepository.count()
         );
     }
 }
