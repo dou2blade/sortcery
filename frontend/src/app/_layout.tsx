@@ -16,8 +16,7 @@ const RootLayout = () => {
   if (!hydrated) return null;
 
   if (
-    (!user && pathname !== "/auth/login")
-    || (user?.role !== "ADMIN" && pathname.startsWith("/admin"))
+    (user?.role !== "ADMIN" && pathname.startsWith("/admin"))
     || (user?.role !== "MANAGER" && pathname.startsWith("/manager"))
     || (user?.role !== "RETAILER" && pathname.startsWith("/retailer"))
   ) {
