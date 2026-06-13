@@ -10,6 +10,4 @@ export const productKeys = {
 
   options: () => [...productKeys.all, "options"] as const,
   stats: () => [...productKeys.all, "stats"] as const,
-
-  topSellers: () => [...productKeys.all, "top-sellers"] as const,
 };

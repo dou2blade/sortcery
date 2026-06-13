@@ -1,9 +1,8 @@
-import { StatCard } from "@/components/cards";
+import { StatCard, StoreCard } from "@/components/cards";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { CmsCardsContainer, CmsContainer, ConsumerSection } from "@/components/containers";
 import { HorizontalScroll } from "@/components/containers/HorizontalScroll";
-import { useProductTopSellers } from "@/features/products/hooks/useProductTopSellers";
-import { usePublicProductCategories, usePublicStats } from "@/features/public/hooks";
+import { usePublicBranchesNearby, usePublicProductCategories, usePublicProductsTopGlobal, usePublicProductsTopNearby, usePublicStats } from "@/features/public/hooks";
 import { useCurrentLocation } from "@/hooks";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
@@ -14,8 +13,10 @@ const ConsumerPage = () => {
   const router = useRouter();
   const location = useCurrentLocation();
 
-  const { data: topSellers, isLoading: topSellersLoading } = useProductTopSellers();
+  const { data: topGlobal, isLoading: topGlobalLoading } = usePublicProductsTopGlobal();
+  const { data: topNearby, isLoading: topNearbyLoading } = usePublicProductsTopNearby(location?.latitude, location?.longitude);
   const { data: productCategories, isLoading: productCategoriesLoading } = usePublicProductCategories();
+  const { data: nearbyBranches, isLoading: nearbyBranchesLoading } = usePublicBranchesNearby(location?.latitude, location?.longitude);
   const { data: stats, isLoading: statsLoading } = usePublicStats();
 
   return (
@@ -25,7 +26,7 @@ const ConsumerPage = () => {
       <Animated.View className="bg-green-600 rounded-2xl p-5 flex-row justify-between items-center" entering={FadeIn}>
         <View>
           <Text className="text-white text-2xl font-bold">
-            Find products near you {location?.latitude} {location?.longitude}
+            Find products near you
           </Text>
           <Text className="text-white/80 mt-1">
             Browse stores
@@ -79,36 +80,73 @@ const ConsumerPage = () => {
 
       <ConsumerSection title="Top Selling Products">
         <HorizontalScroll>
-        {topSellersLoading
-          ? Array.from({ length: 5 }).map((_, idx) => (
-              <ProductCard
-                key={idx}
-                loading
-                name=""
-              />
-            ))
-          : (topSellers?.data ?? []).map((product) => (
-              <ProductCard
-                key={product.id}
-                name={product.name}
-                imageUrl={product.imageUrl}
-                sales={product.totalSales}
-                href={`/consumer/products/${product.id}`}
-              />
-            ))}
-          </HorizontalScroll>
+          {topGlobalLoading
+            ? Array.from({ length: 5 }).map((_, idx) => (
+                <ProductCard
+                  key={idx}
+                  loading
+                  name=""
+                />
+              ))
+            : (topGlobal?.data ?? []).map((product) => (
+                <ProductCard
+                  key={product.id}
+                  name={product.name}
+                  imageUrl={product.imageUrl}
+                  sales={product.totalSales}
+                  href={`/consumer/products/${product.id}`}
+                />
+              ))
+          }
+        </HorizontalScroll>
       </ConsumerSection>
 
-      <CmsCardsContainer title="Popular Near You">
-        {[].slice(0, 4).map(product => (
-          <StatCard
-            key={product.id}
-            title={product.name}
-            value={product.brandName}
-            href={`/consumer/products/${product.id}`}
-          />
-        ))}
-      </CmsCardsContainer>
+      <ConsumerSection title="Nearest stores">
+        <HorizontalScroll>
+          {nearbyBranchesLoading
+            ? Array.from({ length: 4 }).map((_, idx) => (
+                <StoreCard
+                  key={idx}
+                  loading
+                  name=""
+                />
+              ))
+            : (nearbyBranches?.data ?? []).map((branch) => (
+                <StoreCard
+                  key={branch.id}
+                  name={branch.name}
+                  storeName={branch.storeName}
+                  address={branch.address}
+                  distance={branch.distance}
+                  href={`/consumer/branches/${branch.id}`}
+                />
+              ))
+          }
+        </HorizontalScroll>
+      </ConsumerSection>
+
+      <ConsumerSection title="Popular near you">
+        <HorizontalScroll>
+          {topNearbyLoading
+            ? Array.from({ length: 5 }).map((_, idx) => (
+                <ProductCard
+                  key={idx}
+                  loading
+                  name=""
+                />
+              ))
+            : (topNearby?.data ?? []).map((product) => (
+                <ProductCard
+                  key={product.id}
+                  name={product.name}
+                  imageUrl={product.imageUrl}
+                  sales={product.totalSales}
+                  href={`/consumer/products/${product.id}`}
+                />
+              ))
+          }
+        </HorizontalScroll>
+      </ConsumerSection>
 
     </CmsContainer>
   );

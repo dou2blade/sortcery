@@ -2,11 +2,14 @@ import { ActivityIndicator, Text } from "react-native"
 import { DataTableColumn } from "@/features/ui/types";
 import { ApiResponse } from "@/utils/api";
 import { useLocalSearchParams } from "expo-router";
-import { DataTableBody, DataTableFooter, DataTableHeader, RowActionsSheet } from "@/components/datatables";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useRef, useState } from "react";
 import { UseMutationResult } from "@tanstack/react-query";
+import { DataTableHeader } from "./DataTableHeader";
+import { DataTableFooter } from "./DataTableFooter";
+import { DataTableBody } from "./DataTableBody";
+import { RowActionsSheet } from "./RowActionsSheet";
 
 interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
@@ -46,7 +49,7 @@ const DataTable = <T,>({
         <Text className="w-full p-3 text-slate-500 border-x border-slate-300 text-center">
           There are no records to display
         </Text>
-        <DataTableFooter 
+        <DataTableFooter
           page={0} 
           pageCount={0} 
           total={0} 

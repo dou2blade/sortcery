@@ -5,7 +5,7 @@ import { ProductCategory } from "@/features/product-categories/types";
 
 export const usePublicProductCategories = () => {
   return useQuery({
-    queryKey: publicKeys.productCategories,
+    queryKey: publicKeys.productCategories(),
     queryFn: async () => await apiGet<ProductCategory[]>("public/product-categories")
   });
 };

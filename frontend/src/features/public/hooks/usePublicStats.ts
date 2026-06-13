@@ -5,7 +5,7 @@ import { PublicStats } from "../types";
 
 export const usePublicStats = () => {
   return useQuery({
-    queryKey: publicKeys.stats,
+    queryKey: publicKeys.stats(),
     queryFn: () => apiGet<PublicStats>("public/stats"),
   });
 };
