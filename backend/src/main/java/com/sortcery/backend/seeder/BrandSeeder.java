@@ -44,7 +44,7 @@ public class BrandSeeder {
             );
 
             List<Brand> brands = brandNames.stream()
-                .map((name) -> new Brand(name, null))
+                .map((name) -> new Brand(name, "https://placehold.co/600x400?font=playfair-display?text" + name))
                 .toList();
 
             brandRepository.saveAll(brands);

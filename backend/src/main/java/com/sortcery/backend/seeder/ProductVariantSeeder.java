@@ -41,7 +41,7 @@ public class ProductVariantSeeder {
                     variants.add(new ProductVariant(
                             product,
                             name,
-                            null
+                            "https://placehold.co/600x400?font=lora&text=" + name
                     ));
                 }
             };
