@@ -28,17 +28,20 @@ public class ProductService {
     private final ProductCategoryRepository productCategoryRepository;
     private final BrandRepository brandRepository;
     private final ProductVariantRepository productVariantRepository;
+    private final BranchService branchService;
 
     public ProductService(
         ProductRepository productRepository,
 		ProductCategoryRepository productCategoryRepository,
 		BrandRepository brandRepository,
-        ProductVariantRepository productVariantRepository
+        ProductVariantRepository productVariantRepository,
+        BranchService branchService
     ) {
         this.productRepository = productRepository;
         this.productCategoryRepository = productCategoryRepository;
         this.brandRepository = brandRepository;
         this.productVariantRepository = productVariantRepository;
+        this.branchService = branchService;
     }
 
     public Page<ProductResponseDTO> findPage(
@@ -130,7 +133,21 @@ public class ProductService {
         );
     }
 
-    public List<ProductSalesDTO> findTop(int size, Double longitude, Double latitude) { 
-        return productRepository.findTop().subList(0, size);
+    public List<ProductSalesDTO> findTop(int size, Double latitude, Double longitude) { 
+        if (longitude == null || latitude == null) {
+            List<ProductSalesDTO> topProducts = productRepository.findTop();
+            return topProducts.subList(0, Math.min(size, topProducts.size()));
+        }
+
+        // branches within 5km
+        List<Long> branchIds = branchService.findNearby(99, latitude, longitude)
+            .stream()
+            .filter((branch) -> branch.getDistance() < 5)
+            .map((branch) -> branch.getId())
+            .toList();
+
+        // top products within nearby branches
+        List<ProductSalesDTO> topProducts = productRepository.findTopByBranches(branchIds);
+        return topProducts.subList(0, Math.min(size, topProducts.size()));
     }
 }

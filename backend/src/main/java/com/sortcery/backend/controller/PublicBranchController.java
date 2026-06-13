@@ -20,9 +20,10 @@ public class PublicBranchController {
 
     @GetMapping(path="/nearby")
     public ResponseEntity<ApiResponse> findNearby(
+        @RequestParam(defaultValue = "15") int size,
         @RequestParam Double latitude,
         @RequestParam Double longitude
     ) {
-        return ResponseEntity.ok(ApiResponse.of(branchService.findNearby(latitude, longitude)));
+        return ResponseEntity.ok(ApiResponse.of(branchService.findNearby(size, latitude, longitude)));
     }
 }

@@ -257,7 +257,7 @@ public class BranchService {
         );
     }
 
-    public List<BranchPublicDTO> findNearby(Double latitude, Double longitude) {
+    public List<BranchPublicDTO> findNearby(int size, Double latitude, Double longitude) {
         List<BranchPublicDTO> branches = branchRepository.findAll()
             .stream()
             .map((branch) -> new BranchPublicDTO(
@@ -274,6 +274,6 @@ public class BranchService {
             branches,
             Comparator.comparingDouble(
                 BranchPublicDTO::getDistance
-            ));
+            )).subList(0, Math.min(size, branches.size()));
     }
 }
