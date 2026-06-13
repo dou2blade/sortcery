@@ -24,4 +24,9 @@ public class PublicProductController {
     ) {
         return ResponseEntity.ok(ApiResponse.of(productService.findTopSellers(size)));
     }
+
+    @GetMapping(path="/stats")
+    public ResponseEntity<ApiResponse> stats() {
+        return ResponseEntity.ok(ApiResponse.of(productService.stats()));
+    }
 }
