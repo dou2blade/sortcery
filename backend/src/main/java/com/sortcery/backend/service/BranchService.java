@@ -7,6 +7,9 @@ import com.sortcery.backend.model.ProductVariant;
 import com.sortcery.backend.model.Store;
 import com.sortcery.backend.model.User;
 import com.sortcery.backend.model.UserBranch;
+import com.sortcery.backend.algorithms.Haversine;
+import com.sortcery.backend.algorithms.MergeSort;
+import com.sortcery.backend.dto.branch.BranchPublicDTO;
 import com.sortcery.backend.dto.branch.BranchRequestDTO;
 import com.sortcery.backend.dto.branch.BranchResponseDTO;
 import com.sortcery.backend.dto.branch.BranchStatsDTO;
@@ -29,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -251,5 +255,25 @@ public class BranchService {
             weeklySales,
             monthlySales
         );
+    }
+
+    public List<BranchPublicDTO> findNearby(Double latitude, Double longitude) {
+        List<BranchPublicDTO> branches = branchRepository.findAll()
+            .stream()
+            .map((branch) -> new BranchPublicDTO(
+                branch,
+                Haversine.distance(
+                    branch.getLatitude(),
+                    branch.getLongitude(),
+                    latitude,
+                    longitude
+                )
+            )).toList();
+
+        return MergeSort.sort(
+            branches,
+            Comparator.comparingDouble(
+                BranchPublicDTO::getDistance
+            ));
     }
 }

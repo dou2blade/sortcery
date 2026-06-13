@@ -33,5 +33,5 @@ public interface ProductRepository extends
         GROUP BY p.id, p.name, p.imageUrl
         ORDER BY SUM(ABS(im.quantityChange)) DESC
     """)
-    List<ProductSalesDTO> findTopSellers();
+    List<ProductSalesDTO> findTop();
 }

@@ -130,7 +130,7 @@ public class ProductService {
         );
     }
 
-    public List<ProductSalesDTO> findTopSellers(int size) { 
-        return productRepository.findTopSellers().subList(0, size);
+    public List<ProductSalesDTO> findTop(int size, Double longitude, Double latitude) { 
+        return productRepository.findTop().subList(0, size);
     }
 }

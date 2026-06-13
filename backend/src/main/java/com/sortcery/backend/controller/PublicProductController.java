@@ -18,11 +18,13 @@ public class PublicProductController {
         this.productService = productService;
     }
 
-    @GetMapping(path="/top-sellers")
+    @GetMapping(path="/top")
     public ResponseEntity<ApiResponse> findTopSellers(
-        @RequestParam(defaultValue = "5") int size
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(required = false) Double latitude, 
+        @RequestParam(required = false) Double longitude
     ) {
-        return ResponseEntity.ok(ApiResponse.of(productService.findTopSellers(size)));
+        return ResponseEntity.ok(ApiResponse.of(productService.findTop(size, latitude, longitude)));
     }
 
     @GetMapping(path="/stats")
