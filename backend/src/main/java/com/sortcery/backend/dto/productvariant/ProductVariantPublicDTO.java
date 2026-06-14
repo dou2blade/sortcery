@@ -1,6 +1,6 @@
 package com.sortcery.backend.dto.productvariant;
 
-public record ProductVariantSalesDTO(
+public record ProductVariantPublicDTO(
     Long productId,
     String productName,
 
@@ -8,6 +8,6 @@ public record ProductVariantSalesDTO(
     String productVariantName,
 
     String imageUrl,
-    Long totalSales
+    Long sales
 ) {}
 

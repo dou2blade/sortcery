@@ -132,22 +132,4 @@ public class ProductService {
             productVariantRepository.count()
         );
     }
-
-    public List<ProductSalesDTO> findTop(int size, Double latitude, Double longitude) { 
-        if (longitude == null || latitude == null) {
-            List<ProductSalesDTO> topProducts = productRepository.findTop();
-            return topProducts.subList(0, Math.min(size, topProducts.size()));
-        }
-
-        // branches within 5km
-        List<Long> branchIds = branchService.findNearby(99, latitude, longitude)
-            .stream()
-            .filter((branch) -> branch.getDistance() < 5)
-            .map((branch) -> branch.getId())
-            .toList();
-
-        // top products within nearby branches
-        List<ProductSalesDTO> topProducts = productRepository.findTopByBranches(branchIds);
-        return topProducts.subList(0, Math.min(size, topProducts.size()));
-    }
 }
