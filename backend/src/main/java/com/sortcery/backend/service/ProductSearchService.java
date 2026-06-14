@@ -182,6 +182,23 @@ public class ProductSearchService {
         };
     }
 
+    public List<BranchProductVariantPublicDTO> findVariant(Long variantId, Double latitude, Double longitude) {
+        return branchProductVariantRepository.findVariantsWithSales(variantId)
+            .stream()
+            .map((item) -> new BranchProductVariantPublicDTO(
+                item.bpv(),
+                item.sales(),
+                latitude != null && longitude != null
+                    ? Haversine.distance(
+                        item.bpv().getBranch().getLatitude(),
+                        item.bpv().getBranch().getLongitude(),
+                        latitude,
+                        longitude
+                    ) : null
+            ))
+            .toList();
+    }
+
     public List<ProductSalesDTO> findTop(
         int size,
         Double latitude,

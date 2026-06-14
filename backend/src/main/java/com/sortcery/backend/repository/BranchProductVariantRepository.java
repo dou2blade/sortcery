@@ -3,6 +3,8 @@ package com.sortcery.backend.repository;
 import com.sortcery.backend.dto.branchproductvariant.BranchProductVariantSalesIntermediateDTO;
 import com.sortcery.backend.model.BranchProductVariant;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -88,5 +90,22 @@ public interface BranchProductVariantRepository extends
         @Param("brand") Long brand,
         @Param("branch") Long branch,
         Pageable pageable
+    );
+
+    @Query("""
+        SELECT new com.sortcery.backend.dto.branchproductvariant.BranchProductVariantSalesIntermediateDTO(
+            bpv,
+            COALESCE(SUM(ABS(im.quantityChange)), 0)
+        )
+        FROM BranchProductVariant bpv
+        LEFT JOIN InventoryMovement im
+            ON im.branchProductVariant = bpv
+            AND im.type = 'SALE'
+        WHERE bpv.productVariant.id = :variant
+        GROUP BY bpv
+        ORDER BY bpv.price
+    """)
+    List<BranchProductVariantSalesIntermediateDTO> findVariantsWithSales(
+        @Param("variant") Long variant
     );
 }
