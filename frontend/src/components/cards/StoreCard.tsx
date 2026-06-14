@@ -9,6 +9,7 @@ interface StoreCardProps {
   distance?: number;
   href?: Href;
   loading?: boolean;
+  width?: string;
 }
 
 export const StoreCard = ({
@@ -18,12 +19,13 @@ export const StoreCard = ({
   distance,
   href,
   loading = false,
+  width = "w-full"
 }: StoreCardProps) => {
   const router = useRouter();
 
   if (loading) {
     return (
-      <View className="w-64 rounded-xl border border-slate-300 bg-white p-4">
+      <View className={`${width} rounded-xl border border-slate-300 bg-white p-4`}>
         <View className="h-5 w-3/4 rounded bg-slate-200" />
 
         <View className="mt-2 h-4 w-1/2 rounded bg-slate-200" />
@@ -38,7 +40,7 @@ export const StoreCard = ({
   return (
     <Pressable
       onPress={() => href && router.push(href)}
-      className="w-64 rounded-xl border border-slate-300 bg-white p-4"
+      className={`${width} rounded-xl border border-slate-300 bg-white p-4`}
     >
       <View className="flex-row items-start justify-between">
         <View className="flex-1">

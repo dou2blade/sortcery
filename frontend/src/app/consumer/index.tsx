@@ -103,6 +103,7 @@ const ConsumerPage = () => {
             ? Array.from({ length: 4 }).map((_, idx) => (
                 <StoreCard
                   key={idx}
+                  width="w-64"
                   loading
                   name=""
                 />
@@ -110,6 +111,7 @@ const ConsumerPage = () => {
             : (nearbyBranches?.data ?? []).map((branch) => (
                 <StoreCard
                   key={branch.id}
+                  width="w-64"
                   name={branch.name}
                   storeName={branch.storeName}
                   address={branch.address}

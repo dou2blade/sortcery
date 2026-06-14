@@ -3,9 +3,9 @@ import { FilterChip } from "@/components/filters";
 import { usePublicBrandOptions, usePublicProductCategoryOptions, usePublicBranch, usePublicProducts } from "@/features/public/hooks";
 import { useCurrentLocation } from "@/hooks";
 import { toOptions } from "@/utils/forms";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo } from "react";
-import { ActivityIndicator, FlatList, Text, useWindowDimensions, View } from "react-native";
+import { ActivityIndicator, FlatList, Pressable, Text, useWindowDimensions, View } from "react-native";
 
 import { useGridColumns } from "@/hooks/useGridColumns";
 import Animated, { FadeIn } from "react-native-reanimated";
@@ -16,6 +16,7 @@ const ConsumerBranchPage = () => {
   const location = useCurrentLocation();
   const { width } = useWindowDimensions();
   const columns = useGridColumns();
+  const router = useRouter();
 
   const PADDING = 24;
   const GAP = 12;
@@ -27,8 +28,6 @@ const ConsumerBranchPage = () => {
     category,
     brand,
     sort,
-    latitude,
-    longitude
   } = useLocalSearchParams<{
     id: string;
     search: string;
@@ -36,8 +35,6 @@ const ConsumerBranchPage = () => {
     brand: string;
     sort: string;
     radius: string;
-    latitude: string;
-    longitude: string;
   }>();
 
   const {
@@ -56,7 +53,7 @@ const ConsumerBranchPage = () => {
     sort,
   });
 
-  const { data: branch } = usePublicBranch(id, latitude, longitude);
+  const { data: branch } = usePublicBranch(Number(id), location?.latitude!, location?.longitude!);
 
   const { data: productCategories } = usePublicProductCategoryOptions();
   const { data: brands } = usePublicBrandOptions();
@@ -106,23 +103,34 @@ const ConsumerBranchPage = () => {
             className="border border-slate-300 rounded-t-2xl"
           />
           <View className="rounded-b-2xl p-5 border border-slate-300 mb-3">
-            <Text className="text-2xl font-bold">
-              {branch?.data?.storeName} {branch?.data?.name}
-            </Text>
-            <Text className="text-black/70 mt-1">
-              {branch?.data?.address}
-            </Text>
-            {branch?.data?.distance != null && (
-              <View className="mt-3 flex-row items-center gap-1">
-                <MaterialIcons
-                  name="location-on"
-                  size={16}
-                />
-                <Text className="text-sm font-medium">
-                  {branch.data?.distance.toFixed(2)} km away
-                </Text>
-              </View>
-            )}
+            <View>
+              <Text className="text-2xl font-bold">
+                {branch?.data?.storeName} {branch?.data?.name}
+              </Text>
+              <Text className="text-black/70 mt-1">
+                {branch?.data?.address}
+              </Text>
+              {branch?.data?.distance != null && (
+                <View className="mt-3 flex-row items-center gap-1">
+                  <MaterialIcons
+                    name="location-on"
+                    size={16}
+                  />
+                  <Text className="text-sm font-medium">
+                    {branch.data?.distance.toFixed(2)} km away
+                  </Text>
+                </View>
+              )}
+            </View>
+            <Pressable 
+              className="flex-row justify-end items-center mt-4"
+              onPress={() => router.push(`/consumer/stores/${branch?.data?.storeId}`)}
+            >
+              <Text className="font-bold me-2">
+                All branches
+              </Text>
+              <MaterialIcons name="arrow-forward" size={26} />
+            </Pressable>
           </View>
 
           <View className="gap-3 mb-3">
