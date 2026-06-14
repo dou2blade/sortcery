@@ -13,6 +13,7 @@ export * from "./usePublicProductCategories";
 export * from "./usePublicProductCategoryOptions";
 
 export * from "./usePublicProducts";
+export * from "./usePublicProductAlternatives";
 export * from "./usePublicProductsTopGlobal";
 export * from "./usePublicProductsTopNearby";
 

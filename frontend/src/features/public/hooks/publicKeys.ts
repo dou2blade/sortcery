@@ -16,6 +16,7 @@ export const publicKeys = {
   productCategoryOptions: () => [...publicKeys.productCategories(), "options"] as const,
 
   products: () => [...publicKeys.all, "products"] as const,
+  productsAlternatives: (id: number) => [...publicKeys.products(), "alternatives", id] as const,
   productsQuery: (params: PublicProductParams) => [...publicKeys.products(), params] as const,
   productsTopGlobal: () => [...publicKeys.products(), "top-global"] as const,
   productsTopNearby: () => [...publicKeys.products(), "top-nearby"] as const,
