@@ -41,6 +41,7 @@ public class ProductSearchService {
         String search,
         Long category,
         Long brand,
+        Long branch,
         Double latitude,
         Double longitude,
         Double radius
@@ -50,6 +51,7 @@ public class ProductSearchService {
                 search,
                 category,
                 brand,
+                branch,
                 PageRequest.of(
                     page,
                     size,
@@ -71,6 +73,7 @@ public class ProductSearchService {
                 search,
                 category,
                 brand,
+                branch,
                 PageRequest.of(
                     page,
                     size,
@@ -100,6 +103,7 @@ public class ProductSearchService {
                         search,
                         category,
                         brand,
+                        branch,
                         Pageable.unpaged()
                     )
                     .stream()
@@ -144,6 +148,7 @@ public class ProductSearchService {
                 search,
                 category,
                 brand,
+                branch,
                 PageRequest.of(page, size)
             ).map((item) -> new BranchProductVariantPublicDTO(
                 item.bpv(),
@@ -161,6 +166,7 @@ public class ProductSearchService {
                 search,
                 category,
                 brand,
+                branch,
                 PageRequest.of(page, size)
             ).map((item) -> new BranchProductVariantPublicDTO(
                 item.bpv(),

@@ -30,13 +30,14 @@ public class PublicProductController {
     @GetMapping
     public ResponseEntity<ApiResponse> findPage(
         @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "30") int size,
+        @RequestParam(defaultValue = "15") int size,
 
         @RequestParam(defaultValue = "") String search,
         @RequestParam(defaultValue = "popularity") String sort,
 
         @RequestParam(required = false) Long category,
         @RequestParam(required = false) Long brand,
+        @RequestParam(required = false) Long branch,
 
         @RequestParam(required = false) Double latitude, 
         @RequestParam(required = false) Double longitude,
@@ -51,6 +52,7 @@ public class PublicProductController {
                     search,
                     category,
                     brand,
+                    branch,
                     latitude,
                     longitude,
                     radius

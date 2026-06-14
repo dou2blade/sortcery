@@ -39,12 +39,17 @@ public interface BranchProductVariantRepository extends
             :brand IS NULL
             OR bpv.productVariant.product.brand.id = :brand
         )
+        AND (
+            :brand IS NULL
+            OR bpv.branch.id = :branch
+        )
         GROUP BY bpv
     """)
     Page<BranchProductVariantSalesIntermediateDTO> findAllWithSales(
         @Param("search") String search,
         @Param("category") Long category,
         @Param("brand") Long brand,
+        @Param("branch") Long branch,
         Pageable pageable
     );
 
@@ -70,6 +75,10 @@ public interface BranchProductVariantRepository extends
             :brand IS NULL
             OR bpv.productVariant.product.brand.id = :brand
         )
+        AND (
+            :brand IS NULL
+            OR bpv.branch.id = :branch
+        )
         GROUP BY bpv
         ORDER BY COALESCE(SUM(ABS(im.quantityChange)), 0) DESC
     """)
@@ -77,6 +86,7 @@ public interface BranchProductVariantRepository extends
         @Param("search") String search,
         @Param("category") Long category,
         @Param("brand") Long brand,
+        @Param("branch") Long branch,
         Pageable pageable
     );
 }
