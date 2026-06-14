@@ -1,7 +1,7 @@
 export const toOptions = <T>(
   data: T[],
   label: (row: T) => string,
-  value: (row: T) => string | number
+  value: (row: T) => number
 ) => {
   return data.map((item) => ({
     label: label(item),

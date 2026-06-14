@@ -6,6 +6,6 @@ import { apiGet } from "@/utils/api";
 export const usePublicProductsTopGlobal = () => {
   return useQuery({
     queryKey: publicKeys.productsTopGlobal(),
-    queryFn: () => apiGet<PublicProduct[]>("public/products/top", { size: 15 }),
+    queryFn: () => apiGet<PublicProduct[]>("public/products/top", { size: 15, page: 0 }),
   });
 };

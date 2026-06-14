@@ -12,11 +12,13 @@ export const apiFetch = async <T>({ resource, method, body, params }: {
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
   const queryParams = Object.entries(params ?? {})
-    .filter(([_, v]) => v !== undefined)
+    .filter(([_, v]) => v !== undefined && v !== null && (typeof v !== "number" || !isNaN(v)))
     .map(([k, v]) => `${k}=${v}`)
     .join("&");
 
   const url = `${apiUrl}${resource}${queryParams ? `?${queryParams}` : ""}`
+
+  console.log(url)
 
   const res = await fetch(url, {
     method: method ?? "GET",

@@ -6,7 +6,7 @@ import { apiGet } from "@/utils/api";
 export const usePublicProductsTopNearby = (latitude?: number, longitude?: number) => {
   return useQuery({
     queryKey: publicKeys.productsTopNearby(),
-    queryFn: () => apiGet<PublicProduct[]>("public/products/top", { size: 15, latitude, longitude }),
+    queryFn: () => apiGet<PublicProduct[]>("public/products/top", { size: 15, latitude, longitude, page: 0 }),
     enabled: latitude !== undefined && longitude !== undefined
   });
 };

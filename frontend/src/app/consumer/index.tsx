@@ -22,7 +22,6 @@ const ConsumerPage = () => {
   return (
     <CmsContainer>
 
-      {/* Hero */}
       <Animated.View className="bg-green-600 rounded-2xl p-5 flex-row justify-between items-center" entering={FadeIn}>
         <View>
           <Text className="text-white text-2xl font-bold">

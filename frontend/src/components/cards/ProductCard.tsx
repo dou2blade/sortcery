@@ -1,9 +1,11 @@
 import { Pressable, Text, View, Image } from "react-native";
 import { Href, useRouter } from "expo-router";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 interface ProductCardProps {
   name: string;
-  brand?: string;
+  location?: string;
+  distance?: number;
   imageUrl?: string;
   price?: number;
   href?: Href;
@@ -13,7 +15,8 @@ interface ProductCardProps {
 
 export const ProductCard = ({
   name,
-  brand,
+  location,
+  distance,
   imageUrl,
   price,
   href,
@@ -61,14 +64,27 @@ export const ProductCard = ({
         </Text>
 
         <View className="mt-auto">
-          {brand && (
+          {location && (
             <Text
-              numberOfLines={1}
+              numberOfLines={2}
               className="text-sm text-slate-500"
             >
-              {brand}
+              {location}
             </Text>
           )}
+
+          {distance != null && (
+            <View className="mt-3 flex-row items-center gap-1">
+              <MaterialIcons
+                name="location-on"
+                size={16}
+              />
+              <Text className="text-sm font-medium">
+                {distance.toFixed(2)} km away
+              </Text>
+            </View>
+          )}
+
 
           {price != null && (
             <Text className="mt-2 font-bold">

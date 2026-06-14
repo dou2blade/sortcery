@@ -2,8 +2,12 @@ export * from "./publicKeys";
 
 export * from "./usePublicBranchesNearby";
 
-export * from "./usePublicProductCategories";
+export * from "./usePublicBrandOptions";
 
+export * from "./usePublicProductCategories";
+export * from "./usePublicProductCategoryOptions";
+
+export * from "./usePublicProducts";
 export * from "./usePublicProductsTopGlobal";
 export * from "./usePublicProductsTopNearby";
 
