@@ -5,6 +5,9 @@ export interface PublicBranch {
   storeId: number;
   storeName: string;
 
+  latitude: number;
+  longitude: number;
+
   address: string;
   distance: number;
 }

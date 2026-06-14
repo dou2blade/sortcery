@@ -1,5 +1,6 @@
 export * from "./publicKeys";
 
+export * from "./usePublicBranch";
 export * from "./usePublicBranchesNearby";
 
 export * from "./usePublicBrands";

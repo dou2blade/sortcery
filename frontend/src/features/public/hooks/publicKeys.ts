@@ -4,6 +4,7 @@ export const publicKeys = {
   all: ["public"] as const,
 
   branches: () => [...publicKeys.all, "branches"] as const,
+  branch: (id: number) => [...publicKeys.branches(), id] as const,
   branchesNearby: () => [...publicKeys.branches(), "nearby"] as const,
 
   brands: () => [...publicKeys.all, "brands"] as const,

@@ -1,6 +1,7 @@
-export const MapView = ({ latitude, longitude }: { 
-  latitude?: number, 
-  longitude?: number
+export const MapView = ({ latitude, longitude, className }: { 
+  latitude?: number;
+  longitude?: number;
+  className?: string;
 }) => {
   const src = `https://www.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`;
 
@@ -10,7 +11,7 @@ export const MapView = ({ latitude, longitude }: {
       height="300"
       loading="lazy"
       src={src}
-      className="rounded-xl border border-slate-300"
+      className={className ?? "rounded-xl border border-slate-300"}
     />
   );
 }

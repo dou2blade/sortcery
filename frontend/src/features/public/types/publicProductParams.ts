@@ -4,6 +4,7 @@ export interface PublicProductParams {
   longitude?: number;
   category: string;
   brand: string;
+  branch?: string;
   sort: string;
-  radius: number;
+  radius?: number;
 }
