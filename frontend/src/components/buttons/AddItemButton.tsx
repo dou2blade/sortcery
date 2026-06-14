@@ -15,7 +15,7 @@ export const AddItemButton = ({ label, href }: AddItemButtonProps) => {
     <Animated.View entering={FadeIn}>
       <Pressable
         onPress={() => router.push(href)}
-        className="rounded-lg bg-green-600 px-3 py-2 flex-row items-center gap-1"
+        className="rounded-lg bg-green-800 px-3 py-2 flex-row items-center gap-1"
       >
         <MaterialIcons name="add" size={18} color="white" />
         <Text className="text-base text-white">

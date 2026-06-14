@@ -64,7 +64,7 @@ const StaffSidebar = ({
       <Pressable onPress={onToggle} className="h-full">
         <Animated.View
           style={viewStyle}
-          className="h-full bg-green-600"
+          className="h-full bg-green-800"
         >
           <View className="flex-1">
             <View className="py-6 px-4">

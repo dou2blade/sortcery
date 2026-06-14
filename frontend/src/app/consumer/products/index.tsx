@@ -8,6 +8,8 @@ import { useMemo } from "react";
 import { ActivityIndicator, FlatList, Text, useWindowDimensions, View } from "react-native";
 
 import { useGridColumns } from "@/hooks/useGridColumns";
+import Animated, { FadeIn } from "react-native-reanimated";
+import { Image } from "expo-image";
 
 const ConsumerProductsPage = () => {
   const location = useCurrentLocation();
@@ -90,63 +92,60 @@ const ConsumerProductsPage = () => {
       keyExtractor={(item) => item.id.toString()}
 
       ListHeaderComponent={
-        <View className="gap-3 mb-3">
+        <Animated.View entering={FadeIn}>
+          <View className="gap-3 mb-3">
 
-          <SearchFilter
-            name="search"
-            placeholder="Search products..."
-          />
+            <View className="flex-row gap-2">
+              <FilterChip
+                label="Category"
+                name="category"
+                options={categoryOptions}
+              />
 
-          <View className="flex-row gap-2">
-            <FilterChip
-              label="Category"
-              name="category"
-              options={categoryOptions}
-            />
+              <FilterChip
+                label="Brand"
+                name="brand"
+                options={brandOptions}
+              />
 
-            <FilterChip
-              label="Brand"
-              name="brand"
-              options={brandOptions}
-            />
+              <FilterChip
+                label="Sort"
+                name="sort"
+                options={[
+                  { label: "Top Sellers", value: "sales" },
+                  { label: "Price: Low to High", value: "asc" },
+                  { label: "Price: High to Low", value: "desc" },
+                  { label: "Nearest", value: "distance" },
+                ]}
+              />
 
-            <FilterChip
-              label="Sort"
-              name="sort"
-              options={[
-                { label: "Top Sellers", value: "sales" },
-                { label: "Price: Low to High", value: "asc" },
-                { label: "Price: High to Low", value: "desc" },
-                { label: "Nearest", value: "distance" },
-              ]}
-            />
+              <FilterChip
+                label="Area"
+                name="radius"
+                options={[
+                  { label: "5km", value: 5 },
+                  { label: "15km", value: 15 },
+                  { label: "50km", value: 50 },
+                ]}
+              />
+            </View>
 
-            <FilterChip
-              label="Area"
-              name="radius"
-              options={[
-                { label: "5km", value: 5 },
-                { label: "15km", value: 15 },
-                { label: "50km", value: 50 },
-              ]}
-            />
+            <View className="flex-row justify-between items-center">
+              <Text className="text-lg font-bold">
+                Products
+              </Text>
+
+              <Text className="text-slate-500">
+                {totalElements} found
+              </Text>
+            </View>
+
           </View>
-
-          <View className="flex-row justify-between items-center">
-            <Text className="text-lg font-bold">
-              Products
-            </Text>
-
-            <Text className="text-slate-500">
-              {totalElements} found
-            </Text>
-          </View>
-
-        </View>
+        </Animated.View>
       }
 
       renderItem={({ item }) => (
-        <View style={{ width: itemWidth }}>
+        <Animated.View style={{ width: itemWidth }} entering={FadeIn}>
           <ProductCard
             name={`${item.productName} ${item.productVariantName}`}
             imageUrl={item.productVariantImageUrl}
@@ -155,7 +154,7 @@ const ConsumerProductsPage = () => {
             price={item.price}
             href={`/consumer/products/${item.id}`}
           />
-        </View>
+        </Animated.View>
       )}
 
       ListFooterComponent={

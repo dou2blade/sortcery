@@ -2,6 +2,7 @@ export * from "./publicKeys";
 
 export * from "./usePublicBranchesNearby";
 
+export * from "./usePublicBrands";
 export * from "./usePublicBrandOptions";
 
 export * from "./usePublicProductCategories";

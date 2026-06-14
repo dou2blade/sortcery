@@ -40,7 +40,7 @@ export const FormListReadOnly = ({
             rounded
             rounded-tr-xl
             p-2
-            bg-green-600/70
+            bg-green-800/70
           "
         >
           <MaterialIcons name="add" size={14} color="white" />

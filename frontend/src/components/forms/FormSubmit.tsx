@@ -23,7 +23,7 @@ export const FormSubmit = <T extends FieldValues>({ onSubmit, label, readOnly }:
         items-center
         rounded-lg 
         p-3
-        ${!!view || readOnly || isSubmitting ? "bg-green-600/70" : "bg-green-600" } 
+        ${!!view || readOnly || isSubmitting ? "bg-green-800/70" : "bg-green-800" } 
       `}
       onPress={handleSubmit(onSubmit)} 
       disabled={!!view || readOnly || isSubmitting}

@@ -7,6 +7,7 @@ export const publicKeys = {
   branchesNearby: () => [...publicKeys.branches(), "nearby"] as const,
 
   brands: () => [...publicKeys.all, "brands"] as const,
+  brandsQuery: (search: string) => [...publicKeys.brands(), search] as const,
   brandOptions: () => [...publicKeys.brands(), "options"] as const,
 
   productCategories: () => [...publicKeys.all, "product-categories"] as const,

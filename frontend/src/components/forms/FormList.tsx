@@ -72,7 +72,7 @@ export const FormList = <T extends FieldValues>({
                   rounded
                   rounded-tr-xl
                   p-2
-                  ${!!view || readOnly ? "bg-green-600/70" : "bg-green-600" } 
+                  ${!!view || readOnly ? "bg-green-800/70" : "bg-green-800" } 
                 `}
                 disabled={!!view || readOnly}
               >

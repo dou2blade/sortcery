@@ -22,18 +22,13 @@ const ConsumerPage = () => {
   return (
     <CmsContainer>
 
-      <Animated.View className="bg-green-600 rounded-2xl p-5 flex-row justify-between items-center" entering={FadeIn}>
-        <View>
-          <Text className="text-white text-2xl font-bold">
-            Find products near you
-          </Text>
-          <Text className="text-white/80 mt-1">
-            Browse stores
-          </Text>
-        </View>
-        <Pressable>
-          <MaterialIcons name="search" size={32} color="white" />
-        </Pressable>
+      <Animated.View className="rounded-2xl p-5 border border-slate-300" entering={FadeIn}>
+        <Text className="text-2xl font-bold">
+          Find products near you
+        </Text>
+        <Text className="text-black/70 mt-1">
+          Browse stores
+        </Text>
       </Animated.View>
 
       <CmsCardsContainer>
