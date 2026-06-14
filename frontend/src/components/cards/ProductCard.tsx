@@ -11,6 +11,7 @@ interface ProductCardProps {
   href?: Href;
   sales?: number;
   loading?: boolean;
+  width?: string;
 }
 
 export const ProductCard = ({
@@ -22,12 +23,13 @@ export const ProductCard = ({
   href,
   sales,
   loading = false,
+  width = "w-full"
 }: ProductCardProps) => {
   const router = useRouter();
 
   if (loading) {
     return (
-      <View className="w-40 h-64 bg-white rounded-xl border border-slate-300 p-3">
+      <View className={`${width} w-40 h-64 bg-white rounded-xl border border-slate-300 p-3`}>
         <View className="h-32 rounded-lg bg-slate-200" />
 
         <View className="mt-3 h-4 w-3/4 rounded bg-slate-200" />
@@ -44,7 +46,7 @@ export const ProductCard = ({
   return (
     <Pressable
       onPress={() => href && router.push(href)}
-      className="w-40 h-64 overflow-hidden rounded-xl border border-slate-300 bg-white"
+      className={`${width} h-64 overflow-hidden rounded-xl border border-slate-300 bg-white`}
     >
       <Image
         source={{

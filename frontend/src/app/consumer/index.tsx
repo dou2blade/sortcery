@@ -83,6 +83,7 @@ const ConsumerPage = () => {
             ? Array.from({ length: 5 }).map((_, idx) => (
                 <ProductCard
                   key={idx}
+                  width="w-40"
                   loading
                   name=""
                 />
@@ -90,6 +91,7 @@ const ConsumerPage = () => {
             : (topGlobal?.data ?? []).map((product) => (
                 <ProductCard
                   key={product.id}
+                  width="w-40"
                   name={product.name}
                   imageUrl={product.imageUrl}
                   sales={product.totalSales}
@@ -130,12 +132,14 @@ const ConsumerPage = () => {
             ? Array.from({ length: 5 }).map((_, idx) => (
                 <ProductCard
                   key={idx}
+                  width="w-40"
                   loading
                   name=""
                 />
               ))
             : (topNearby?.data ?? []).map((product) => (
                 <ProductCard
+                  width="w-40"
                   key={product.id}
                   name={product.name}
                   imageUrl={product.imageUrl}

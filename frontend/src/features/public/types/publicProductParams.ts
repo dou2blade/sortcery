@@ -1,5 +1,4 @@
 export interface PublicProductParams {
-  page: number;
   search: string;
   latitude?: number;
   longitude?: number;
