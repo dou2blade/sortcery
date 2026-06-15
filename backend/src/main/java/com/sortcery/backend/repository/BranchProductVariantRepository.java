@@ -42,7 +42,7 @@ public interface BranchProductVariantRepository extends
             OR bpv.productVariant.product.brand.id = :brand
         )
         AND (
-            :brand IS NULL
+            :branch IS NULL
             OR bpv.branch.id = :branch
         )
         GROUP BY bpv
@@ -78,7 +78,7 @@ public interface BranchProductVariantRepository extends
             OR bpv.productVariant.product.brand.id = :brand
         )
         AND (
-            :brand IS NULL
+            :branch IS NULL
             OR bpv.branch.id = :branch
         )
         GROUP BY bpv

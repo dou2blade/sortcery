@@ -11,12 +11,17 @@ import org.springframework.stereotype.Service;
 
 import com.sortcery.backend.algorithms.Haversine;
 import com.sortcery.backend.algorithms.MergeSort;
+import com.sortcery.backend.algorithms.ProductScorer;
 import com.sortcery.backend.dto.branch.BranchPublicDTO;
 import com.sortcery.backend.dto.branchproductvariant.BranchProductVariantPublicDTO;
 import com.sortcery.backend.dto.product.ProductSalesDTO;
 import com.sortcery.backend.repository.ProductRepository;
 import com.sortcery.backend.repository.BranchProductVariantRepository;
 
+record ScoredProduct(
+    BranchProductVariantPublicDTO product,
+    double score
+) {}
 
 @Service
 public class ProductSearchService {
@@ -162,28 +167,62 @@ public class ProductSearchService {
                     ) : null
             ));
 
-            default -> branchProductVariantRepository.findAllWithSales(
-                search,
-                category,
-                brand,
-                branch,
-                PageRequest.of(page, size)
-            ).map((item) -> new BranchProductVariantPublicDTO(
-                item.bpv(),
-                item.sales(),
-                latitude != null && longitude != null
-                    ? Haversine.distance(
-                        item.bpv().getBranch().getLatitude(),
-                        item.bpv().getBranch().getLongitude(),
-                        latitude,
-                        longitude
-                    ) : null
-            ));
+            default -> {
+                List<ScoredProduct> products =
+                    branchProductVariantRepository.findAllWithSales(
+                        search,
+                        category,
+                        brand,
+                        branch,
+                        Pageable.unpaged()
+                    )
+                    .stream()
+                    .map(item -> {
+                        BranchProductVariantPublicDTO product = new BranchProductVariantPublicDTO(
+                            item.bpv(),
+                            item.sales(),
+                            latitude != null && longitude != null
+                                ? Haversine.distance(
+                                    item.bpv().getBranch().getLatitude(),
+                                    item.bpv().getBranch().getLongitude(),
+                                    latitude,
+                                    longitude
+                                )
+                                : null
+                        );
+
+                        return new ScoredProduct(product, ProductScorer.score(product, search));
+                    })
+                    .toList();
+
+                List<BranchProductVariantPublicDTO> rankedProducts = MergeSort.sort(
+                    products,
+                    Comparator.comparingDouble(ScoredProduct::score)
+                )
+                .stream()
+                .map(ScoredProduct::product)
+                .toList();
+
+                int start = page * size;
+                int end = Math.min(start + size, products.size());
+
+                List<BranchProductVariantPublicDTO> content =
+                    start >= rankedProducts.size()
+                        ? List.of()
+                        : rankedProducts.subList(start, end);
+
+                yield new PageImpl<>(
+                    content,
+                    PageRequest.of(page, size),
+                    rankedProducts.size()
+                );
+            } 
         };
     }
 
     public List<BranchProductVariantPublicDTO> findVariant(Long variantId, Double latitude, Double longitude) {
-        return branchProductVariantRepository.findVariantsWithSales(variantId)
+        List<BranchProductVariantPublicDTO> bpvs = branchProductVariantRepository
+            .findVariantsWithSales(variantId)
             .stream()
             .map((item) -> new BranchProductVariantPublicDTO(
                 item.bpv(),
@@ -197,6 +236,8 @@ public class ProductSearchService {
                     ) : null
             ))
             .toList();
+
+        return MergeSort.sort(bpvs, Comparator.comparingDouble(BranchProductVariantPublicDTO::getDistance));
     }
 
     public List<ProductSalesDTO> findTop(

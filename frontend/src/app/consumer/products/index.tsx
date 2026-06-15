@@ -53,6 +53,7 @@ const ConsumerProductsPage = () => {
 
   const { data: brands } = usePublicBrandOptions();
 
+
   const products = useMemo(() => (
     data?.pages.flatMap(
       (page) => page.data ?? []
