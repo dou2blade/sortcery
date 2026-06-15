@@ -28,7 +28,7 @@ export const FilterChip = ({
     <>
       <Pressable
         onPress={() => sheetRef.current?.present()}
-        className="flex-1 flex-row items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3"
+        className="flex-1 flex-row items-center justify-between gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3"
       >
         <Text
           numberOfLines={1}

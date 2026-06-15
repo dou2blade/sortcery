@@ -182,7 +182,7 @@ const ConsumerBranchPage = () => {
             sales={item.sales}
             location={item.branchName}
             price={item.price}
-            href={`/consumer/products/${item.id}`}
+            href={`/consumer/products/${item.productVariantId}`}
           />
         </Animated.View>
       )}

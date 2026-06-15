@@ -52,7 +52,7 @@ const ConsumerPage = () => {
         />
       </CmsCardsContainer>
 
-      <ConsumerSection title="Categories" onSeeAll={() => router.push("/consumer/product-categories")}>
+      <ConsumerSection title="Categories" onSeeAll={() => router.push("/consumer/products")}>
         <HorizontalScroll>
           {productCategoriesLoading 
             ? Array.from({ length: 12 }, (_, i) => (
@@ -64,6 +64,7 @@ const ConsumerPage = () => {
                 <Pressable
                   key={category.id}
                   className="bg-white border border-slate-300 rounded-xl px-4 py-3"
+                  onPress={() => router.push(`/consumer/products?category=${category.id}`)}
                 >
                   <Text>{category.name}</Text>
                 </Pressable>
@@ -90,7 +91,7 @@ const ConsumerPage = () => {
                   name={product.name}
                   imageUrl={product.imageUrl}
                   sales={product.totalSales}
-                  href={`/consumer/products/${product.id}`}
+                  href={`/consumer/products?search=${product.name}`}
                 />
               ))
           }
@@ -141,7 +142,7 @@ const ConsumerPage = () => {
                   name={product.name}
                   imageUrl={product.imageUrl}
                   sales={product.totalSales}
-                  href={`/consumer/products/${product.id}`}
+                  href={`/consumer/products?search=${product.name}`}
                 />
               ))
           }

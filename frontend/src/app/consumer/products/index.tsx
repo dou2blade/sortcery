@@ -9,7 +9,6 @@ import { ActivityIndicator, FlatList, Text, useWindowDimensions, View } from "re
 
 import { useGridColumns } from "@/hooks/useGridColumns";
 import Animated, { FadeIn } from "react-native-reanimated";
-import { Image } from "expo-image";
 
 const ConsumerProductsPage = () => {
   const location = useCurrentLocation();
@@ -152,7 +151,7 @@ const ConsumerProductsPage = () => {
             sales={item.sales}
             location={item.branchName}
             price={item.price}
-            href={`/consumer/products/${item.id}`}
+            href={`/consumer/products/${item.productVariantId}`}
           />
         </Animated.View>
       )}

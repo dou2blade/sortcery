@@ -1,25 +1,44 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Image } from "expo-image";
-import { Stack, usePathname, useRouter } from "expo-router";
+import { Stack, useGlobalSearchParams, useLocalSearchParams, usePathname, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, TextInput, View } from "react-native";
 
 const ConsumerLayout = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const { search } = useGlobalSearchParams<{
+    search?: string;
+  }>();
 
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(search ?? "");
 
   const isHome = pathname === "/consumer";
 
   useEffect(() => {
+    if (search !== value) {
+      setValue(search ?? "");
+    }
+  }, [search]);
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
-      if (isHome && value) router.push("/consumer/products");
-      router.setParams({ search: value || undefined });
+      if (isHome && value) {
+        router.push({
+          pathname: "/consumer/products",
+          params: { search: value },
+        });
+
+        return;
+      }
+
+      router.setParams({
+        search: value || undefined,
+      });
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [value]);
+  }, [value, isHome]);
 
   return (
     <View className="flex-1">

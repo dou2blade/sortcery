@@ -5,7 +5,7 @@ import { PublicBranchProduct } from "../types";
 
 export const usePublicProductAlternatives = (id: number, latitude: number, longitude: number) => {
   return useQuery({
-    queryKey: publicKeys.productsAlternatives(id),
+    queryKey: publicKeys.productsAlternatives(id, latitude, longitude),
     queryFn: async () => await apiGet<PublicBranchProduct[]>(`public/products/variants/${id}`, { latitude, longitude })
   });
 };

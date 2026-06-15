@@ -18,8 +18,6 @@ export const apiFetch = async <T>({ resource, method, body, params }: {
 
   const url = `${apiUrl}${resource}${queryParams ? `?${queryParams}` : ""}`
 
-  console.log(url)
-
   const res = await fetch(url, {
     method: method ?? "GET",
     headers: {

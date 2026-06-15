@@ -5,7 +5,7 @@ import { PublicBranch } from "../types/publicBranch";
 
 export const usePublicBranches = (search: string, store: number, latitude: number, longitude: number) => {
   return useInfiniteQuery({
-    queryKey: publicKeys.branchesStore(search, store),
+    queryKey: publicKeys.branchesStore(search, store, latitude, longitude),
 
     queryFn: ({ pageParam = 0 }) => apiGet<PublicBranch[]>("public/branches", { search, store, latitude, longitude, page: pageParam }),
 

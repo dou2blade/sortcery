@@ -5,7 +5,7 @@ import { PublicBranch } from "../types/publicBranch";
 
 export const usePublicBranch = (id: number, latitude: number, longitude: number) => {
   return useQuery({
-    queryKey: publicKeys.branch(id),
+    queryKey: publicKeys.branch(id, latitude, longitude),
     queryFn: async () => await apiGet<PublicBranch>(`public/branches/${id}`, { latitude, longitude }),
   });
 };
